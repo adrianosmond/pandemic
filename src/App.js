@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Canvas } from 'react-three-fiber';
+import { CitiesContext } from 'contexts/cities';
+import useCities from 'hooks/useCities';
 
-function App() {
+import Cities from 'components/Cities';
+import Content from 'components/Content';
+import Controls from 'components/Controls';
+
+const App = () => {
+  const cityContextValue = useCities();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Canvas camera={{ position: [0, 0, 2] }}>
+        <CitiesContext.Provider value={cityContextValue}>
+          <Controls />
+          <Content cityContextValue={cityContextValue} />
+        </CitiesContext.Provider>
+      </Canvas>
+      <CitiesContext.Provider value={cityContextValue}>
+        <Cities />
+      </CitiesContext.Provider>
+    </>
   );
-}
+};
 
 export default App;
