@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useCities } from 'contexts/cities';
 import { extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -10,10 +10,14 @@ const Controls = () => {
   const { camera, gl } = useThree();
   const { update } = useCities();
 
+  useEffect(() => {
+    update(camera);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useFrame(() => {
-    if (ref.current.update()) {
-      update(camera);
-    }
+    ref.current.update();
+    update(camera);
   });
 
   return (
@@ -24,7 +28,7 @@ const Controls = () => {
       dampingFactor={0.1}
       rotateSpeed={0.3}
       minDistance={1.4}
-      maxDistance={4}
+      maxDistance={2}
       args={[camera, gl.domElement]}
     />
   );
