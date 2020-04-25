@@ -296,7 +296,7 @@ const INITIAL_CITY_DATA = [
     name: 'London',
     color: 'blue',
     lat: 55,
-    lon: -10,
+    lon: -12,
     realLat: 51.5074,
     realLon: 0,
     infections: {
@@ -312,7 +312,7 @@ const INITIAL_CITY_DATA = [
     name: 'Madrid',
     color: 'blue',
     lat: 40.4168,
-    lon: -8,
+    lon: -10,
     realLat: 40.4168,
     realLon: -3.7038,
     infections: {
@@ -426,8 +426,10 @@ const INITIAL_CITY_DATA = [
     key: 'algiers',
     name: 'Algiers',
     color: 'black',
-    lat: 36.7538,
-    lon: 3.0588,
+    lat: 33,
+    lon: 5,
+    realLat: 36.7538,
+    realLon: 3.0588,
     infections: {
       black: 0,
       blue: 0,
@@ -678,7 +680,7 @@ const INITIAL_CITY_DATA = [
     name: 'Taipei',
     color: 'red',
     lat: 23,
-    lon: 121,
+    lon: 125,
     realLat: 25.033,
     realLon: 121.5654,
     infections: {
@@ -694,7 +696,7 @@ const INITIAL_CITY_DATA = [
     name: 'Osaka',
     color: 'red',
     lat: 30,
-    lon: 137,
+    lon: 139,
     realLat: 34.6937,
     realLon: 135.5023,
     infections: {
@@ -757,7 +759,7 @@ const INITIAL_CITY_DATA = [
     key: 'seoul',
     name: 'Seoul',
     color: 'red',
-    lat: 40,
+    lat: 43,
     lon: 127,
     realLat: 37.5665,
     realLon: 126.978,

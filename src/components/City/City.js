@@ -5,12 +5,14 @@ const City = ({ name, zIndex, transform, opacity, color, infections }) => {
   const infectionRows = Object.entries(infections)
     .filter(([col, number]) => col === color || number > 0)
     .sort((a, b) => {
-      if (a === color) return -1;
-      if (b === color) return 1;
-      return a < b ? -1 : 1;
+      if (a[1] === b[1]) return a[0] === color ? -1 : 1;
+      return b[1] - a[1];
     });
   return (
-    <div className={classes.city} style={{ zIndex, transform, opacity }}>
+    <div
+      className={[classes.city, classes[color]].join(' ')}
+      style={{ zIndex, transform, opacity }}
+    >
       {name}
       {infectionRows.map(([col, count], index) => (
         <div className={classes.infectionRow} key={index}>

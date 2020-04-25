@@ -7,7 +7,23 @@
   opacity: 0;
   border-radius: 0.25rem;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.black {
+  color: #ccc;
+}
+
+.blue {
+  color: deepskyblue;
+}
+
+.red {
+  color: tomato;
+}
+
+.yellow {
+  color: yellow;
 }
 
 .infectionRow {
@@ -32,18 +48,18 @@
   opacity: 1;
 }
 
-.black {
-  background-color: #999;
+.pill.black {
+  background-color: #ccc;
 }
 
-.blue {
-  background-color: dodgerblue;
+.pill.blue {
+  background-color: deepskyblue;
 }
 
-.red {
-  background-color: red;
+.pill.red {
+  background-color: tomato;
 }
 
-.yellow {
+.pill.yellow {
   background-color: yellow;
 }
