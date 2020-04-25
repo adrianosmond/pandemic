@@ -8,7 +8,7 @@ export default () => {
   const [cities, setCities] = useState(INITIAL_CITY_DATA);
 
   const update = useCallback(
-    (camera) => {
+    (camera, size) => {
       const surfaceCameraPos = new Vector3();
       surfaceCameraPos.copy(camera.position);
       surfaceCameraPos.normalize();
@@ -19,8 +19,8 @@ export default () => {
         tempV.project(camera);
 
         const distFromCamera = surfaceCameraPos.distanceTo(city.position);
-        const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (tempV.y * -0.5 + 0.5) * window.innerHeight;
+        const x = (tempV.x * 0.5 + 0.5) * size.width;
+        const y = (tempV.y * -0.5 + 0.5) * size.height;
         const scale = 1.05 - distFromCamera * distFromCamera;
 
         newCities.push({

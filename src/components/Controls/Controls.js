@@ -7,17 +7,17 @@ extend({ OrbitControls });
 
 const Controls = () => {
   const ref = useRef();
-  const { camera, gl } = useThree();
+  const { camera, gl, size } = useThree();
   const { update } = useCities();
 
   useEffect(() => {
-    update(camera);
+    update(camera, size);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useFrame(() => {
     ref.current.update();
-    update(camera);
+    update(camera, size);
   });
 
   return (
@@ -25,6 +25,7 @@ const Controls = () => {
       ref={ref}
       target={[0, 0, 0]}
       enableDamping
+      enablePan={false}
       dampingFactor={0.1}
       rotateSpeed={0.3}
       minDistance={1.4}

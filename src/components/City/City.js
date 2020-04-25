@@ -12,8 +12,8 @@ const City = ({ name, zIndex, transform, opacity, color, infections }) => {
   return (
     <div className={classes.city} style={{ zIndex, transform, opacity }}>
       {name}
-      {infectionRows.map(([col, count]) => (
-        <div className={classes.infectionRow}>
+      {infectionRows.map(([col, count], index) => (
+        <div className={classes.infectionRow} key={index}>
           <div
             className={[
               classes.pill,
