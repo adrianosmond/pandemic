@@ -6,6 +6,7 @@ const tempV = new Vector3();
 
 export default () => {
   const [cities, setCities] = useState(INITIAL_CITY_DATA);
+  const [pauseRendering, setPauseRendering] = useState(true);
 
   const update = useCallback(
     (camera, size) => {
@@ -35,5 +36,5 @@ export default () => {
     [cities],
   );
 
-  return { cities, update };
+  return { cities, update, pauseRendering, setPauseRendering };
 };

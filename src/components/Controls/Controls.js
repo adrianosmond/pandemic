@@ -1,17 +1,25 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { useCities } from 'contexts/cities';
-import { extend, useFrame, useThree } from 'react-three-fiber';
+import { extend, useFrame, useThree, invalidate } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 extend({ OrbitControls });
 
 const Controls = () => {
-  const ref = useRef();
   const { camera, gl, size } = useThree();
-  const { update } = useCities();
+  const { update, setPauseRendering } = useCities();
+
+  const ref = useRef();
+  const timeoutRef = useRef();
 
   useEffect(() => {
-    update(camera, size);
+    ref.current.addEventListener('change', () => {
+      setPauseRendering(false);
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setPauseRendering(true);
+      });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

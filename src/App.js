@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { CitiesContext } from 'contexts/cities';
-import useCities from 'hooks/useCities';
+import useGameState from 'hooks/useGameState';
 
 import Cities from 'components/Cities';
 import Content from 'components/Content';
 import Controls from 'components/Controls';
 
 const App = () => {
-  const cityContextValue = useCities();
+  const gameState = useGameState();
 
   return (
     <>
-      <Canvas camera={{ position: [0, 0, 2] }}>
-        <CitiesContext.Provider value={cityContextValue}>
+      <Canvas
+        camera={{ position: [0, 0, 2] }}
+        invalidateFrameloop={gameState.pauseRendering}
+      >
+        <CitiesContext.Provider value={gameState}>
           <Controls />
-          <Content cityContextValue={cityContextValue} />
+          <Content />
         </CitiesContext.Provider>
       </Canvas>
-      <CitiesContext.Provider value={cityContextValue}>
+      <CitiesContext.Provider value={gameState}>
         <Cities />
       </CitiesContext.Provider>
     </>
