@@ -3,21 +3,17 @@
   position: absolute;
   left: 0;
   top: 0;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.5rem 0.5rem;
   opacity: 0;
   border-radius: 0.25rem;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .infectionRow {
   margin-top: 0.5rem;
   display: flex;
   justify-content: center;
-}
-
-.infectionRow:first-child {
-  margin-top: 0.25rem;
 }
 
 .pill {
@@ -37,8 +33,7 @@
 }
 
 .black {
-  background-color: #000;
-  border: 1px solid #333;
+  background-color: #999;
 }
 
 .blue {

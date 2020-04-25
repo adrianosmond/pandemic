@@ -18,7 +18,7 @@ const Curve = ({ curve }) => {
       <lineGeometry attach="geometry" ref={ref} />
       <lineMaterial
         attach="material"
-        color="#333333"
+        color="#9effb8"
         linewidth={1.5}
         resolution={[size.width, size.height]}
       />

@@ -25,7 +25,7 @@ export default () => {
 
         newCities.push({
           ...city,
-          transform: `translate(-50%, -50%) translate(${x}px,${y}px) scale(${scale})`,
+          transform: `translate(-50%, -50%) translate3d(${x}px,${y}px, 0px) scale(${scale})`,
           opacity: Math.max(Math.min((scale - 0.3) / 0.6, 1), 0),
           zIndex: Math.round((1 - distFromCamera) * 100),
         });
