@@ -10,7 +10,7 @@ const Planet = () => {
   return (
     <mesh>
       <sphereGeometry attach="geometry" args={[1, 64, 64]} />
-      <meshBasicMaterial attach="material" map={earth} bumpScale={0.05} />
+      <meshBasicMaterial attach="material" map={earth} />
     </mesh>
   );
 };

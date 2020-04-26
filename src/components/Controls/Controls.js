@@ -1,16 +1,15 @@
-import React, { useRef, useEffect, useCallback } from 'react';
-import { useCities } from 'contexts/cities';
-import { extend, useFrame, useThree, invalidate } from 'react-three-fiber';
+import React, { useRef, useEffect } from 'react';
+import { extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { useCities } from 'contexts/cities';
 
 extend({ OrbitControls });
 
 const Controls = () => {
-  const { camera, gl, size } = useThree();
-  const { update, setPauseRendering } = useCities();
-
   const ref = useRef();
   const timeoutRef = useRef();
+  const { camera, gl, size } = useThree();
+  const { update, setPauseRendering } = useCities();
 
   useEffect(() => {
     ref.current.addEventListener('change', () => {
@@ -20,8 +19,7 @@ const Controls = () => {
         setPauseRendering(true);
       });
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setPauseRendering]);
 
   useFrame(() => {
     ref.current.update();
