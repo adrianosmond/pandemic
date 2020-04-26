@@ -1,4 +1,5 @@
 import { Object3D, MathUtils, Vector3, CatmullRomCurve3 } from 'three';
+import { getArcPoints } from 'utils/utils';
 
 const lonFudge = Math.PI * 1.5;
 const latFudge = Math.PI;
@@ -469,10 +470,10 @@ const INITIAL_CITY_DATA = [
     key: 'paris',
     name: 'Paris',
     color: 'blue',
-    lat: 48,
-    lon: 0,
-    realLat: 48.8566,
-    realLon: 2.3522,
+    lat: 48.8566,
+    lon: 2.3522,
+    realLat: null,
+    realLon: null,
     position: null,
     adjustedPosition: null,
     realPosition: null,
@@ -514,7 +515,7 @@ const INITIAL_CITY_DATA = [
     name: 'Milan',
     color: 'blue',
     lat: 45,
-    lon: 13,
+    lon: 15,
     realLat: 45.4642,
     realLon: 9.19,
     position: null,
@@ -1125,27 +1126,18 @@ INITIAL_CITY_DATA.forEach(({ connections, key, position }) => {
     .map((connection) => INITIAL_CITY_DATA.find((c) => c.key === connection))
     .filter(Boolean)
     .forEach(({ position: position2 }) => {
+      const pts = getArcPoints(
+        position.clone().setLength(1.01),
+        position2.clone().setLength(1.01),
+        5,
+      );
       const distance = position.distanceTo(position2);
-      const heightAbove = Math.max(1 + (distance * distance) / 35, 1.005);
-      const heightBelow = 1 - (distance * distance) / 5;
-      const midpointAbove = new Vector3(
-        (position.x + position2.x) * 0.5,
-        (position.y + position2.y) * 0.5,
-        (position.z + position2.z) * 0.5,
-      );
-      midpointAbove.setLength(heightAbove);
-      const midpointBelow = new Vector3(
-        (position.x + position2.x) * 0.5,
-        (position.y + position2.y) * 0.5,
-        (position.z + position2.z) * 0.5,
-      );
-      midpointBelow.setLength(heightBelow);
-      CONNECTING_LINES.push(
-        new CatmullRomCurve3(
-          [midpointBelow, position, midpointAbove, position2],
-          true,
-        ).getPoints(50),
-      );
+      const maxHeight = Math.max((distance * distance) / 70, 0.0125);
+      pts[1].setLength(1 + maxHeight * 0.8);
+      pts[2].setLength(1 + maxHeight);
+      pts[3].setLength(1 + maxHeight * 0.8);
+      const numPoints = Math.min(Math.max(2 ** Math.ceil(distance * 5), 5), 32);
+      CONNECTING_LINES.push(new CatmullRomCurve3(pts).getPoints(numPoints));
     });
 });
 
