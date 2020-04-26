@@ -1,9 +1,9 @@
 import React from 'react';
 import PositionMarker from 'components/PositionMarker';
-import { useCities } from 'contexts/cities';
+import { useGame } from 'contexts/game';
 
 const CityMarkers = () => {
-  const { cities } = useCities();
+  const { cities } = useGame();
 
   return (
     <>

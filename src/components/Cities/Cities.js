@@ -1,11 +1,11 @@
 import React from 'react';
-import { useCities } from 'contexts/cities';
+import { useGame } from 'contexts/game';
 import City from 'components/City';
 
 import classes from './Cities.module.css';
 
 const Cities = () => {
-  const { cities } = useCities();
+  const { cities } = useGame();
 
   return (
     <div className={classes.cities}>

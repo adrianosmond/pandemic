@@ -1,6 +1,6 @@
 import React from 'react';
 import { Canvas } from 'react-three-fiber';
-import { CitiesContext } from 'contexts/cities';
+import { GameContext } from 'contexts/game';
 import useGameState from 'hooks/useGameState';
 
 import Cities from 'components/Cities';
@@ -16,14 +16,14 @@ const App = () => {
         camera={{ position: [0, 0, 2] }}
         invalidateFrameloop={gameState.pauseRendering}
       >
-        <CitiesContext.Provider value={gameState}>
+        <GameContext.Provider value={gameState}>
           <Controls />
           <Content />
-        </CitiesContext.Provider>
+        </GameContext.Provider>
       </Canvas>
-      <CitiesContext.Provider value={gameState}>
+      <GameContext.Provider value={gameState}>
         <Cities />
-      </CitiesContext.Provider>
+      </GameContext.Provider>
     </>
   );
 };

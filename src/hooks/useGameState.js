@@ -7,8 +7,9 @@ const tempV = new Vector3();
 export default () => {
   const [cities, setCities] = useState(INITIAL_CITY_DATA);
   const [pauseRendering, setPauseRendering] = useState(true);
+  const [panTarget, setPanTarget] = useState(null);
 
-  const update = useCallback(
+  const updateCities = useCallback(
     (camera, size) => {
       const surfaceCameraPos = new Vector3();
       surfaceCameraPos.copy(camera.position);
@@ -36,5 +37,12 @@ export default () => {
     [cities],
   );
 
-  return { cities, update, pauseRendering, setPauseRendering };
+  return {
+    cities,
+    updateCities,
+    pauseRendering,
+    setPauseRendering,
+    panTarget,
+    setPanTarget,
+  };
 };
