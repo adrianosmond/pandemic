@@ -27,6 +27,22 @@
   appearance: none;
 }
 
+.city--blue {
+  color: deepskyblue;
+}
+
+.city--black {
+  color: #ccc;
+}
+
+.city--red {
+  color: tomato;
+}
+
+.city--yellow {
+  color: yellow;
+}
+
 .cityName {
   flex-grow: 1;
   font-size: 1rem;

@@ -59,7 +59,7 @@ const CitiesScreen = ({ close }) => {
       </div>
       {sortedCities.map((city) => (
         <button
-          className={classes.city}
+          className={[classes.city, classes[`city--${city.color}`]].join(' ')}
           key={city.key}
           onClick={() => {
             close();

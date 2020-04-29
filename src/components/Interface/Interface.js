@@ -40,7 +40,10 @@ const Interface = () => {
     >
       {uiVisible && (
         <>
-          <div className={classes.blur} />
+          <div
+            className={classes.blur}
+            onClick={isGameStarted ? closeUi : null}
+          />
           <div className={classes.uiWrapper}>
             <div className={classes.ui}>
               {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}

@@ -17,7 +17,6 @@ const ProgressScreen = () => {
     <div>
       <h2>Cure Progress</h2>
       <div className={classes.cureProgress}>
-        <div className={classes.numCured}>{numCured} / 4</div>
         {Object.entries(cures).map(([name, cured]) => (
           <div
             key={name}
@@ -28,30 +27,31 @@ const ProgressScreen = () => {
             ].join(' ')}
           />
         ))}
+        <div className={classes.numCured}>{numCured} / 4</div>
       </div>
-      <h2 className={classes.heading}>Disease progress</h2>
+      <h2 className={classes.heading}>Pandemic Progress</h2>
 
       <div className={classes.stats}>
         <div className={classes.stat}>
-          <h3 className={classes.subHeading}>Outbreaks</h3>
-          <p className={classes.progress}>{diseaseProgress.outbreaks} / 7</p>
+          <h3 className={classes.subHeading}>Cubes left</h3>
+          {sortedCubes.map(([name, remaining]) => (
+            <div key={name} className={classes.cubeRow}>
+              <div
+                className={[classes.disease, classes[name], classes.cured].join(
+                  ' ',
+                )}
+              />
+              <span className={classes.numRemaining}>{remaining} / 24</span>
+            </div>
+          ))}
         </div>
         <div className={classes.stat}>
-          <h3 className={classes.subHeading}>Cards remaining</h3>
+          <h3 className={classes.subHeading}>Outbreaks</h3>
+          <p className={classes.progress}>{diseaseProgress.outbreaks} / 7</p>
+          <h3 className={classes.subHeading}>Cards left</h3>
           <p className={classes.progress}>{playerDeck.deck.length}</p>
         </div>
       </div>
-      <h3 className={classes.subHeading}>Cubes remaining</h3>
-      {sortedCubes.map(([name, remaining]) => (
-        <div key={name} className={classes.cubeRow}>
-          <div
-            className={[classes.disease, classes[name], classes.cured].join(
-              ' ',
-            )}
-          />
-          <span className={classes.numRemaining}>{remaining} / 24</span>
-        </div>
-      ))}
     </div>
   );
 };

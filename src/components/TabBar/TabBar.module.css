@@ -4,9 +4,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  pointer-events: initial;
   color: #fff;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
 .tabBarButton {
@@ -15,6 +15,7 @@
   width: 3rem;
   background-color: #000;
   outline: 0;
+  pointer-events: initial;
 }
 
 .selectedTab {

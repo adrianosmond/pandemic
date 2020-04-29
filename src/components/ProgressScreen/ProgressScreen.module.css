@@ -4,14 +4,14 @@
 }
 
 .numCured {
-  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .disease {
   height: 1rem;
   width: 1rem;
   border-radius: 0.25rem;
-  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   opacity: 0.3;
 }
 
@@ -40,6 +40,10 @@
 }
 
 .subHeading {
+  margin-top: 0.5rem;
+}
+
+.subHeading:not(:first-child) {
   margin-top: 1rem;
 }
 
@@ -49,10 +53,11 @@
 
 .stats {
   display: flex;
+  margin-bottom: 2rem;
 }
 
 .stat:first-child {
-  margin-right: 1rem;
+  margin-right: 2rem;
 }
 
 .cubeRow {

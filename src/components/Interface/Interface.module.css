@@ -20,6 +20,7 @@
   flex-direction: column;
   justify-content: center;
   max-height: calc(100% - 3rem);
+  pointer-events: none;
 }
 
 .ui {
@@ -29,6 +30,7 @@
   margin: 2rem;
   padding: 1rem;
   overflow-y: scroll;
+  pointer-events: initial;
 }
 
 .blur {
@@ -39,4 +41,5 @@
   right: 0;
   z-index: -1;
   backdrop-filter: blur(10px);
+  pointer-events: initial;
 }
