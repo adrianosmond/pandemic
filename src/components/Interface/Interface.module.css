@@ -1,0 +1,42 @@
+.wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.uiVisible {
+  pointer-events: initial;
+}
+
+.uiWrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: calc(100% - 3rem);
+}
+
+.ui {
+  color: #fff;
+  border: 1px solid #ccc;
+  background-color: rgba(0, 0, 0, 0.75);
+  margin: 2rem;
+  padding: 1rem;
+  overflow-y: scroll;
+}
+
+.blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  backdrop-filter: blur(10px);
+}

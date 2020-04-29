@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Vector3, CatmullRomCurve3 } from 'three';
 import { extend, useFrame, useThree } from 'react-three-fiber';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { useGame } from 'contexts/game';
+import { useWorld } from 'contexts/world';
 import { getArcPoints, easeInOut } from 'utils/utils';
 
 extend({ OrbitControls });
@@ -16,7 +16,7 @@ const Controls = () => {
     setPauseRendering,
     panTarget,
     setPanTarget,
-  } = useGame();
+  } = useWorld();
   const [panAnimation, setPanAnimation] = useState(null);
 
   useEffect(() => {

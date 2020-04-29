@@ -1,0 +1,22 @@
+.tabBar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: initial;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.tabBarButton {
+  border: 1px solid #ccc;
+  height: 3rem;
+  width: 3rem;
+  background-color: #000;
+  outline: 0;
+}
+
+.selectedTab {
+  background-color: #333;
+}

@@ -1,0 +1,13 @@
+.startScreen {
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 1rem;
+}
+
+.startButton {
+  border: 0;
+  padding: 0.5rem;
+  background-color: #fff;
+}
