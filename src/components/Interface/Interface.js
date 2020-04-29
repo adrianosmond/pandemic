@@ -14,16 +14,23 @@ const Interface = () => {
   const [uiVisible, setUiVisible] = useState(true);
   const [visibleTab, setVisibleTab] = useState(null);
   const { isGameStarted } = useProperties();
+
   const showTab = useCallback((tabName) => {
     setVisibleTab((state) => {
       setUiVisible(tabName !== state);
       return tabName === state ? null : tabName;
     });
   }, []);
+
   const closeUiAndStart = useCallback(() => {
     setUiVisible(false);
     startGame();
   }, [startGame]);
+
+  const closeUi = useCallback(() => {
+    setUiVisible(false);
+    setVisibleTab(null);
+  }, []);
 
   return (
     <div
@@ -37,10 +44,10 @@ const Interface = () => {
           <div className={classes.uiWrapper}>
             <div className={classes.ui}>
               {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
-              {visibleTab === 'progress' && <ProgressScreen />}
-              {visibleTab === 'cards' && <CardsScreen />}
-              {visibleTab === 'cities' && <CitiesScreen />}
-              {visibleTab === 'actions' && <ActionsScreen />}
+              {visibleTab === 'progress' && <ProgressScreen close={closeUi} />}
+              {visibleTab === 'cards' && <CardsScreen close={closeUi} />}
+              {visibleTab === 'cities' && <CitiesScreen close={closeUi} />}
+              {visibleTab === 'actions' && <ActionsScreen close={closeUi} />}
             </div>
           </div>
         </>

@@ -37,6 +37,14 @@ export default () => {
     [cities],
   );
 
+  const panToCity = useCallback(
+    (cityKey) => {
+      const pos = cities.find((city) => city.key === cityKey).position;
+      setPanTarget(pos);
+    },
+    [cities],
+  );
+
   return {
     cities,
     updateCities,
@@ -44,5 +52,6 @@ export default () => {
     setPauseRendering,
     panTarget,
     setPanTarget,
+    panToCity,
   };
 };

@@ -23,7 +23,6 @@ const getPosition = (lat, lon) => {
 const INITIAL_MAP_DATA = [
   {
     key: 'mexico-city',
-    name: 'Mexico City',
     lat: 19.4326,
     lon: -99.1332,
     realLat: null,
@@ -37,7 +36,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'los-angeles',
-    name: 'Los Angeles',
     lat: 27,
     lon: -118,
     realLat: 34.0522,
@@ -51,7 +49,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'bogota',
-    name: 'Bogota',
     lat: 4.711,
     lon: -74.0721,
     realLat: null,
@@ -65,7 +62,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'miami',
-    name: 'Miami',
     lat: 25.7617,
     lon: -80.1918,
     realLat: null,
@@ -79,7 +75,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'lima',
-    name: 'Lima',
     lat: -12.0464,
     lon: -77.0428,
     realLat: null,
@@ -93,7 +88,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'santiago',
-    name: 'Santiago',
     lat: -33,
     lon: -75,
     realLat: -33.4489,
@@ -107,7 +101,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'sao-paolo',
-    name: 'Sao Paolo',
     lat: -23.5505,
     lon: -46.6333,
     realLat: null,
@@ -121,7 +114,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'buenos-aires',
-    name: 'Buenos Aires',
     lat: -34.6037,
     lon: -58.3816,
     realLat: null,
@@ -135,7 +127,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'lagos',
-    name: 'Lagos',
     lat: 6.5244,
     lon: 3.3792,
     realLat: null,
@@ -149,7 +140,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'kinshasa',
-    name: 'Kinshasa',
     lat: -4.4419,
     lon: 15.2663,
     realLat: null,
@@ -163,7 +153,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'khartoum',
-    name: 'Khartoum',
     lat: 15.5007,
     lon: 32.5599,
     realLat: null,
@@ -177,7 +166,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'johannesburg',
-    name: 'Johannesburg',
     lat: -26.2041,
     lon: 28.0473,
     realLat: null,
@@ -191,7 +179,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'san-francisco',
-    name: 'San Francisco',
     lat: 37.7749,
     lon: -122.4194,
     realLat: null,
@@ -205,7 +192,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'chicago',
-    name: 'Chicago',
     lat: 42,
     lon: -93,
     realLat: 41.8781,
@@ -219,7 +205,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'atlanta',
-    name: 'Atlanta',
     lat: 34,
     lon: -88,
     realLat: 33.749,
@@ -233,7 +218,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'montreal',
-    name: 'Montreal',
     lat: 47,
     lon: -80,
     realLat: 45.5017,
@@ -247,7 +231,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'washington',
-    name: 'Washington',
     lat: 34,
     lon: -72,
     realLat: 38.9072,
@@ -261,7 +244,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'new-york',
-    name: 'New York',
     lat: 43,
     lon: -65,
     realLat: 40.7128,
@@ -275,7 +257,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'london',
-    name: 'London',
     lat: 55,
     lon: -12,
     realLat: 51.5074,
@@ -289,7 +270,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'madrid',
-    name: 'Madrid',
     lat: 40.4168,
     lon: -10,
     realLat: 40.4168,
@@ -303,7 +283,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'paris',
-    name: 'Paris',
     lat: 48.8566,
     lon: 2.3522,
     realLat: null,
@@ -317,7 +296,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'essen',
-    name: 'Essen',
     lat: 58,
     lon: 7,
     realLat: 51.4556,
@@ -331,7 +309,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'milan',
-    name: 'Milan',
     lat: 45,
     lon: 15,
     realLat: 45.4642,
@@ -345,7 +322,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'st-petersburg',
-    name: 'St Petersburg',
     lat: 59.9311,
     lon: 30.3609,
     realLat: null,
@@ -359,7 +335,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'moscow',
-    name: 'Moscow',
     lat: 50,
     lon: 42,
     realLat: 55.7558,
@@ -373,7 +348,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'istanbul',
-    name: 'Istanbul',
     lat: 41.0082,
     lon: 28.9784,
     realLat: null,
@@ -387,7 +361,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'algiers',
-    name: 'Algiers',
     lat: 33,
     lon: 5,
     realLat: 36.7538,
@@ -401,7 +374,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'cairo',
-    name: 'Cairo',
     lat: 30,
     lon: 28,
     realLat: 30.0444,
@@ -415,7 +387,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'baghdad',
-    name: 'Baghdad',
     lat: 33.3152,
     lon: 44.3661,
     realLat: null,
@@ -429,7 +400,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'tehran',
-    name: 'Tehran',
     lat: 40,
     lon: 55,
     realLat: 35.6892,
@@ -443,7 +413,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'delhi',
-    name: 'Delhi',
     lat: 28.7041,
     lon: 77.1025,
     realLat: null,
@@ -457,7 +426,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'karachi',
-    name: 'Karachi',
     lat: 24,
     lon: 62,
     realLat: 24.8607,
@@ -471,7 +439,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'riyadh',
-    name: 'Riyadh',
     lat: 24.7136,
     lon: 46.6753,
     realLat: null,
@@ -485,7 +452,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'kolkata',
-    name: 'Kolkata',
     lat: 22.5726,
     lon: 88.3639,
     realLat: null,
@@ -499,7 +465,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'mumbai',
-    name: 'Mumbai',
     lat: 19,
     lon: 70,
     realLat: 19.076,
@@ -513,7 +478,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'chennai',
-    name: 'Chennai',
     lat: 13.0827,
     lon: 80.2707,
     realLat: null,
@@ -527,7 +491,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'bangkok',
-    name: 'Bangkok',
     lat: 13,
     lon: 95,
     realLat: 13.7563,
@@ -541,7 +504,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'jakarta',
-    name: 'Jakarta',
     lat: -6.2088,
     lon: 106.8456,
     realLat: null,
@@ -555,7 +517,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'sydney',
-    name: 'Sydney',
     lat: -33.8688,
     lon: 151.2093,
     realLat: null,
@@ -569,7 +530,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'manila',
-    name: 'Manila',
     lat: 9,
     lon: 125,
     realLat: 14.5995,
@@ -583,7 +543,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'ho-chi-min-city',
-    name: 'Ho Chi Min City',
     lat: 5,
     lon: 106,
     realLat: 10.8231,
@@ -597,7 +556,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'hong-kong',
-    name: 'Hong Kong',
     lat: 22,
     lon: 108,
     realLat: 22.3193,
@@ -611,7 +569,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'taipei',
-    name: 'Taipei',
     lat: 23,
     lon: 125,
     realLat: 25.033,
@@ -625,7 +582,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'osaka',
-    name: 'Osaka',
     lat: 30,
     lon: 139,
     realLat: 34.6937,
@@ -639,7 +595,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'tokyo',
-    name: 'Tokyo',
     lat: 38,
     lon: 140,
     realLat: 35.6762,
@@ -653,7 +608,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'shanghai',
-    name: 'Shanghai',
     lat: 31,
     lon: 118,
     realLat: 31.2304,
@@ -667,7 +621,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'beijing',
-    name: 'Beijing',
     lat: 39,
     lon: 110,
     realLat: 39.9042,
@@ -681,7 +634,6 @@ const INITIAL_MAP_DATA = [
   },
   {
     key: 'seoul',
-    name: 'Seoul',
     lat: 43,
     lon: 127,
     realLat: 37.5665,

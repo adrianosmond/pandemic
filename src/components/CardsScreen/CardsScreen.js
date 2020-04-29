@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './CardsScreen.module.css';
+// import classes from './CardsScreen.module.css';
 
 const CardsScreen = () => <div>Cards</div>;
 

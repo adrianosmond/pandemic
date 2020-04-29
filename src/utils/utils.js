@@ -36,3 +36,16 @@ export const shuffle = (a) => {
   }
   return arr;
 };
+
+export const sortDiseaseAmounts = ({ color, black, blue, red, yellow }) =>
+  Object.entries({
+    black,
+    blue,
+    red,
+    yellow,
+  })
+    .filter(([col, number]) => col === color || number > 0)
+    .sort((a, b) => {
+      if (a[1] === b[1]) return a[0] === color ? -1 : 1;
+      return b[1] - a[1];
+    });

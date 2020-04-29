@@ -1,5 +1,6 @@
 export const CITIES = {
   'mexico-city': {
+    name: 'Mexico City',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -10,6 +11,7 @@ export const CITIES = {
     connections: ['los-angeles', 'chicago', 'bogota', 'miami', 'lima'],
   },
   'los-angeles': {
+    name: 'Los Angeles',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -20,6 +22,7 @@ export const CITIES = {
     connections: ['mexico-city', 'sydney', 'san-francisco', 'chicago'],
   },
   bogota: {
+    name: 'Bogota',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -30,6 +33,7 @@ export const CITIES = {
     connections: ['mexico-city', 'miami', 'sao-paolo', 'buenos-aires', 'lima'],
   },
   miami: {
+    name: 'Miami',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -40,6 +44,7 @@ export const CITIES = {
     connections: ['mexico-city', 'atlanta', 'washington', 'bogota'],
   },
   lima: {
+    name: 'Lima',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -50,6 +55,7 @@ export const CITIES = {
     connections: ['mexico-city', 'bogota', 'santiago'],
   },
   santiago: {
+    name: 'Santiago',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -60,6 +66,7 @@ export const CITIES = {
     connections: ['lima'],
   },
   'sao-paolo': {
+    name: 'Sao Paolo',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -70,6 +77,7 @@ export const CITIES = {
     connections: ['bogota', 'madrid', 'lagos', 'buenos-aires'],
   },
   'buenos-aires': {
+    name: 'Buenos Aires',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -80,6 +88,7 @@ export const CITIES = {
     connections: ['bogota', 'sao-paolo'],
   },
   lagos: {
+    name: 'Lagos',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -90,6 +99,7 @@ export const CITIES = {
     connections: ['sao-paolo', 'khartoum', 'kinshasa'],
   },
   kinshasa: {
+    name: 'Kinshasa',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -100,6 +110,7 @@ export const CITIES = {
     connections: ['lagos', 'khartoum', 'johannesburg'],
   },
   khartoum: {
+    name: 'Khartoum',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -110,6 +121,7 @@ export const CITIES = {
     connections: ['lagos', 'kinshasa', 'cairo', 'johannesburg'],
   },
   johannesburg: {
+    name: 'Johannesburg',
     color: 'yellow',
     researchCenter: false,
     quarantined: false,
@@ -120,6 +132,7 @@ export const CITIES = {
     connections: ['khartoum', 'kinshasa'],
   },
   'san-francisco': {
+    name: 'San Francisco',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -130,6 +143,7 @@ export const CITIES = {
     connections: ['tokyo', 'manila', 'chicago', 'los-angeles'],
   },
   chicago: {
+    name: 'Chicago',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -146,6 +160,7 @@ export const CITIES = {
     ],
   },
   atlanta: {
+    name: 'Atlanta',
     color: 'blue',
     researchCenter: true,
     quarantined: false,
@@ -156,6 +171,7 @@ export const CITIES = {
     connections: ['chicago', 'washington', 'miami'],
   },
   montreal: {
+    name: 'Montreal',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -166,6 +182,7 @@ export const CITIES = {
     connections: ['chicago', 'washington', 'new-york'],
   },
   washington: {
+    name: 'Washington',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -176,6 +193,7 @@ export const CITIES = {
     connections: ['montreal', 'new-york', 'miami', 'atlanta'],
   },
   'new-york': {
+    name: 'New York',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -186,6 +204,7 @@ export const CITIES = {
     connections: ['montreal', 'london', 'madrid', 'washington'],
   },
   london: {
+    name: 'London',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -196,6 +215,7 @@ export const CITIES = {
     connections: ['new-york', 'essen', 'madrid', 'paris'],
   },
   madrid: {
+    name: 'Madrid',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -206,6 +226,7 @@ export const CITIES = {
     connections: ['new-york', 'london', 'algiers', 'paris', 'sao-paolo'],
   },
   paris: {
+    name: 'Paris',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -216,6 +237,7 @@ export const CITIES = {
     connections: ['essen', 'london', 'milan', 'algiers', 'madrid'],
   },
   essen: {
+    name: 'Essen',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -226,6 +248,7 @@ export const CITIES = {
     connections: ['st-petersburg', 'london', 'milan', 'paris'],
   },
   milan: {
+    name: 'Milan',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -236,6 +259,7 @@ export const CITIES = {
     connections: ['essen', 'paris', 'istanbul'],
   },
   'st-petersburg': {
+    name: 'St Petersburg',
     color: 'blue',
     researchCenter: false,
     quarantined: false,
@@ -246,6 +270,7 @@ export const CITIES = {
     connections: ['essen', 'moscow', 'istanbul'],
   },
   moscow: {
+    name: 'Moscow',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -256,6 +281,7 @@ export const CITIES = {
     connections: ['st-petersburg', 'tehran', 'istanbul'],
   },
   istanbul: {
+    name: 'Istanbul',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -273,6 +299,7 @@ export const CITIES = {
     ],
   },
   algiers: {
+    name: 'Algiers',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -283,6 +310,7 @@ export const CITIES = {
     connections: ['madrid', 'paris', 'istanbul', 'cairo'],
   },
   cairo: {
+    name: 'Cairo',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -293,6 +321,7 @@ export const CITIES = {
     connections: ['algiers', 'baghdad', 'istanbul', 'riyadh', 'khartoum'],
   },
   baghdad: {
+    name: 'Baghdad',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -303,6 +332,7 @@ export const CITIES = {
     connections: ['tehran', 'istanbul', 'cairo', 'karachi', 'riyadh'],
   },
   tehran: {
+    name: 'Tehran',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -313,6 +343,7 @@ export const CITIES = {
     connections: ['moscow', 'baghdad', 'karachi', 'delhi'],
   },
   delhi: {
+    name: 'Delhi',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -323,6 +354,7 @@ export const CITIES = {
     connections: ['tehran', 'kolkata', 'karachi', 'mumbai', 'chennai'],
   },
   karachi: {
+    name: 'Karachi',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -333,6 +365,7 @@ export const CITIES = {
     connections: ['riyadh', 'baghdad', 'tehran', 'delhi', 'mumbai'],
   },
   riyadh: {
+    name: 'Riyadh',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -343,6 +376,7 @@ export const CITIES = {
     connections: ['cairo', 'baghdad', 'karachi'],
   },
   kolkata: {
+    name: 'Kolkata',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -353,6 +387,7 @@ export const CITIES = {
     connections: ['delhi', 'chennai', 'bangkok', 'hong-kong'],
   },
   mumbai: {
+    name: 'Mumbai',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -363,6 +398,7 @@ export const CITIES = {
     connections: ['chennai', 'delhi', 'karachi'],
   },
   chennai: {
+    name: 'Chennai',
     color: 'black',
     researchCenter: false,
     quarantined: false,
@@ -373,6 +409,7 @@ export const CITIES = {
     connections: ['mumbai', 'delhi', 'kolkata', 'bangkok', 'jakarta'],
   },
   bangkok: {
+    name: 'Bangkok',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -389,6 +426,7 @@ export const CITIES = {
     ],
   },
   jakarta: {
+    name: 'Jakarta',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -399,6 +437,7 @@ export const CITIES = {
     connections: ['chennai', 'bangkok', 'ho-chi-min-city', 'sydney'],
   },
   sydney: {
+    name: 'Sydney',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -409,6 +448,7 @@ export const CITIES = {
     connections: ['jakarta', 'manila', 'los-angeles'],
   },
   manila: {
+    name: 'Manila',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -425,6 +465,7 @@ export const CITIES = {
     ],
   },
   'ho-chi-min-city': {
+    name: 'Ho Chi Min City',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -435,6 +476,7 @@ export const CITIES = {
     connections: ['bangkok', 'hong-kong', 'manila', 'jakarta'],
   },
   'hong-kong': {
+    name: 'Hong Kong',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -452,6 +494,7 @@ export const CITIES = {
     ],
   },
   taipei: {
+    name: 'Taipei',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -462,6 +505,7 @@ export const CITIES = {
     connections: ['hong-kong', 'osaka', 'manila', 'shanghai'],
   },
   osaka: {
+    name: 'Osaka',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -472,6 +516,7 @@ export const CITIES = {
     connections: ['tokyo', 'taipei'],
   },
   tokyo: {
+    name: 'Tokyo',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -482,6 +527,7 @@ export const CITIES = {
     connections: ['osaka', 'shanghai', 'seoul', 'san-francisco'],
   },
   shanghai: {
+    name: 'Shanghai',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -492,6 +538,7 @@ export const CITIES = {
     connections: ['beijing', 'seoul', 'tokyo', 'taipei', 'hong-kong'],
   },
   beijing: {
+    name: 'Beijing',
     color: 'red',
     researchCenter: false,
     quarantined: false,
@@ -502,6 +549,7 @@ export const CITIES = {
     connections: ['seoul', 'shanghai'],
   },
   seoul: {
+    name: 'Seoul',
     color: 'red',
     researchCenter: false,
     quarantined: false,

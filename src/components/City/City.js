@@ -1,4 +1,5 @@
 import React from 'react';
+import { sortDiseaseAmounts } from 'utils/utils';
 import classes from './City.module.css';
 
 const City = ({
@@ -12,17 +13,7 @@ const City = ({
   red,
   yellow,
 }) => {
-  const infectionRows = Object.entries({
-    black,
-    blue,
-    red,
-    yellow,
-  })
-    .filter(([col, number]) => col === color || number > 0)
-    .sort((a, b) => {
-      if (a[1] === b[1]) return a[0] === color ? -1 : 1;
-      return b[1] - a[1];
-    });
+  const infectionRows = sortDiseaseAmounts({ color, black, blue, red, yellow });
   return (
     <div
       className={[classes.city, classes[color]].join(' ')}

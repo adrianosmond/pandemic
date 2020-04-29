@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './ActionsScreen.module.css';
+// import classes from './ActionsScreen.module.css';
 
 const ActionsScreen = () => <div>Actions</div>;
 

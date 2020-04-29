@@ -1,1 +1,65 @@
-/* your css code */
+.sortButton {
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  outline: 0;
+  background-color: #000;
+  border-color: #ccc;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.activeButton {
+  background-color: #333;
+}
+
+.city {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  color: #fff;
+  text-align: left;
+  font: inherit;
+}
+
+.cityName {
+  flex-grow: 1;
+  font-size: 1rem;
+}
+
+.diseases {
+  display: flex;
+}
+
+.disease {
+  display: flex;
+}
+
+.pill {
+  height: 0.25rem;
+  width: 0.25rem;
+  border-radius: 0.125rem;
+  opacity: 0.3;
+  margin-left: 0.125rem;
+}
+
+.filled {
+  opacity: 1;
+}
+
+.blue {
+  background-color: deepskyblue;
+}
+
+.black {
+  background-color: #ccc;
+}
+
+.red {
+  background-color: tomato;
+}
+
+.yellow {
+  background-color: yellow;
+}
