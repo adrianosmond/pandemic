@@ -31,6 +31,12 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      window.onresize = function () {
+        document.body.style.height = window.innerHeight + 'px';
+      };
+      window.onresize();
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

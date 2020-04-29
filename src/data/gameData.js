@@ -561,16 +561,16 @@ export const CITIES = {
   },
 };
 
-export const DISEASE_PROGRESS = {
-  outbreaks: 0,
-  infectionRateIdx: 0,
-};
-
 export const CURES = {
   black: false,
   blue: false,
   red: false,
   yellow: false,
+};
+
+export const DISEASE_PROGRESS = {
+  outbreaks: 0,
+  infectionRateIdx: 0,
 };
 
 export const EVENTS = {

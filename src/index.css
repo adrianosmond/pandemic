@@ -14,7 +14,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #000;
-  height: 100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 dl,
@@ -34,11 +35,5 @@ button {
 }
 
 #root {
-  --safe-area-inset-top: env(safe-area-inset-top);
-  --safe-area-inset-bottom: env(safe-area-inset-bottom);
-
-  height: calc(
-    100% + (var(--safe-area-inset-top) + var(--safe-area-inset-bottom))
-  );
-  /* height: 100vh; */
+  height: 100%;
 }

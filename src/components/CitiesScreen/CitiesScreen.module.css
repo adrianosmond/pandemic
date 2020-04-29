@@ -1,15 +1,17 @@
 .sortButton {
   margin-left: 0.5rem;
-  padding: 0.25rem;
+  padding: 0.25rem 0;
   outline: 0;
   background-color: #000;
-  border-color: #ccc;
+  border: 0;
+  border-bottom: 2px solid transparent;
   color: #fff;
   text-transform: capitalize;
+  appearance: none;
 }
 
 .activeButton {
-  background-color: #333;
+  border-color: #ccc;
 }
 
 .city {
@@ -17,10 +19,12 @@
   align-items: center;
   width: 100%;
   margin-top: 0.5rem;
-  padding: 0.5rem 0.25rem;
+  padding: 0.5rem;
+  background-color: #000;
   color: #fff;
   text-align: left;
   font: inherit;
+  appearance: none;
 }
 
 .cityName {

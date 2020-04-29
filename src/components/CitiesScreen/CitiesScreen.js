@@ -43,7 +43,7 @@ const CitiesScreen = ({ close }) => {
   return (
     <div>
       <div>
-        <span>Sort by: </span>
+        <span>Sort by:</span>
         {Object.keys(sorters).map((sort) => (
           <button
             key={sort}
