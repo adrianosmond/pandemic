@@ -7,6 +7,11 @@
   border-top-right-radius: 0.5rem;
   color: #000;
   margin-top: -0.5rem;
+  box-shadow: 0 -2px 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.card:last-child {
+  padding-bottom: 0.75rem;
 }
 
 .black {
