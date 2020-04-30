@@ -1,0 +1,15 @@
+.uiCard {
+  color: #fff;
+  border: 1px solid #ccc;
+  background-color: rgba(0, 0, 0, 0.75);
+  margin: 2rem;
+  padding: 1rem;
+  overflow-y: scroll;
+  pointer-events: initial;
+}
+
+@media (min-width: 600px) {
+  .uiCard {
+    width: 400px;
+  }
+}

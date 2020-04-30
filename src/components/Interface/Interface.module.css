@@ -19,21 +19,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   max-height: calc(100% - 3rem);
   pointer-events: none;
-}
-
-.ui {
-  min-width: 260px;
-  max-width: 400px;
-  color: #fff;
-  border: 1px solid #ccc;
-  background-color: rgba(0, 0, 0, 0.75);
-  margin: 2rem;
-  padding: 1rem;
-  overflow-y: scroll;
-  pointer-events: initial;
 }
 
 .blur {
@@ -45,4 +32,10 @@
   z-index: -1;
   backdrop-filter: blur(2px);
   pointer-events: initial;
+}
+
+@media (min-width: 600px) {
+  .uiWrapper {
+    align-items: center;
+  }
 }

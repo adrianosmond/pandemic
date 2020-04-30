@@ -574,11 +574,33 @@ export const DISEASE_PROGRESS = {
 };
 
 export const EVENTS = {
-  airlift: false,
-  center: false,
-  quietNight: false,
-  forecast: false,
-  resilientPopulation: false,
+  airlift: {
+    active: false,
+    name: 'Airlift',
+    description: 'Move any 1 pawn to any city.',
+  },
+  center: {
+    active: false,
+    name: 'Government Grant',
+    description: 'Add 1 research station to any city',
+  },
+  quietNight: {
+    active: false,
+    name: 'One Quiet Night',
+    description: 'Skip the next infect cities step',
+  },
+  forecast: {
+    active: false,
+    name: 'Forecast',
+    description:
+      'Draw, look at and rearrange the top 6 cards of the infection deck. Put them back on top.',
+  },
+  resilientPopulation: {
+    active: false,
+    name: 'Resilient Population',
+    description:
+      'Remove 1 card from the infection discard pile. You may play this between the infect and intensify steps of an epidemic.',
+  },
 };
 
 export const INFECTION_DECK = {

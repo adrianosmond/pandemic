@@ -26,13 +26,15 @@ export const getArcPoints = (pointStart, pointEnd, numPoints = 8) => {
 export const easeInOut = (t) =>
   t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
 
-export const shuffle = (a) => {
+export const shuffle = (a, times = 1) => {
   const arr = [...a];
-  for (let i = arr.length; i; i -= 1) {
-    const j = Math.floor(Math.random() * i);
-    const x = arr[i - 1];
-    arr[i - 1] = arr[j];
-    arr[j] = x;
+  for (let t = 0; t < times; t += 1) {
+    for (let i = arr.length; i; i -= 1) {
+      const j = Math.floor(Math.random() * i);
+      const x = arr[i - 1];
+      arr[i - 1] = arr[j];
+      arr[j] = x;
+    }
   }
   return arr;
 };

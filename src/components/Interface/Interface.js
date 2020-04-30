@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import useMethods from 'hooks/useMethods';
 import useProperties from 'hooks/useProperties';
+import UiCard from 'components/UiCard';
 import StartScreen from 'components/StartScreen';
 import ProgressScreen from 'components/ProgressScreen';
 import CardsScreen from 'components/CardsScreen';
@@ -45,13 +46,13 @@ const Interface = () => {
             onClick={isGameStarted ? closeUi : null}
           />
           <div className={classes.uiWrapper}>
-            <div className={classes.ui}>
+            <UiCard>
               {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
               {visibleTab === 'progress' && <ProgressScreen close={closeUi} />}
               {visibleTab === 'cards' && <CardsScreen close={closeUi} />}
               {visibleTab === 'cities' && <CitiesScreen close={closeUi} />}
               {visibleTab === 'actions' && <ActionsScreen close={closeUi} />}
-            </div>
+            </UiCard>
           </div>
         </>
       )}

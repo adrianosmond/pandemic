@@ -41,6 +41,22 @@ export default () => {
     return card;
   }, [setInfectionDeck]);
 
+  const discardPlayerCard = useCallback(
+    (card) => {
+      setPlayers((state) =>
+        state.map((player) => ({
+          ...player,
+          hand: player.hand.filter((c) => c !== card),
+        })),
+      );
+      setPlayerDeck((state) => ({
+        ...state,
+        discard: [...state.discard, card],
+      }));
+    },
+    [setPlayerDeck, setPlayers],
+  );
+
   const drawPlayerCard = useCallback(
     (playerId) => {
       let card;
@@ -116,6 +132,7 @@ export default () => {
     cureDisease,
     drawInfectionCard,
     drawPlayerCard,
+    discardPlayerCard,
     infectCity,
   };
 };
