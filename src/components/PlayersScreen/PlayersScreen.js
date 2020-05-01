@@ -6,7 +6,7 @@ import { sortByDisease } from 'utils/utils';
 import Card from 'components/Card/Card';
 import { ConfirmModal } from 'components/Modal';
 import PlayerToken from 'components/PlayerToken';
-import classes from './CardsScreen.module.css';
+import classes from './PlayersScreen.module.css';
 
 const CardsScreen = () => {
   const { players } = useGame();

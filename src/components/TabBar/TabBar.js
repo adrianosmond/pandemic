@@ -21,16 +21,28 @@ const TabBar = ({ visibleTab, showTab }) => (
     <button
       className={[
         classes.tabBarButton,
-        visibleTab === 'cards' ? classes.selectedTab : '',
+        visibleTab === 'players' ? classes.selectedTab : '',
       ].join(' ')}
-      onClick={() => showTab('cards')}
+      onClick={() => showTab('players')}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="#ffffff"
       >
-        <path d="M2.5 19.6l1.4.6v-9L1.4 17a2 2 0 001.1 2.6zM22 16L17 4a2 2 0 00-2.5-1L7 5.9a2 2 0 00-1 2.7l4.9 12a2 2 0 002.6 1l7.3-3A2 2 0 0022 16zM8 8.8c-.6 0-1-.4-1-1s.4-1 1-1 1 .5 1 1-.5 1-1 1zm-2 11c0 1.2.9 2 2 2h1.4L6 13.4v6.3z" />
+        <path
+          d="M16.7 13.1c1.3 1 2.3 2.2 2.3 3.9v3h4v-3c0-2.2-3.6-3.5-6.3-3.9z"
+          fillRule="evenodd"
+        />
+        <circle cx="9" cy="8" fillRule="evenodd" r="4" />
+        <path
+          d="M15 12a4 4 0 10-1.3-7.8 6 6 0 010 7.6l1.3.2z"
+          fillRule="evenodd"
+        />
+        <path
+          d="M9 13c-2.7 0-8 1.3-8 4v3h16v-3c0-2.7-5.3-4-8-4z"
+          fillRule="evenodd"
+        />
       </svg>
     </button>
     <button

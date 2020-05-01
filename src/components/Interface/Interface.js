@@ -4,7 +4,7 @@ import useProperties from 'hooks/useProperties';
 import UiCard from 'components/UiCard';
 import StartScreen from 'components/StartScreen';
 import ProgressScreen from 'components/ProgressScreen';
-import CardsScreen from 'components/CardsScreen';
+import PlayersScreen from 'components/PlayersScreen';
 import CitiesScreen from 'components/CitiesScreen';
 import ActionsScreen from 'components/ActionsScreen';
 import TabBar from 'components/TabBar';
@@ -49,7 +49,7 @@ const Interface = () => {
             <UiCard>
               {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
               {visibleTab === 'progress' && <ProgressScreen close={closeUi} />}
-              {visibleTab === 'cards' && <CardsScreen close={closeUi} />}
+              {visibleTab === 'players' && <PlayersScreen close={closeUi} />}
               {visibleTab === 'cities' && <CitiesScreen close={closeUi} />}
               {visibleTab === 'actions' && <ActionsScreen close={closeUi} />}
             </UiCard>

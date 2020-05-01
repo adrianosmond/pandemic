@@ -75,7 +75,7 @@ const CitiesScreen = ({ close }) => {
                 .map(({ role }) => (
                   <PlayerToken
                     role={role}
-                    size="tiny"
+                    size="small"
                     key={role}
                     className={classes.player}
                   />

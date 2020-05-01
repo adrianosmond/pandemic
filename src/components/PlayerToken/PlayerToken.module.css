@@ -4,54 +4,56 @@
   background-size: cover;
 }
 
+.contingency-planner {
+  background-image: url('/contingency-planner.jpg');
+  border-color: darkturquoise;
+  background-color: darkturquoise;
+}
+
+.dispatcher {
+  background-image: url('/dispatcher.jpg');
+  border-color: hotpink;
+  background-color: hotpink;
+}
+
+.medic {
+  background-image: url('/medic.jpg');
+  border-color: orange;
+  background-color: orange;
+}
+
+.operations-expert {
+  background-image: url('/operations-expert.jpg');
+  border-color: lightgreen;
+  background-color: lightgreen;
+}
+
+.quarantine-specialist {
+  background-image: url('/quarantine-specialist.jpg');
+  border-color: green;
+  background-color: green;
+}
+
+.researcher {
+  background-image: url('/researcher.jpg');
+  border-color: chocolate;
+  background-color: chocolate;
+}
+
+.scientist {
+  background-image: url('/scientist.jpg');
+  border-color: white;
+  background-color: white;
+}
+
 .normal {
   width: 3rem;
   height: 3rem;
 }
 
 .small {
-  border-width: 1px;
-  width: 1rem;
-  height: 1rem;
-}
-
-.tiny {
-  border-width: 1px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background-image: none;
   width: 0.75rem;
   height: 0.75rem;
-}
-
-.contingency-planner {
-  background-image: url('/contingency-planner.jpg');
-  border-color: darkturquoise;
-}
-
-.dispatcher {
-  background-image: url('/dispatcher.jpg');
-  border-color: hotpink;
-}
-
-.medic {
-  background-image: url('/medic.jpg');
-  border-color: orange;
-}
-
-.operations-expert {
-  background-image: url('/operations-expert.jpg');
-  border-color: lightgreen;
-}
-
-.quarantine-specialist {
-  background-image: url('/quarantine-specialist.jpg');
-  border-color: green;
-}
-
-.researcher {
-  background-image: url('/researcher.jpg');
-  border-color: chocolate;
-}
-
-.scientist {
-  background-image: url('/scientist.jpg');
-  border-color: white;
 }
