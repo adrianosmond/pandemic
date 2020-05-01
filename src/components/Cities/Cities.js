@@ -8,13 +8,14 @@ import classes from './Cities.module.css';
 
 const Cities = () => {
   const { cities } = useWorld();
-  const { cities: citiesState } = useGame();
+  const { cities: citiesState, players } = useGame();
   const mixedState = useMemo(() => {
     return cities.map((c) => ({
       ...c,
       ...citiesState[c.key],
+      players: players.filter((player) => player.location === c.key),
     }));
-  }, [cities, citiesState]);
+  }, [cities, citiesState, players]);
   const { isGameStarted } = useProperties();
 
   if (!isGameStarted) return null;

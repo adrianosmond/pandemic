@@ -63,3 +63,22 @@
 .pill.yellow {
   background-color: yellow;
 }
+
+.players {
+  display: flex;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+}
+
+.playerToken {
+  margin-left: -0.25rem;
+}
+
+.researchCenter {
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+}

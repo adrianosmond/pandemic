@@ -10,8 +10,15 @@
 }
 
 .small {
+  border-width: 1px;
   width: 1rem;
   height: 1rem;
+}
+
+.tiny {
+  border-width: 1px;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .contingency-planner {

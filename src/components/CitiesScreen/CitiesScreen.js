@@ -7,6 +7,7 @@ import {
   sortByDisease,
   sortByPriority,
 } from 'utils/utils';
+import PlayerToken from 'components/PlayerToken';
 import classes from './CitiesScreen.module.css';
 
 const sorters = {
@@ -17,7 +18,7 @@ const sorters = {
 
 const CitiesScreen = ({ close }) => {
   const [order, setOrder] = useState(Object.keys(sorters)[0]);
-  const { cities } = useGame();
+  const { cities, players } = useGame();
   const { panToCity } = useWorld();
   const sortedCities = useMemo(
     () =>
@@ -57,7 +58,30 @@ const CitiesScreen = ({ close }) => {
             panToCity(city.key);
           }}
         >
-          <div className={classes.cityName}>{city.name}</div>
+          <div className={classes.cityName}>
+            {city.researchCenter && (
+              <svg
+                className={classes.researchCenter}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 22L3 10l8-8 8 8v10H3z" fill="#fff" />
+              </svg>
+            )}
+            {city.name}
+            <div className={classes.players}>
+              {players
+                .filter((player) => player.location === city.key)
+                .map(({ role }) => (
+                  <PlayerToken
+                    role={role}
+                    size="tiny"
+                    key={role}
+                    className={classes.player}
+                  />
+                ))}
+            </div>
+          </div>
           <div className={classes.diseases}>
             {city.disease.map(([col, amt]) => (
               <div className={classes.disease} key={col}>

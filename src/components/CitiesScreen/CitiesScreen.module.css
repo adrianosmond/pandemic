@@ -44,6 +44,8 @@
 }
 
 .cityName {
+  display: flex;
+  align-items: center;
   flex-grow: 1;
   font-size: 1rem;
 }
@@ -82,4 +84,24 @@
 
 .yellow {
   background-color: yellow;
+}
+
+.researchCenter {
+  position: relative;
+  top: 1px;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.25rem;
+}
+
+.players {
+  display: flex;
+  margin-left: 0.25rem;
+}
+
+.players:empty {
+  display: none;
+}
+.player {
+  margin-left: 1px;
 }
