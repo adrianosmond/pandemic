@@ -616,29 +616,77 @@ export const PLAYER_DECK = {
 export const PLAYERS = [
   {
     name: 'Player 1',
-    role: null,
+    role: 'contingency-planner',
     hand: [],
     location: 'atlanta',
   },
   {
     name: 'Player 2',
-    role: null,
+    role: 'dispatcher',
     hand: [],
     location: 'atlanta',
   },
   {
     name: 'Player 3',
-    role: null,
+    role: 'medic',
     hand: [],
     location: 'atlanta',
   },
   {
     name: 'Player 4',
-    role: null,
+    role: 'operations-expert',
     hand: [],
     location: 'atlanta',
   },
 ];
+
+export const ROLES = {
+  'contingency-planner': {
+    name: 'Contingency Planner',
+    abilities: [
+      'As an action, take any discarded Event card and store it (limit 1 at a time)',
+      'When you play the stored Event card, it is removed from the game.',
+    ],
+  },
+  dispatcher: {
+    name: 'Dispatcher',
+    abilities: [
+      'As an action, move any player to any city containing another player',
+      'As an action, move any player as if they were you',
+    ],
+  },
+  medic: {
+    name: 'Medic',
+    abilities: [
+      'Remove all cubes of one colour when treating diseases',
+      'Automatically remove all cured diseases from the city you are in (and prevent them from being added there)',
+    ],
+  },
+  'operations-expert': {
+    name: 'Operations Expert',
+    abilities: [
+      'As an action, build a research station in the city you are in (no city card needed)',
+      'Once per turn as an action, move from a research station to any city by discarding any city card',
+    ],
+  },
+  'quarantine-specialist': {
+    name: 'Quarantine Specialist',
+    abilities: [
+      'Prevent additional disease (and outbreaks) in the city you are in and all cities connected to it',
+    ],
+  },
+  researcher: {
+    name: 'Researcher',
+    abilities: [
+      'You may give any 1 of your city cards when you share knowledge - it need not match your city.',
+      'A player who Shares Knowledge with you on their turn can take any 1 of your city cards.',
+    ],
+  },
+  scientist: {
+    name: 'Scientist',
+    abilities: ['You need only 4 cards of the same colour to discover a cure'],
+  },
+};
 
 export const TURN = {
   activePlayer: -1,

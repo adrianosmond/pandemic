@@ -1,27 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { useGame } from 'contexts/game';
 import { useWorld } from 'contexts/world';
-import { sortDiseaseAmounts } from 'utils/utils';
+import {
+  sortDiseaseAmounts,
+  sortByName,
+  sortByDisease,
+  sortByPriority,
+} from 'utils/utils';
 import classes from './CitiesScreen.module.css';
 
-const colors = ['black', 'blue', 'red', 'yellow'];
-const numCubes = (city) =>
-  colors.map((col) => city[col]).reduce((a, b) => a + b, 0);
-
 const sorters = {
-  priority: (a, b) => {
-    const aCubes = numCubes(a);
-    const bCubes = numCubes(b);
-    if (aCubes !== bCubes) return bCubes - aCubes;
-    if (a.color !== b.color) return sorters.disease(a, b);
-    return sorters.name(a, b);
-  },
-  disease: (a, b) => {
-    if (a.color !== b.color)
-      return colors.indexOf(a.color) - colors.indexOf(b.color);
-    return sorters.name(a, b);
-  },
-  name: (a, b) => (a.name > b.name ? 1 : -1),
+  priority: sortByPriority,
+  disease: sortByDisease,
+  name: sortByName,
 };
 
 const CitiesScreen = ({ close }) => {

@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useGame } from 'contexts/game';
-import { CITIES, EVENTS } from 'data/gameData';
+import { CITIES, EVENTS, ROLES } from 'data/gameData';
 import useActions from 'hooks/useActions';
+import { sortByDisease } from 'utils/utils';
 import Card from 'components/Card/Card';
 import { ConfirmModal } from 'components/Modal';
+import PlayerToken from 'components/PlayerToken';
 import classes from './CardsScreen.module.css';
 
 const CardsScreen = () => {
@@ -20,28 +22,42 @@ const CardsScreen = () => {
   const discardCard = useCallback(() => {
     discardPlayerCard(cardToDiscard);
   }, [cardToDiscard, discardPlayerCard]);
+
   return (
     <div>
       {players.map((player, playerIndex) => (
         <div key={playerIndex}>
           <h2>{player.name}</h2>
+          <div className={classes.role}>
+            <PlayerToken role={player.role} className={classes.token} />
+            <div>
+              <h3 className={classes.roleName}>{ROLES[player.role].name}</h3>
+              <ul className={classes.abilityList}>
+                {ROLES[player.role].abilities.map((ability, index) => (
+                  <li className={classes.ability} key={index}>
+                    {ability}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           <div className={classes.playerCards}>
-            {player.hand.map((card) => {
-              const cardObj = CITIES[card] || EVENTS[card];
-              return (
+            {player.hand
+              .map((card) => ({ ...(CITIES[card] || EVENTS[card]), key: card }))
+              .sort(sortByDisease)
+              .map((card) => (
                 <Card
-                  key={card}
-                  cardStyle={cardObj.color || 'event'}
-                  title={cardObj.name}
-                  description={cardObj.description}
+                  key={card.key}
+                  cardStyle={card.color || 'event'}
+                  title={card.name}
+                  description={card.description}
                   discard={() => {
                     setCardToDiscard(card);
-                    setCardToDiscardName(cardObj.name);
+                    setCardToDiscardName(card.name);
                     setShowDiscardModal(true);
                   }}
                 />
-              );
-            })}
+              ))}
             {player.hand.length === 0 && <p>{player.name} has no cards</p>}
           </div>
         </div>

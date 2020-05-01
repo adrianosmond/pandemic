@@ -51,3 +51,24 @@ export const sortDiseaseAmounts = ({ color, black, blue, red, yellow }) =>
       if (a[1] === b[1]) return a[0] === color ? -1 : 1;
       return b[1] - a[1];
     });
+
+export const sortByName = (a, b) => (a.name > b.name ? 1 : -1);
+
+const colorOrders = ['black', 'blue', 'red', 'yellow'];
+
+export const sortByDisease = (a, b) => {
+  if (a.color !== b.color)
+    return colorOrders.indexOf(a.color) - colorOrders.indexOf(b.color);
+  return sortByName(a, b);
+};
+
+const numCubes = (city) =>
+  colorOrders.map((col) => city[col]).reduce((a, b) => a + b, 0);
+
+export const sortByPriority = (a, b) => {
+  const aCubes = numCubes(a);
+  const bCubes = numCubes(b);
+  if (aCubes !== bCubes) return bCubes - aCubes;
+  if (a.color !== b.color) return sortByDisease(a, b);
+  return sortByName(a, b);
+};

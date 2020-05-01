@@ -1,0 +1,50 @@
+.playerToken {
+  border-radius: 50%;
+  border: 3px solid;
+  background-size: cover;
+}
+
+.normal {
+  width: 3rem;
+  height: 3rem;
+}
+
+.small {
+  width: 1rem;
+  height: 1rem;
+}
+
+.contingency-planner {
+  background-image: url('/contingency-planner.jpg');
+  border-color: darkturquoise;
+}
+
+.dispatcher {
+  background-image: url('/dispatcher.jpg');
+  border-color: hotpink;
+}
+
+.medic {
+  background-image: url('/medic.jpg');
+  border-color: orange;
+}
+
+.operations-expert {
+  background-image: url('/operations-expert.jpg');
+  border-color: lightgreen;
+}
+
+.quarantine-specialist {
+  background-image: url('/quarantine-specialist.jpg');
+  border-color: green;
+}
+
+.researcher {
+  background-image: url('/researcher.jpg');
+  border-color: chocolate;
+}
+
+.scientist {
+  background-image: url('/scientist.jpg');
+  border-color: white;
+}
