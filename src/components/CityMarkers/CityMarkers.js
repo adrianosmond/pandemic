@@ -1,6 +1,7 @@
 import React from 'react';
 import PositionMarker from 'components/PositionMarker';
 import { useWorld } from 'contexts/world';
+import { CITIES } from 'data/gameData';
 
 const CityMarkers = () => {
   const { cities } = useWorld();
@@ -9,13 +10,13 @@ const CityMarkers = () => {
     <>
       {cities
         .filter((city) => city.realLat)
-        .map(({ adjustedPosition, realPosition, opacity, color, key }) => {
+        .map(({ adjustedPosition, realPosition, opacity, key }) => {
           return (
             <PositionMarker
               from={adjustedPosition}
               to={realPosition}
               opacity={opacity}
-              color={color}
+              color={CITIES[key].color}
               key={key}
             />
           );
