@@ -51,6 +51,11 @@
   height: 3rem;
 }
 
+.medium {
+  width: 2rem;
+  height: 2rem;
+}
+
 .small {
   border: 1px solid rgba(0, 0, 0, 0.3);
   background-image: none;

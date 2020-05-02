@@ -8,6 +8,7 @@ import PlayersScreen from 'components/PlayersScreen';
 import CitiesScreen from 'components/CitiesScreen';
 import ActionsScreen from 'components/ActionsScreen';
 import TabBar from 'components/TabBar';
+import Hud from 'components/Hud';
 import classes from './Interface.module.css';
 
 const Interface = () => {
@@ -56,7 +57,12 @@ const Interface = () => {
           </div>
         </>
       )}
-      {isGameStarted && <TabBar visibleTab={visibleTab} showTab={showTab} />}
+      {isGameStarted && (
+        <>
+          {!uiVisible && <Hud />}
+          <TabBar visibleTab={visibleTab} showTab={showTab} />
+        </>
+      )}
     </div>
   );
 };

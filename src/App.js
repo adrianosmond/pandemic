@@ -10,6 +10,12 @@ import Content from 'components/Content';
 import Controls from 'components/Controls';
 import Interface from 'components/Interface';
 
+const cameraStart = [
+  0.057865988059268056,
+  1.1183858069414931,
+  1.6570650905313735,
+]; // over Atlanta
+
 const App = () => {
   const worldState = useWorldState();
   const gameState = useGameState();
@@ -17,7 +23,7 @@ const App = () => {
   return (
     <>
       <Canvas
-        camera={{ position: [0, 0, 2] }}
+        camera={{ position: cameraStart }}
         invalidateFrameloop={worldState.pauseRendering}
       >
         <WorldContext.Provider value={worldState}>
