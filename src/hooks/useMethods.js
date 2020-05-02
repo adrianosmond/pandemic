@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { shuffle } from 'utils/utils';
-import { CITIES, EVENTS, ROLES } from 'data/gameData';
+import { CITIES, EVENTS, ROLES, TURN } from 'data/gameData';
 
 export default () => {
   const {
+    cures,
     players,
     setCities,
     setInfectionDeck,
@@ -12,6 +13,22 @@ export default () => {
     setPlayerDeck,
     setTurn,
   } = useGame();
+
+  const endTurn = useCallback(() => {
+    setTurn((state) => ({
+      ...TURN,
+      activePlayer: (state.activePlayer + 1) % players.length,
+    }));
+  }, [players.length, setTurn]);
+
+  const isCityInstacured = useCallback(
+    (city, color) => {
+      if (!cures[color]) return false;
+      const medic = players.find((player) => player.role === 'medic');
+      return medic && medic.location === city;
+    },
+    [cures, players],
+  );
 
   const startGame = useCallback(
     (difficulty = 4) => {
@@ -65,5 +82,5 @@ export default () => {
     [players, setCities, setInfectionDeck, setPlayerDeck, setPlayers, setTurn],
   );
 
-  return { startGame };
+  return { endTurn, isCityInstacured, startGame };
 };

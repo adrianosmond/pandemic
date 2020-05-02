@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
+import useMethods from './useMethods';
+import useProperties from './useProperties';
 
 export default () => {
   const {
@@ -9,7 +11,10 @@ export default () => {
     setInfectionDeck,
     setPlayerDeck,
     setPlayers,
+    setTurn,
   } = useGame();
+  const { isCityInstacured } = useMethods();
+  const { quarantinedCities } = useProperties();
 
   const buildResearchCenter = useCallback(
     (city) => {
@@ -69,7 +74,7 @@ export default () => {
         };
       });
       if (card === 'epidemic') {
-        setDiseaseProgress((state) => ({
+        setTurn((state) => ({
           ...state,
           epidemicPhase: 1,
         }));
@@ -85,33 +90,44 @@ export default () => {
         );
       }
     },
-    [setDiseaseProgress, setPlayerDeck, setPlayers],
+    [setPlayerDeck, setPlayers, setTurn],
   );
 
   const infectCity = useCallback(
     (city, amount, col) => {
       let numOutbreaks = 0;
+      if (quarantinedCities.includes(city)) {
+        return;
+      }
       setCities((state) => {
         const modifications = { [city]: { ...state[city] } };
         const color = col || state[city].color;
         const alreadyOutbroken = [];
         const toOutbreak = [city];
+        if (isCityInstacured(city, color)) {
+          return state;
+        }
         modifications[city][color] += amount - 1;
         while (toOutbreak.length > 0) {
           const o = toOutbreak.shift();
           alreadyOutbroken.push(o);
-          if (!modifications[o]) {
-            Object.assign(modifications, { [o]: { ...state[o] } });
-          }
-          modifications[o][color] += 1;
-          if (modifications[o][color] > 3) {
-            numOutbreaks += 1;
-            modifications[o][color] = 3;
-            toOutbreak.push(
-              ...state[o].connections.filter(
-                (con) => !alreadyOutbroken.includes(con),
-              ),
-            );
+          if (
+            !quarantinedCities.includes(city) &&
+            !isCityInstacured(city, color)
+          ) {
+            if (!modifications[o]) {
+              Object.assign(modifications, { [o]: { ...state[o] } });
+            }
+            modifications[o][color] += 1;
+            if (modifications[o][color] > 3) {
+              numOutbreaks += 1;
+              modifications[o][color] = 3;
+              toOutbreak.push(
+                ...state[o].connections.filter(
+                  (con) => !alreadyOutbroken.includes(con),
+                ),
+              );
+            }
           }
         }
         return {
@@ -124,7 +140,22 @@ export default () => {
         outbreaks: state.outbreaks + numOutbreaks,
       }));
     },
-    [setCities, setDiseaseProgress],
+    [isCityInstacured, quarantinedCities, setCities, setDiseaseProgress],
+  );
+
+  const movePlayer = useCallback(
+    (playerId, location) => {
+      setPlayers((state) =>
+        state.map((player, index) => {
+          if (index !== playerId) return player;
+          return {
+            ...player,
+            location,
+          };
+        }),
+      );
+    },
+    [setPlayers],
   );
 
   return {
@@ -134,5 +165,6 @@ export default () => {
     drawPlayerCard,
     discardPlayerCard,
     infectCity,
+    movePlayer,
   };
 };

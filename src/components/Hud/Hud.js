@@ -6,15 +6,14 @@ import classes from './Hud.module.css';
 
 const Hud = () => {
   const { players, turn } = useGame();
-  const { panToCity, cities } = useWorld();
+  const { panToCity } = useWorld();
   const player = useMemo(() => players[turn.activePlayer], [
     players,
     turn.activePlayer,
   ]);
   const panToPlayer = useCallback(() => {
     panToCity(player.location);
-    console.log(cities.find((c) => c.key === 'atlanta'));
-  }, [cities, panToCity, player.location]);
+  }, [panToCity, player.location]);
 
   return (
     <div className={classes.hud} onClick={panToPlayer}>

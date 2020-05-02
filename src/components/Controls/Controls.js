@@ -37,7 +37,7 @@ const Controls = () => {
 
     const start = performance.now();
     const path = new CatmullRomCurve3(getArcPoints(camera.position, panTo));
-    const duration = 750 * Math.sqrt(path.getLength());
+    const duration = Math.max(750 * Math.sqrt(path.getLength()), 500);
     setPanAnimation({ start, duration, path });
     setPauseRendering(false);
   }, [camera, panTarget, setPanTarget, setPauseRendering]);

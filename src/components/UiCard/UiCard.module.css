@@ -4,7 +4,7 @@
   margin: 2rem;
   padding: 1rem;
   overflow-y: scroll;
-  pointer-events: initial;
+  pointer-events: auto;
 }
 
 @media (min-width: 600px) {

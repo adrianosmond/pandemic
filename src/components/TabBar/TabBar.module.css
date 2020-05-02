@@ -14,7 +14,7 @@
   width: 3rem;
   background-color: #000;
   outline: 0;
-  pointer-events: initial;
+  pointer-events: auto;
 }
 
 .selectedTab {
