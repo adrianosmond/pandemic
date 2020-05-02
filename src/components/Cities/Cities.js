@@ -9,13 +9,15 @@ import classes from './Cities.module.css';
 const Cities = () => {
   const { cities } = useWorld();
   const { cities: citiesState, players } = useGame();
+  const { quarantinedCities } = useProperties();
   const mixedState = useMemo(() => {
     return cities.map((c) => ({
       ...c,
       ...citiesState[c.key],
       players: players.filter((player) => player.location === c.key),
+      isQuarantined: quarantinedCities.includes(c.key),
     }));
-  }, [cities, citiesState, players]);
+  }, [cities, citiesState, players, quarantinedCities]);
   const { isGameStarted } = useProperties();
 
   if (!isGameStarted) return null;

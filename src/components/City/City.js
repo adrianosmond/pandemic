@@ -14,12 +14,17 @@ const City = ({
   red,
   yellow,
   researchCenter,
+  isQuarantined,
   players,
 }) => {
   const infectionRows = sortDiseaseAmounts({ color, black, blue, red, yellow });
   return (
     <div
-      className={[classes.city, classes[color]].join(' ')}
+      className={[
+        classes.city,
+        classes[color],
+        isQuarantined ? classes.quarantined : '',
+      ].join(' ')}
       style={{ zIndex, transform, opacity }}
     >
       {name}
