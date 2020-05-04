@@ -16,6 +16,7 @@ const City = ({
   researchCenter,
   isQuarantined,
   players,
+  selectCity,
 }) => {
   const infectionRows = sortDiseaseAmounts({ color, black, blue, red, yellow });
   return (
@@ -25,7 +26,12 @@ const City = ({
         classes[color],
         isQuarantined ? classes.quarantined : '',
       ].join(' ')}
-      style={{ zIndex, transform, opacity }}
+      style={
+        opacity > 0
+          ? { zIndex, transform, opacity }
+          : { opacity: 0, pointerEvents: 'none' }
+      }
+      onPointerUp={selectCity}
     >
       {name}
       {infectionRows.map(([col, count], index) => (

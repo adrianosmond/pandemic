@@ -7,10 +7,10 @@ import { getArcPoints, easeInOut } from 'utils/utils';
 
 extend({ OrbitControls });
 
-const Controls = () => {
+const Controls = ({ domEl }) => {
   const ref = useRef();
   const timeoutRef = useRef();
-  const { camera, gl, size } = useThree();
+  const { camera, size } = useThree();
   const {
     updateCities,
     setPauseRendering,
@@ -18,6 +18,11 @@ const Controls = () => {
     setPanTarget,
   } = useWorld();
   const [panAnimation, setPanAnimation] = useState(null);
+
+  useEffect(() => {
+    updateCities(camera, size);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     ref.current.addEventListener('change', () => {
@@ -69,7 +74,7 @@ const Controls = () => {
       rotateSpeed={0.3}
       minDistance={1.4}
       maxDistance={2}
-      args={[camera, gl.domElement]}
+      args={[camera, domEl]}
     />
   );
 };

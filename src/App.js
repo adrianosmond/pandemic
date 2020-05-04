@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { WorldContext } from 'contexts/world';
 import { GameContext } from 'contexts/game';
+import { UiContext } from 'contexts/ui';
 import useWorldState from 'hooks/useWorldState';
 import useGameState from 'hooks/useGameState';
+import useUiState from 'hooks/useUiState';
 
 import Cities from 'components/Cities';
 import Content from 'components/Content';
@@ -19,6 +21,8 @@ const cameraStart = [
 const App = () => {
   const worldState = useWorldState();
   const gameState = useGameState();
+  const uiState = useUiState();
+  const citiesRef = useRef();
 
   return (
     <>
@@ -28,15 +32,19 @@ const App = () => {
       >
         <WorldContext.Provider value={worldState}>
           <GameContext.Provider value={gameState}>
-            <Controls />
-            <Content />
+            <UiContext.Provider value={uiState}>
+              {citiesRef.current && <Controls domEl={citiesRef.current} />}
+              <Content />
+            </UiContext.Provider>
           </GameContext.Provider>
         </WorldContext.Provider>
       </Canvas>
       <WorldContext.Provider value={worldState}>
         <GameContext.Provider value={gameState}>
-          <Cities />
-          <Interface />
+          <UiContext.Provider value={uiState}>
+            <Cities ref={citiesRef} />
+            <Interface />
+          </UiContext.Provider>
         </GameContext.Provider>
       </WorldContext.Provider>
     </>

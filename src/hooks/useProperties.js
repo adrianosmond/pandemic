@@ -45,6 +45,13 @@ export default () => {
       .some((amount) => amount >= cardsNeeded);
   }, [currentCity.researchCenter, currentPlayer.hand, currentPlayer.role]);
 
+  const canMoveToSameCity = useMemo(() => {
+    if (currentPlayer.role !== 'dispatcher') {
+      return false;
+    }
+    return players.some((player) => player.location !== currentPlayer.location);
+  }, [currentPlayer.location, currentPlayer.role, players]);
+
   const canPickUpEventCard = useMemo(() => {
     if (currentPlayer.role === 'contingency-planner') return false;
     return (
@@ -74,8 +81,11 @@ export default () => {
   }, [currentPlayer.hand, currentPlayer.location, currentPlayer.role, players]);
 
   const canTreatDisease = useMemo(
-    () => Object.values(currentCity.disease || {}).some((amount) => amount > 0),
-    [currentCity.disease],
+    () =>
+      Object.keys(CURES)
+        .map((disease) => currentCity[disease])
+        .some((amount) => amount > 0),
+    [currentCity],
   );
 
   const cubesRemaining = useMemo(() => {
@@ -125,6 +135,7 @@ export default () => {
     currentCity,
     canBuildResearchCenter,
     canCure,
+    canMoveToSameCity,
     canPickUpEventCard,
     canShareKnowledge,
     canTreatDisease,

@@ -11,7 +11,7 @@ const Modal = ({ clickOutside, children }) => {
 
   return ReactDOM.createPortal(
     <div className={classes.modal} ref={ref}>
-      <UiCard>{children}</UiCard>
+      <UiCard className={classes.modalUiCard}>{children}</UiCard>
     </div>,
     document.getElementById('modal-root'),
   );

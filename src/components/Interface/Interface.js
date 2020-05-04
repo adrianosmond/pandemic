@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import useMethods from 'hooks/useMethods';
 import useProperties from 'hooks/useProperties';
 import UiCard from 'components/UiCard';
@@ -7,32 +7,33 @@ import ProgressScreen from 'components/ProgressScreen';
 import PlayersScreen from 'components/PlayersScreen';
 import CitiesScreen from 'components/CitiesScreen';
 import ActionsScreen from 'components/ActionsScreen';
+import { useUi } from 'contexts/ui';
 import TabBar from 'components/TabBar';
 import Hud from 'components/Hud';
+import Modal from 'components/Modal';
+import SelectedCityActions from 'components/SelectedCityActions';
 import classes from './Interface.module.css';
 
 const Interface = () => {
   const { startGame } = useMethods();
-  const [uiVisible, setUiVisible] = useState(true);
-  const [visibleTab, setVisibleTab] = useState(null);
   const { isGameStarted } = useProperties();
-
-  const showTab = useCallback((tabName) => {
-    setVisibleTab((state) => {
-      setUiVisible(tabName !== state);
-      return tabName === state ? null : tabName;
-    });
-  }, []);
+  const {
+    uiVisible,
+    visibleTab,
+    closeUi,
+    showTab,
+    selectedCity,
+    setSelectedCity,
+  } = useUi();
 
   const closeUiAndStart = useCallback(() => {
-    setUiVisible(false);
+    closeUi();
     startGame();
-  }, [startGame]);
+  }, [closeUi, startGame]);
 
-  const closeUi = useCallback(() => {
-    setUiVisible(false);
-    setVisibleTab(null);
-  }, []);
+  const closeModal = useCallback(() => {
+    setSelectedCity(null);
+  }, [setSelectedCity]);
 
   return (
     <div
@@ -57,11 +58,17 @@ const Interface = () => {
           </div>
         </>
       )}
+
       {isGameStarted && (
         <>
           {!uiVisible && <Hud />}
           <TabBar visibleTab={visibleTab} showTab={showTab} />
         </>
+      )}
+      {selectedCity !== null && (
+        <Modal clickOutside={closeModal}>
+          <SelectedCityActions city={selectedCity} />
+        </Modal>
       )}
     </div>
   );

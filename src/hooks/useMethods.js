@@ -2,9 +2,11 @@ import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { shuffle } from 'utils/utils';
 import { CITIES, EVENTS, ROLES, TURN } from 'data/gameData';
+import useProperties from './useProperties';
 
 export default () => {
   const {
+    cities,
     cures,
     players,
     setCities,
@@ -13,6 +15,41 @@ export default () => {
     setPlayerDeck,
     setTurn,
   } = useGame();
+  const { currentPlayer } = useProperties();
+
+  const canMovePlayerToCity = useCallback(
+    (player, city) => {
+      const location = cities[player.location];
+      const destination = cities[city];
+
+      if (
+        location.connections.includes(city) || // Can drive / ferry?
+        (location.researchCenter && destination.researchCenter) || // Can get a shuttle flight
+        (location.researchCenter && currentPlayer.role === 'operations-expert')
+      ) {
+        return [true, null, player.name];
+      }
+      // Can charter a flight ?
+      if (currentPlayer.hand.includes(player.location)) {
+        return [true, player.location, player.name];
+      }
+      // Can take a direct flight?
+      if (currentPlayer.hand.includes(city)) {
+        return [true, city, player.name];
+      }
+      return [false, null, player.name];
+    },
+    [cities, currentPlayer.hand, currentPlayer.role],
+  );
+
+  const canMoveToCity = useCallback(
+    (city) =>
+      (currentPlayer.role === 'dispatcher'
+        ? players
+        : [currentPlayer]
+      ).map((player) => canMovePlayerToCity(player, city)),
+    [canMovePlayerToCity, currentPlayer, players],
+  );
 
   const endTurn = useCallback(() => {
     setTurn((state) => ({
@@ -82,5 +119,11 @@ export default () => {
     [players, setCities, setInfectionDeck, setPlayerDeck, setPlayers, setTurn],
   );
 
-  return { endTurn, isCityInstacured, startGame };
+  return {
+    canMovePlayerToCity,
+    canMoveToCity,
+    endTurn,
+    isCityInstacured,
+    startGame,
+  };
 };
