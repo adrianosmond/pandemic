@@ -1,77 +1,98 @@
 import React from 'react';
-import { CITIES, CURES } from 'data/gameData';
 import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
+import { CITIES, CURES } from 'data/gameData';
 import classes from './SelectedCityActions.module.css';
 
 const CurrentCityActions = ({ city }) => {
   const {
+    currentPlayer,
     canBuildResearchCenter,
     canCure,
-    canMoveToSameCity,
     canShareKnowledge,
     canTreatDisease,
   } = useProperties();
+  const { canMoveToSameCity, doPlayerMove } = useMethods();
+  const sameCityMoves = canMoveToSameCity(city.key);
 
   return (
     <>
       {canCure && (
-        <div>
+        <div className={classes.option}>
           <button className={classes.button}>Discover cure</button>
         </div>
       )}
       {canTreatDisease && (
-        <div>
+        <div className={classes.option}>
           {Object.keys(CURES).map((color) =>
             city[color] === 0 ? null : (
-              <button key={color}>Treat {color}</button>
+              <button key={color} className={classes.button}>
+                Treat {color}
+              </button>
             ),
           )}
         </div>
       )}
       {canShareKnowledge && (
-        <div>
+        <div className={classes.option}>
           <button className={classes.button}>Share knowledge</button>
         </div>
       )}
       {canBuildResearchCenter && (
-        <div>
+        <div className={classes.option}>
           <button className={classes.button}>Build research center</button>
         </div>
       )}
-      {canMoveToSameCity && (
-        <div>
-          <button className={classes.button}>Move X here</button>
-        </div>
-      )}
+      {sameCityMoves.map(([canMove, player], index) => {
+        const label = `Move ${
+          player.role !== currentPlayer.role ? player.name : ''
+        } to ${city.name}`;
+        return canMove ? (
+          <div key={index} className={classes.option}>
+            <button
+              className={classes.button}
+              onClick={() => doPlayerMove(index, city.key, null, label)}
+            >
+              {label}
+            </button>
+          </div>
+        ) : null;
+      })}
       {!canCure &&
         !canTreatDisease &&
         !canShareKnowledge &&
         !canBuildResearchCenter &&
-        !canMoveToSameCity && <p>Nothing to do here</p>}
+        sameCityMoves.length === 0 && <p>Nothing to do here</p>}
     </>
   );
 };
 
 const OtherCityActions = ({ city }) => {
-  const { canMoveToCity } = useMethods();
+  const { canMoveToCity, doPlayerMove } = useMethods();
   const { currentPlayer } = useProperties();
-  const validMoves = canMoveToCity(city.key).filter(([possible]) => possible);
+  const moves = canMoveToCity(city.key);
 
   return (
     <>
-      {validMoves.map(([canMove, cost, playerName], index) =>
-        canMove ? (
-          <div key={index}>
-            <button className={classes.button}>
-              Move {playerName !== currentPlayer.name ? playerName : ''} to{' '}
-              {city.name}
+      {moves.map(([canMove, cost, player], index) => {
+        const label = `Move ${
+          player.role !== currentPlayer.role ? player.name : ''
+        } to ${city.name}`;
+        return canMove ? (
+          <div key={index} className={classes.option}>
+            <button
+              className={classes.button}
+              onClick={() => doPlayerMove(index, city.key, cost, label)}
+            >
+              {label}
             </button>
-            {cost && <p>Cost: {cost}</p>}
+            {cost && <p className={classes.cost}>Cost: {CITIES[cost].name}</p>}
           </div>
-        ) : null,
+        ) : null;
+      })}
+      {moves.filter(([possible]) => possible).length === 0 && (
+        <p>Nothing to do here</p>
       )}
-      {validMoves.length === 0 && <p>Nothing to do here</p>}
     </>
   );
 };
@@ -84,8 +105,8 @@ const SelectedCityActions = ({ city }) => {
   const { currentCity } = useProperties();
   return (
     <div className={classes.wrapper}>
-      <h2>{selectedCity.name}</h2>
-      {selectedCity === currentCity ? (
+      <h2 className={classes.cityName}>{selectedCity.name}</h2>
+      {selectedCity.name === currentCity.name ? (
         <CurrentCityActions city={selectedCity} />
       ) : (
         <OtherCityActions city={selectedCity} />

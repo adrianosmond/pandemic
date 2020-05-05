@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
+import { useUi } from 'contexts/ui';
 import { shuffle } from 'utils/utils';
 import { CITIES, EVENTS, ROLES, TURN } from 'data/gameData';
 import useProperties from './useProperties';
+import useActions from './useActions';
 
 export default () => {
   const {
     cities,
-    cures,
     players,
     setCities,
     setInfectionDeck,
@@ -15,7 +16,9 @@ export default () => {
     setPlayerDeck,
     setTurn,
   } = useGame();
+  const { setSelectedCity } = useUi();
   const { currentPlayer } = useProperties();
+  const { movePlayer, discardPlayerCard } = useActions();
 
   const canMovePlayerToCity = useCallback(
     (player, city) => {
@@ -27,17 +30,17 @@ export default () => {
         (location.researchCenter && destination.researchCenter) || // Can get a shuttle flight
         (location.researchCenter && currentPlayer.role === 'operations-expert')
       ) {
-        return [true, null, player.name];
+        return [true, null, player];
       }
       // Can charter a flight ?
       if (currentPlayer.hand.includes(player.location)) {
-        return [true, player.location, player.name];
+        return [true, player.location, player];
       }
       // Can take a direct flight?
       if (currentPlayer.hand.includes(city)) {
-        return [true, city, player.name];
+        return [true, city, player];
       }
-      return [false, null, player.name];
+      return [false, null, player];
     },
     [cities, currentPlayer.hand, currentPlayer.role],
   );
@@ -51,21 +54,38 @@ export default () => {
     [canMovePlayerToCity, currentPlayer, players],
   );
 
+  const canMoveToSameCity = useCallback(
+    (city) => {
+      const someoneInCity = players.some((player) => player.location === city);
+      if (currentPlayer.role !== 'dispatcher' || !someoneInCity) {
+        return [];
+      }
+      return players.map((player) => [player.location !== city, player]);
+    },
+    [currentPlayer, players],
+  );
+
+  const doPlayerMove = useCallback(
+    (playerIndex, city, cost, actionStr) => {
+      movePlayer(playerIndex, city);
+      if (cost) {
+        discardPlayerCard(cost);
+      }
+      setTurn((state) => ({
+        ...state,
+        actions: [...state.actions, actionStr],
+      }));
+      setSelectedCity(null);
+    },
+    [discardPlayerCard, movePlayer, setSelectedCity, setTurn],
+  );
+
   const endTurn = useCallback(() => {
     setTurn((state) => ({
       ...TURN,
       activePlayer: (state.activePlayer + 1) % players.length,
     }));
   }, [players.length, setTurn]);
-
-  const isCityInstacured = useCallback(
-    (city, color) => {
-      if (!cures[color]) return false;
-      const medic = players.find((player) => player.role === 'medic');
-      return medic && medic.location === city;
-    },
-    [cures, players],
-  );
 
   const startGame = useCallback(
     (difficulty = 4) => {
@@ -122,8 +142,9 @@ export default () => {
   return {
     canMovePlayerToCity,
     canMoveToCity,
+    canMoveToSameCity,
+    doPlayerMove,
     endTurn,
-    isCityInstacured,
     startGame,
   };
 };

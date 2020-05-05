@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
-import useMethods from './useMethods';
 import useProperties from './useProperties';
 
 export default () => {
   const {
+    cures,
+    players,
     setCities,
     setCures,
     setDiseaseProgress,
@@ -13,7 +14,6 @@ export default () => {
     setPlayers,
     setTurn,
   } = useGame();
-  const { isCityInstacured } = useMethods();
   const { quarantinedCities } = useProperties();
 
   const buildResearchCenter = useCallback(
@@ -91,6 +91,15 @@ export default () => {
       }
     },
     [setPlayerDeck, setPlayers, setTurn],
+  );
+
+  const isCityInstacured = useCallback(
+    (city, color) => {
+      if (!cures[color]) return false;
+      const medic = players.find((player) => player.role === 'medic');
+      return medic && medic.location === city;
+    },
+    [cures, players],
   );
 
   const infectCity = useCallback(

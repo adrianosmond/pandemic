@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useWorld } from 'contexts/world';
 import { useGame } from 'contexts/game';
 import { useUi } from 'contexts/ui';
@@ -13,17 +13,32 @@ const Cities = React.forwardRef((props, ref) => {
   const { cities: citiesState, players } = useGame();
   const { setSelectedCity } = useUi();
   const { quarantinedCities } = useProperties();
+  const [, setPointerStart] = useState(null);
 
   const selectCityCallbacks = useMemo(
     () =>
       Object.fromEntries(
         Object.entries(CITIES).map(([key]) => [
           key,
-          () => setSelectedCity(key),
+          ({ pageX, pageY }) => {
+            setPointerStart((state) => {
+              const timeDiff = new Date().getTime() - state.time;
+              const xDiff = Math.abs(pageX - state.pageX);
+              const yDiff = Math.abs(pageY - state.pageY);
+              const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+              if (timeDiff < 500 && distance < 10) {
+                setTimeout(() => setSelectedCity(key));
+              }
+              return null;
+            });
+          },
         ]),
       ),
     [setSelectedCity],
   );
+  const onPointerDown = useCallback(({ pageX, pageY }) => {
+    setPointerStart({ time: new Date().getTime(), pageX, pageY });
+  }, []);
 
   const mixedState = useMemo(() => {
     return cities.map((c) => ({
@@ -35,7 +50,7 @@ const Cities = React.forwardRef((props, ref) => {
   }, [cities, citiesState, players, quarantinedCities]);
 
   return (
-    <div className={classes.cities} ref={ref}>
+    <div className={classes.cities} ref={ref} onPointerDown={onPointerDown}>
       {mixedState.map((city) => (
         <City
           key={city.key}

@@ -642,7 +642,7 @@ export const ROLES = {
 
 export const TURN = {
   activePlayer: -1,
-  actionsTaken: 0,
+  actions: [],
   playerCardsDrawn: 0,
   infectionCardsDrawn: 0,
   epidemicPhase: 0,

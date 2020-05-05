@@ -1,4 +1,13 @@
 .wrapper {
+  min-width: 260px;
+}
+
+.cityName {
+  margin-bottom: 1rem;
+}
+
+.option {
+  margin-top: 1rem;
 }
 
 .button {
@@ -8,4 +17,8 @@
   margin: 0;
   padding: 0.5rem;
   white-space: nowrap;
+}
+
+.cost {
+  margin-top: 0.5rem;
 }

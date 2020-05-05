@@ -1,1 +1,8 @@
-/* your css code */
+.button {
+  background-color: #fff;
+  color: #000;
+  border: 0;
+  margin: 0;
+  padding: 0.5rem;
+  white-space: nowrap;
+}
