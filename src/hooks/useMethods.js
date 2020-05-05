@@ -18,7 +18,7 @@ export default () => {
   } = useGame();
   const { setSelectedCity } = useUi();
   const { currentPlayer } = useProperties();
-  const { movePlayer, discardPlayerCard } = useActions();
+  const { movePlayer, discardPlayerCard, treatDisease } = useActions();
 
   const canMovePlayerToCity = useCallback(
     (player, city) => {
@@ -78,6 +78,18 @@ export default () => {
       setSelectedCity(null);
     },
     [discardPlayerCard, movePlayer, setSelectedCity, setTurn],
+  );
+
+  const doTreatDisease = useCallback(
+    (player, disease) => {
+      treatDisease(player, disease);
+      setTurn((state) => ({
+        ...state,
+        actions: [...state.actions, `Treat ${disease}`],
+      }));
+      setSelectedCity(null);
+    },
+    [setSelectedCity, setTurn, treatDisease],
   );
 
   const endTurn = useCallback(() => {
@@ -144,6 +156,7 @@ export default () => {
     canMoveToCity,
     canMoveToSameCity,
     doPlayerMove,
+    doTreatDisease,
     endTurn,
     startGame,
   };

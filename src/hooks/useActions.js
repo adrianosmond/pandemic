@@ -167,6 +167,22 @@ export default () => {
     [setPlayers],
   );
 
+  const treatDisease = useCallback(
+    (player, disease) => {
+      setCities((state) => ({
+        ...state,
+        [player.location]: {
+          ...state[player.location],
+          [disease]: Math.max(
+            0,
+            state[player.location][disease] - (player.role === 'medic' ? 3 : 1),
+          ),
+        },
+      }));
+    },
+    [setCities],
+  );
+
   return {
     buildResearchCenter,
     cureDisease,
@@ -175,5 +191,6 @@ export default () => {
     discardPlayerCard,
     infectCity,
     movePlayer,
+    treatDisease,
   };
 };

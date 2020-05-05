@@ -12,7 +12,7 @@ const CurrentCityActions = ({ city }) => {
     canShareKnowledge,
     canTreatDisease,
   } = useProperties();
-  const { canMoveToSameCity, doPlayerMove } = useMethods();
+  const { canMoveToSameCity, doPlayerMove, doTreatDisease } = useMethods();
   const sameCityMoves = canMoveToSameCity(city.key);
 
   return (
@@ -26,7 +26,11 @@ const CurrentCityActions = ({ city }) => {
         <div className={classes.option}>
           {Object.keys(CURES).map((color) =>
             city[color] === 0 ? null : (
-              <button key={color} className={classes.button}>
+              <button
+                key={color}
+                className={classes.button}
+                onClick={() => doTreatDisease(currentPlayer, color)}
+              >
                 Treat {color}
               </button>
             ),
