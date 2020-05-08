@@ -1,5 +1,6 @@
 export const CITIES = {
   'mexico-city': {
+    key: 'mexico-city',
     name: 'Mexico City',
     color: 'yellow',
     researchCenter: false,
@@ -10,6 +11,7 @@ export const CITIES = {
     connections: ['los-angeles', 'chicago', 'bogota', 'miami', 'lima'],
   },
   'los-angeles': {
+    key: 'los-angeles',
     name: 'Los Angeles',
     color: 'yellow',
     researchCenter: false,
@@ -20,6 +22,7 @@ export const CITIES = {
     connections: ['mexico-city', 'sydney', 'san-francisco', 'chicago'],
   },
   bogota: {
+    key: 'bogota',
     name: 'Bogota',
     color: 'yellow',
     researchCenter: false,
@@ -30,6 +33,7 @@ export const CITIES = {
     connections: ['mexico-city', 'miami', 'sao-paolo', 'buenos-aires', 'lima'],
   },
   miami: {
+    key: 'miami',
     name: 'Miami',
     color: 'yellow',
     researchCenter: false,
@@ -40,6 +44,7 @@ export const CITIES = {
     connections: ['mexico-city', 'atlanta', 'washington', 'bogota'],
   },
   lima: {
+    key: 'lima',
     name: 'Lima',
     color: 'yellow',
     researchCenter: false,
@@ -50,6 +55,7 @@ export const CITIES = {
     connections: ['mexico-city', 'bogota', 'santiago'],
   },
   santiago: {
+    key: 'santiago',
     name: 'Santiago',
     color: 'yellow',
     researchCenter: false,
@@ -60,6 +66,7 @@ export const CITIES = {
     connections: ['lima'],
   },
   'sao-paolo': {
+    key: 'sao-paolo',
     name: 'Sao Paolo',
     color: 'yellow',
     researchCenter: false,
@@ -70,6 +77,7 @@ export const CITIES = {
     connections: ['bogota', 'madrid', 'lagos', 'buenos-aires'],
   },
   'buenos-aires': {
+    key: 'buenos-aires',
     name: 'Buenos Aires',
     color: 'yellow',
     researchCenter: false,
@@ -80,6 +88,7 @@ export const CITIES = {
     connections: ['bogota', 'sao-paolo'],
   },
   lagos: {
+    key: 'lagos',
     name: 'Lagos',
     color: 'yellow',
     researchCenter: false,
@@ -90,6 +99,7 @@ export const CITIES = {
     connections: ['sao-paolo', 'khartoum', 'kinshasa'],
   },
   kinshasa: {
+    key: 'kinshasa',
     name: 'Kinshasa',
     color: 'yellow',
     researchCenter: false,
@@ -100,6 +110,7 @@ export const CITIES = {
     connections: ['lagos', 'khartoum', 'johannesburg'],
   },
   khartoum: {
+    key: 'khartoum',
     name: 'Khartoum',
     color: 'yellow',
     researchCenter: false,
@@ -110,6 +121,7 @@ export const CITIES = {
     connections: ['lagos', 'kinshasa', 'cairo', 'johannesburg'],
   },
   johannesburg: {
+    key: 'johannesburg',
     name: 'Johannesburg',
     color: 'yellow',
     researchCenter: false,
@@ -120,6 +132,7 @@ export const CITIES = {
     connections: ['khartoum', 'kinshasa'],
   },
   'san-francisco': {
+    key: 'san-francisco',
     name: 'San Francisco',
     color: 'blue',
     researchCenter: false,
@@ -130,6 +143,7 @@ export const CITIES = {
     connections: ['tokyo', 'manila', 'chicago', 'los-angeles'],
   },
   chicago: {
+    key: 'chicago',
     name: 'Chicago',
     color: 'blue',
     researchCenter: false,
@@ -146,6 +160,7 @@ export const CITIES = {
     ],
   },
   atlanta: {
+    key: 'atlanta',
     name: 'Atlanta',
     color: 'blue',
     researchCenter: true,
@@ -156,6 +171,7 @@ export const CITIES = {
     connections: ['chicago', 'washington', 'miami'],
   },
   montreal: {
+    key: 'montreal',
     name: 'Montreal',
     color: 'blue',
     researchCenter: false,
@@ -166,6 +182,7 @@ export const CITIES = {
     connections: ['chicago', 'washington', 'new-york'],
   },
   washington: {
+    key: 'washington',
     name: 'Washington',
     color: 'blue',
     researchCenter: false,
@@ -176,6 +193,7 @@ export const CITIES = {
     connections: ['montreal', 'new-york', 'miami', 'atlanta'],
   },
   'new-york': {
+    key: 'new-york',
     name: 'New York',
     color: 'blue',
     researchCenter: false,
@@ -186,6 +204,7 @@ export const CITIES = {
     connections: ['montreal', 'london', 'madrid', 'washington'],
   },
   london: {
+    key: 'london',
     name: 'London',
     color: 'blue',
     researchCenter: false,
@@ -196,6 +215,7 @@ export const CITIES = {
     connections: ['new-york', 'essen', 'madrid', 'paris'],
   },
   madrid: {
+    key: 'madrid',
     name: 'Madrid',
     color: 'blue',
     researchCenter: false,
@@ -206,6 +226,7 @@ export const CITIES = {
     connections: ['new-york', 'london', 'algiers', 'paris', 'sao-paolo'],
   },
   paris: {
+    key: 'paris',
     name: 'Paris',
     color: 'blue',
     researchCenter: false,
@@ -216,6 +237,7 @@ export const CITIES = {
     connections: ['essen', 'london', 'milan', 'algiers', 'madrid'],
   },
   essen: {
+    key: 'essen',
     name: 'Essen',
     color: 'blue',
     researchCenter: false,
@@ -226,6 +248,7 @@ export const CITIES = {
     connections: ['st-petersburg', 'london', 'milan', 'paris'],
   },
   milan: {
+    key: 'milan',
     name: 'Milan',
     color: 'blue',
     researchCenter: false,
@@ -236,6 +259,7 @@ export const CITIES = {
     connections: ['essen', 'paris', 'istanbul'],
   },
   'st-petersburg': {
+    key: 'st-petersburg',
     name: 'St Petersburg',
     color: 'blue',
     researchCenter: false,
@@ -246,6 +270,7 @@ export const CITIES = {
     connections: ['essen', 'moscow', 'istanbul'],
   },
   moscow: {
+    key: 'moscow',
     name: 'Moscow',
     color: 'black',
     researchCenter: false,
@@ -256,6 +281,7 @@ export const CITIES = {
     connections: ['st-petersburg', 'tehran', 'istanbul'],
   },
   istanbul: {
+    key: 'istanbul',
     name: 'Istanbul',
     color: 'black',
     researchCenter: false,
@@ -273,6 +299,7 @@ export const CITIES = {
     ],
   },
   algiers: {
+    key: 'algiers',
     name: 'Algiers',
     color: 'black',
     researchCenter: false,
@@ -283,6 +310,7 @@ export const CITIES = {
     connections: ['madrid', 'paris', 'istanbul', 'cairo'],
   },
   cairo: {
+    key: 'cairo',
     name: 'Cairo',
     color: 'black',
     researchCenter: false,
@@ -293,6 +321,7 @@ export const CITIES = {
     connections: ['algiers', 'baghdad', 'istanbul', 'riyadh', 'khartoum'],
   },
   baghdad: {
+    key: 'baghdad',
     name: 'Baghdad',
     color: 'black',
     researchCenter: false,
@@ -303,6 +332,7 @@ export const CITIES = {
     connections: ['tehran', 'istanbul', 'cairo', 'karachi', 'riyadh'],
   },
   tehran: {
+    key: 'tehran',
     name: 'Tehran',
     color: 'black',
     researchCenter: false,
@@ -313,6 +343,7 @@ export const CITIES = {
     connections: ['moscow', 'baghdad', 'karachi', 'delhi'],
   },
   delhi: {
+    key: 'delhi',
     name: 'Delhi',
     color: 'black',
     researchCenter: false,
@@ -323,6 +354,7 @@ export const CITIES = {
     connections: ['tehran', 'kolkata', 'karachi', 'mumbai', 'chennai'],
   },
   karachi: {
+    key: 'karachi',
     name: 'Karachi',
     color: 'black',
     researchCenter: false,
@@ -333,6 +365,7 @@ export const CITIES = {
     connections: ['riyadh', 'baghdad', 'tehran', 'delhi', 'mumbai'],
   },
   riyadh: {
+    key: 'riyadh',
     name: 'Riyadh',
     color: 'black',
     researchCenter: false,
@@ -343,6 +376,7 @@ export const CITIES = {
     connections: ['cairo', 'baghdad', 'karachi'],
   },
   kolkata: {
+    key: 'kolkata',
     name: 'Kolkata',
     color: 'black',
     researchCenter: false,
@@ -353,6 +387,7 @@ export const CITIES = {
     connections: ['delhi', 'chennai', 'bangkok', 'hong-kong'],
   },
   mumbai: {
+    key: 'mumbai',
     name: 'Mumbai',
     color: 'black',
     researchCenter: false,
@@ -363,6 +398,7 @@ export const CITIES = {
     connections: ['chennai', 'delhi', 'karachi'],
   },
   chennai: {
+    key: 'chennai',
     name: 'Chennai',
     color: 'black',
     researchCenter: false,
@@ -373,6 +409,7 @@ export const CITIES = {
     connections: ['mumbai', 'delhi', 'kolkata', 'bangkok', 'jakarta'],
   },
   bangkok: {
+    key: 'bangkok',
     name: 'Bangkok',
     color: 'red',
     researchCenter: false,
@@ -389,6 +426,7 @@ export const CITIES = {
     ],
   },
   jakarta: {
+    key: 'jakarta',
     name: 'Jakarta',
     color: 'red',
     researchCenter: false,
@@ -399,6 +437,7 @@ export const CITIES = {
     connections: ['chennai', 'bangkok', 'ho-chi-min-city', 'sydney'],
   },
   sydney: {
+    key: 'sydney',
     name: 'Sydney',
     color: 'red',
     researchCenter: false,
@@ -409,6 +448,7 @@ export const CITIES = {
     connections: ['jakarta', 'manila', 'los-angeles'],
   },
   manila: {
+    key: 'manila',
     name: 'Manila',
     color: 'red',
     researchCenter: false,
@@ -425,6 +465,7 @@ export const CITIES = {
     ],
   },
   'ho-chi-min-city': {
+    key: 'ho-chi-min-city',
     name: 'Ho Chi Min City',
     color: 'red',
     researchCenter: false,
@@ -435,6 +476,7 @@ export const CITIES = {
     connections: ['bangkok', 'hong-kong', 'manila', 'jakarta'],
   },
   'hong-kong': {
+    key: 'hong-kong',
     name: 'Hong Kong',
     color: 'red',
     researchCenter: false,
@@ -452,6 +494,7 @@ export const CITIES = {
     ],
   },
   taipei: {
+    key: 'taipei',
     name: 'Taipei',
     color: 'red',
     researchCenter: false,
@@ -462,6 +505,7 @@ export const CITIES = {
     connections: ['hong-kong', 'osaka', 'manila', 'shanghai'],
   },
   osaka: {
+    key: 'osaka',
     name: 'Osaka',
     color: 'red',
     researchCenter: false,
@@ -472,6 +516,7 @@ export const CITIES = {
     connections: ['tokyo', 'taipei'],
   },
   tokyo: {
+    key: 'tokyo',
     name: 'Tokyo',
     color: 'red',
     researchCenter: false,
@@ -482,6 +527,7 @@ export const CITIES = {
     connections: ['osaka', 'shanghai', 'seoul', 'san-francisco'],
   },
   shanghai: {
+    key: 'shanghai',
     name: 'Shanghai',
     color: 'red',
     researchCenter: false,
@@ -492,6 +538,7 @@ export const CITIES = {
     connections: ['beijing', 'seoul', 'tokyo', 'taipei', 'hong-kong'],
   },
   beijing: {
+    key: 'beijing',
     name: 'Beijing',
     color: 'red',
     researchCenter: false,
@@ -502,6 +549,7 @@ export const CITIES = {
     connections: ['seoul', 'shanghai'],
   },
   seoul: {
+    key: 'seoul',
     name: 'Seoul',
     color: 'red',
     researchCenter: false,
@@ -527,27 +575,32 @@ export const DISEASE_PROGRESS = {
 
 export const EVENTS = {
   airlift: {
+    key: 'airlift',
     active: false,
     name: 'Airlift',
     description: 'Move any 1 pawn to any city.',
   },
   center: {
+    key: 'center',
     active: false,
     name: 'Government Grant',
     description: 'Add 1 research station to any city',
   },
   quietNight: {
+    key: 'quietNight',
     active: false,
     name: 'One Quiet Night',
     description: 'Skip the next infect cities step',
   },
   forecast: {
+    key: 'forecast',
     active: false,
     name: 'Forecast',
     description:
       'Draw, look at and rearrange the top 6 cards of the infection deck. Put them back on top.',
   },
   resilientPopulation: {
+    key: 'resilientPopulation',
     active: false,
     name: 'Resilient Population',
     description:

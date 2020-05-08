@@ -43,7 +43,7 @@ const CardsScreen = () => {
           </div>
           <div className={classes.playerCards}>
             {player.hand
-              .map((card) => ({ ...(CITIES[card] || EVENTS[card]), key: card }))
+              .map((card) => ({ ...(CITIES[card] || EVENTS[card]) }))
               .sort(sortByDisease)
               .map((card) => (
                 <Card

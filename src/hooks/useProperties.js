@@ -12,10 +12,14 @@ export default () => {
     turn,
   } = useGame();
 
-  const currentPlayer = useMemo(
-    () => players[turn.activePlayer] || players[0],
-    [players, turn.activePlayer],
-  );
+  const currentPlayerIdx = useMemo(() => turn.activePlayer, [
+    turn.activePlayer,
+  ]);
+
+  const currentPlayer = useMemo(() => players[currentPlayerIdx] || players[0], [
+    currentPlayerIdx,
+    players,
+  ]);
 
   const currentCity = useMemo(() => cities[currentPlayer.location], [
     cities,
@@ -44,6 +48,14 @@ export default () => {
       .map((disease) => diseaseCards.filter((card) => card === disease).length)
       .some((amount) => amount >= cardsNeeded);
   }, [currentCity.researchCenter, currentPlayer.hand, currentPlayer.role]);
+
+  const canDoOperationsExpertMove = useMemo(
+    () =>
+      currentPlayer.role === 'operations-expert' &&
+      currentCity.researchCenter &&
+      currentPlayer.hand.filter((card) => CITIES[card]).length > 0,
+    [currentCity.researchCenter, currentPlayer.hand, currentPlayer.role],
+  );
 
   const canPickUpEventCard = useMemo(() => {
     if (currentPlayer.role === 'contingency-planner') return false;
@@ -124,10 +136,12 @@ export default () => {
   }, [players]);
 
   return {
+    currentPlayerIdx,
     currentPlayer,
     currentCity,
     canBuildResearchCenter,
     canCure,
+    canDoOperationsExpertMove,
     canPickUpEventCard,
     canShareKnowledge,
     canTreatDisease,

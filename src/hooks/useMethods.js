@@ -18,7 +18,12 @@ export default () => {
   } = useGame();
   const { setSelectedCity } = useUi();
   const { currentPlayer } = useProperties();
-  const { movePlayer, discardPlayerCard, treatDisease } = useActions();
+  const {
+    buildResearchCenter,
+    movePlayer,
+    discardPlayerCard,
+    treatDisease,
+  } = useActions();
 
   const canMovePlayerToCity = useCallback(
     (player, city) => {
@@ -27,8 +32,7 @@ export default () => {
 
       if (
         location.connections.includes(city) || // Can drive / ferry?
-        (location.researchCenter && destination.researchCenter) || // Can get a shuttle flight
-        (location.researchCenter && currentPlayer.role === 'operations-expert')
+        (location.researchCenter && destination.researchCenter) // Can get a shuttle flight
       ) {
         return [true, null, player];
       }
@@ -42,7 +46,7 @@ export default () => {
       }
       return [false, null, player];
     },
-    [cities, currentPlayer.hand, currentPlayer.role],
+    [cities, currentPlayer.hand],
   );
 
   const canMoveToCity = useCallback(
@@ -63,6 +67,27 @@ export default () => {
       return players.map((player) => [player.location !== city, player]);
     },
     [currentPlayer, players],
+  );
+
+  const doBuildResearchCenter = useCallback(
+    (city) => {
+      buildResearchCenter(city);
+      setTurn((state) => ({
+        ...state,
+        actions: [...state.actions, `Build research center`],
+      }));
+      if (currentPlayer.role !== 'operations-expert') {
+        discardPlayerCard(city);
+      }
+      setSelectedCity(null);
+    },
+    [
+      buildResearchCenter,
+      currentPlayer.role,
+      discardPlayerCard,
+      setSelectedCity,
+      setTurn,
+    ],
   );
 
   const doPlayerMove = useCallback(
@@ -155,6 +180,7 @@ export default () => {
     canMovePlayerToCity,
     canMoveToCity,
     canMoveToSameCity,
+    doBuildResearchCenter,
     doPlayerMove,
     doTreatDisease,
     endTurn,
