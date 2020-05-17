@@ -65,26 +65,6 @@ export default () => {
     );
   }, [currentPlayer.role, playerDeck.discard]);
 
-  const canShareKnowledge = useMemo(() => {
-    const otherPlayersInCurrentLocation = players
-      .filter((player) => player.location === currentPlayer.location)
-      .filter((player) => player.role !== currentPlayer.role);
-    if (otherPlayersInCurrentLocation.length === 0) return false;
-    if (currentPlayer.role === 'researcher') return true;
-    if (
-      otherPlayersInCurrentLocation
-        .map((player) => player.role)
-        .filter((role) => role === 'researcher').length > 0
-    )
-      return true;
-    return (
-      currentPlayer.hand.includes(currentPlayer.location) ||
-      otherPlayersInCurrentLocation.filter((player) =>
-        player.hand.includes(currentPlayer.location),
-      ).length > 0
-    );
-  }, [currentPlayer.hand, currentPlayer.location, currentPlayer.role, players]);
-
   const canTreatDisease = useMemo(
     () =>
       Object.keys(CURES)
@@ -127,6 +107,16 @@ export default () => {
     [infectionCardsToDraw, turn.infectionCardsDrawn],
   );
 
+  const otherPlayersInCurrentCity = useMemo(
+    () =>
+      players.filter(
+        (player) =>
+          player.role !== currentPlayer.role &&
+          player.location === currentPlayer.location,
+      ),
+    [currentPlayer, players],
+  );
+
   const quarantinedCities = useMemo(() => {
     const qs = players.find(
       (player) => player.role === 'quarantine-specialist',
@@ -143,7 +133,6 @@ export default () => {
     canCure,
     canDoOperationsExpertMove,
     canPickUpEventCard,
-    canShareKnowledge,
     canTreatDisease,
     cubesRemaining,
     infectionCardsToDraw,
@@ -151,6 +140,7 @@ export default () => {
     isGameStarted,
     isGameWon,
     isTurnOver,
+    otherPlayersInCurrentCity,
     quarantinedCities,
   };
 };

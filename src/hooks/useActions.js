@@ -16,6 +16,21 @@ export default () => {
   } = useGame();
   const { quarantinedCities } = useProperties();
 
+  const addCardToHand = useCallback(
+    (player, card) => {
+      setPlayers((state) =>
+        state.map((p) => {
+          if (p.role !== player.role) return p;
+          return {
+            ...p,
+            hand: [...p.hand, card.key],
+          };
+        }),
+      );
+    },
+    [setPlayers],
+  );
+
   const buildResearchCenter = useCallback(
     (city) => {
       setCities((state) => ({
@@ -167,6 +182,21 @@ export default () => {
     [setPlayers],
   );
 
+  const removeCardFromHand = useCallback(
+    (player, card) => {
+      setPlayers((state) =>
+        state.map((p) => {
+          if (p.role !== player.role) return p;
+          return {
+            ...p,
+            hand: p.hand.filter((c) => c !== card.key),
+          };
+        }),
+      );
+    },
+    [setPlayers],
+  );
+
   const treatDisease = useCallback(
     (player, disease) => {
       setCities((state) => ({
@@ -184,6 +214,7 @@ export default () => {
   );
 
   return {
+    addCardToHand,
     buildResearchCenter,
     cureDisease,
     drawInfectionCard,
@@ -191,6 +222,7 @@ export default () => {
     discardPlayerCard,
     infectCity,
     movePlayer,
+    removeCardFromHand,
     treatDisease,
   };
 };

@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { CITIES, EVENTS, ROLES } from 'data/gameData';
 import useActions from 'hooks/useActions';
+import useMethods from 'hooks/useMethods';
+import useProperties from 'hooks/useProperties';
 import { sortByDisease } from 'utils/utils';
 import Card from 'components/Card/Card';
 import { ConfirmModal } from 'components/Modal';
@@ -10,18 +12,29 @@ import classes from './PlayersScreen.module.css';
 
 const CardsScreen = () => {
   const { players } = useGame();
+  const { currentPlayer, otherPlayersInCurrentCity } = useProperties();
   const { discardPlayerCard } = useActions();
+  const { canShareKnowledgeWithPlayer, doShareKnowledge } = useMethods();
+
   const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [cardToDiscard, setCardToDiscard] = useState(null);
-  const [cardToDiscardName, setCardToDiscardName] = useState(null);
   const closeDiscardModal = useCallback(() => {
     setShowDiscardModal(false);
     setCardToDiscard(null);
-    setCardToDiscardName(null);
   }, []);
   const discardCard = useCallback(() => {
     discardPlayerCard(cardToDiscard);
   }, [cardToDiscard, discardPlayerCard]);
+
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [cardToShare, setCardToShare] = useState(null);
+  const [cardRecipient, setCardRecipient] = useState(null);
+  const [cardOwner, setCardOwner] = useState(false);
+  const closeShareModal = useCallback(() => {
+    setShowShareModal(false);
+    setCardToShare(null);
+    setCardRecipient(null);
+  }, []);
 
   return (
     <div>
@@ -51,9 +64,17 @@ const CardsScreen = () => {
                   cardStyle={card.color || 'event'}
                   title={card.name}
                   description={card.description}
+                  share={
+                    canShareKnowledgeWithPlayer(card, player) &&
+                    (() => {
+                      setCardToShare(card);
+                      setCardOwner(player);
+                      setCardRecipient(otherPlayersInCurrentCity[0]);
+                      setShowShareModal(true);
+                    })
+                  }
                   discard={() => {
                     setCardToDiscard(card);
-                    setCardToDiscardName(card.name);
                     setShowDiscardModal(true);
                   }}
                 />
@@ -71,7 +92,54 @@ const CardsScreen = () => {
           cancelText="No, keep it"
           confirmText="Yes, discard it"
         >
-          Are you sure you want to discard {cardToDiscardName}?
+          Are you sure you want to discard {cardToDiscard.name}?
+        </ConfirmModal>
+      )}
+
+      {showShareModal && cardOwner.role === currentPlayer.role && (
+        <ConfirmModal
+          isDelete={true}
+          closeModal={closeShareModal}
+          onConfirm={() => {
+            doShareKnowledge(cardToShare, cardRecipient, false);
+            closeShareModal();
+          }}
+          cancelText="No, keep it"
+          confirmText="Yes, share it"
+        >
+          Are you sure you want to give {cardToShare.name} to{' '}
+          {otherPlayersInCurrentCity.length === 1 ? (
+            <>{otherPlayersInCurrentCity[0].name}</>
+          ) : (
+            <select
+              value={cardRecipient}
+              onChange={(e) => setCardRecipient(e.target.value)}
+              className={classes.select}
+            >
+              {otherPlayersInCurrentCity.map((player) => (
+                <option key={player.role} value={player.role}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
+          )}
+          ?
+        </ConfirmModal>
+      )}
+
+      {showShareModal && cardOwner.role !== currentPlayer.role && (
+        <ConfirmModal
+          isDelete={true}
+          closeModal={closeShareModal}
+          onConfirm={() => {
+            doShareKnowledge(cardToShare, cardOwner, true);
+            closeShareModal();
+          }}
+          cancelText="No, leave it"
+          confirmText="Yes, take it"
+        >
+          Are you sure you want to take {cardToShare.name} from {cardOwner.name}
+          ?
         </ConfirmModal>
       )}
     </div>

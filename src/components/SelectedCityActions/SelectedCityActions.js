@@ -9,7 +9,6 @@ const CurrentCityActions = ({ city }) => {
     currentPlayer,
     canBuildResearchCenter,
     canCure,
-    canShareKnowledge,
     canTreatDisease,
   } = useProperties();
   const {
@@ -42,11 +41,6 @@ const CurrentCityActions = ({ city }) => {
           )}
         </div>
       )}
-      {canShareKnowledge && (
-        <div className={classes.option}>
-          <button className={classes.button}>Share knowledge</button>
-        </div>
-      )}
       {canBuildResearchCenter && (
         <div className={classes.option}>
           <button
@@ -74,7 +68,6 @@ const CurrentCityActions = ({ city }) => {
       })}
       {!canBuildResearchCenter &&
         !canCure &&
-        !canShareKnowledge &&
         !canTreatDisease &&
         sameCityMoves.length === 0 && <p>Nothing to do here</p>}
     </>

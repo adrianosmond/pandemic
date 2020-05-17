@@ -19,9 +19,11 @@ export default () => {
   const { setSelectedCity } = useUi();
   const { currentPlayer } = useProperties();
   const {
+    addCardToHand,
     buildResearchCenter,
     movePlayer,
     discardPlayerCard,
+    removeCardFromHand,
     treatDisease,
   } = useActions();
 
@@ -69,6 +71,22 @@ export default () => {
     [currentPlayer, players],
   );
 
+  const canShareKnowledgeWithPlayer = useCallback(
+    (card, player) => {
+      if (player.location !== currentPlayer.location) {
+        return false;
+      }
+      if (player.role === 'researcher' && !card.description) {
+        return true;
+      }
+      if (card.key === currentPlayer.location) {
+        return true;
+      }
+      return false;
+    },
+    [currentPlayer.location],
+  );
+
   const doBuildResearchCenter = useCallback(
     (city) => {
       buildResearchCenter(city);
@@ -103,6 +121,26 @@ export default () => {
       setSelectedCity(null);
     },
     [discardPlayerCard, movePlayer, setSelectedCity, setTurn],
+  );
+
+  const doShareKnowledge = useCallback(
+    (card, otherPlayer, taking = true) => {
+      let actionStr;
+      if (taking) {
+        actionStr = `Take ${card.name} from ${otherPlayer.name}`;
+        addCardToHand(currentPlayer, card);
+        removeCardFromHand(otherPlayer, card);
+      } else {
+        actionStr = `Give ${card.name} to ${otherPlayer.name}`;
+        addCardToHand(otherPlayer, card);
+        removeCardFromHand(currentPlayer, card);
+      }
+      setTurn((state) => ({
+        ...state,
+        actions: [...state.actions, actionStr],
+      }));
+    },
+    [addCardToHand, currentPlayer, removeCardFromHand, setTurn],
   );
 
   const doTreatDisease = useCallback(
@@ -180,8 +218,10 @@ export default () => {
     canMovePlayerToCity,
     canMoveToCity,
     canMoveToSameCity,
+    canShareKnowledgeWithPlayer,
     doBuildResearchCenter,
     doPlayerMove,
+    doShareKnowledge,
     doTreatDisease,
     endTurn,
     startGame,
