@@ -26,3 +26,12 @@
 .select {
   background-color: #fff;
 }
+
+.discardOptions {
+  margin: 1rem 0;
+}
+
+.checkboxRow {
+  display: flex;
+  margin: 0.25rem 0;
+}

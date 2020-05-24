@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';
@@ -6,24 +6,80 @@ import classes from './SelectedCityActions.module.css';
 
 const CurrentCityActions = ({ city }) => {
   const {
+    cardsNeededToCure,
     currentPlayer,
     canBuildResearchCenter,
     canCure,
     canTreatDisease,
+    highestNumberOfDiseaseCards,
   } = useProperties();
   const {
     canMoveToSameCity,
     doBuildResearchCenter,
+    doCureDisease,
     doPlayerMove,
     doTreatDisease,
   } = useMethods();
   const sameCityMoves = canMoveToSameCity(city.key);
+  const [cardsToDiscard, setCardsToDiscard] = useState([]);
+  const selectCardToDiscard = useCallback(({ target: { checked, value } }) => {
+    if (checked) {
+      setCardsToDiscard((state) => [...state, value]);
+    } else {
+      setCardsToDiscard((state) => state.filter((c) => c !== value));
+    }
+  }, []);
 
   return (
     <>
       {canCure && (
         <div className={classes.option}>
-          <button className={classes.button}>Discover cure</button>
+          {highestNumberOfDiseaseCards.amount > cardsNeededToCure && (
+            <>
+              <p>
+                Select the {cardsNeededToCure} cards you want to discard for a
+                cure for {highestNumberOfDiseaseCards.disease}:
+              </p>
+              <div className={classes.discardOptions}>
+                {currentPlayer.hand
+                  .filter(
+                    (card) =>
+                      CITIES[card].color ===
+                      highestNumberOfDiseaseCards.disease,
+                  )
+                  .map((card) => (
+                    <label key={card} className={classes.checkboxRow}>
+                      <input
+                        type="checkbox"
+                        checked={cardsToDiscard.includes(card)}
+                        onChange={selectCardToDiscard}
+                        value={card}
+                      />{' '}
+                      {CITIES[card].name}
+                    </label>
+                  ))}
+              </div>
+            </>
+          )}
+          <button
+            className={classes.button}
+            disabled={
+              highestNumberOfDiseaseCards.amount > cardsNeededToCure &&
+              cardsToDiscard.length !== cardsNeededToCure
+            }
+            onClick={() => {
+              if (highestNumberOfDiseaseCards.amount === cardsNeededToCure) {
+                doCureDisease(highestNumberOfDiseaseCards.disease);
+              } else {
+                doCureDisease(
+                  highestNumberOfDiseaseCards.disease,
+                  cardsToDiscard,
+                );
+              }
+            }}
+          >
+            Discover cure for {highestNumberOfDiseaseCards.disease}
+          </button>
         </div>
       )}
       {canTreatDisease && (
@@ -75,13 +131,9 @@ const CurrentCityActions = ({ city }) => {
 };
 
 const OtherCityActions = ({ city }) => {
-  const [opsExpertMoveCost, setOpsExpertMoveCost] = useState('');
+  const [moveCost, setMoveCost] = useState('');
   const { canMoveToCity, doPlayerMove } = useMethods();
-  const {
-    currentPlayer,
-    currentPlayerIdx,
-    canDoOperationsExpertMove,
-  } = useProperties();
+  const { currentPlayer } = useProperties();
   const moves = canMoveToCity(city.key);
 
   return (
@@ -90,61 +142,54 @@ const OtherCityActions = ({ city }) => {
         const label = `Move ${
           player.role !== currentPlayer.role ? player.name : ''
         } to ${city.name}`;
-        return canMove && !(cost && canDoOperationsExpertMove) ? (
-          <div key={index} className={classes.option}>
-            <button
-              className={classes.button}
-              onClick={() => doPlayerMove(index, city.key, cost, label)}
-            >
-              {label}
-            </button>
-            {cost && <p className={classes.cost}>Cost: {CITIES[cost].name}</p>}
-          </div>
-        ) : null;
-      })}
-      {canDoOperationsExpertMove &&
-      (!moves[0][0] || moves[0][1]) && ( // only show this if we can't move here for free
-          <>
-            <div className={classes.option}>
+        return (
+          canMove && (
+            <div key={index} className={classes.option}>
               <button
                 className={classes.button}
-                disabled={opsExpertMoveCost === ''}
+                disabled={cost.length > 1 && moveCost === ''}
                 onClick={() =>
                   doPlayerMove(
-                    currentPlayerIdx,
+                    index,
                     city.key,
-                    opsExpertMoveCost,
-                    `Move to ${city.name}`,
+                    cost.length > 1 ? moveCost : cost[0],
+                    label,
                   )
                 }
               >
-                Move to {city.name}
+                {label}
               </button>
-            </div>
-            <p className={classes.cost}>
-              Cost:{' '}
-              <select
-                value={opsExpertMoveCost}
-                onChange={(e) => setOpsExpertMoveCost(e.target.value)}
-                className={classes.select}
-              >
-                <option value="" key="default">
-                  Choose a card
-                </option>
-                {currentPlayer.hand
-                  .map((card) => CITIES[card])
-                  .filter(Boolean)
-                  .map((cityObj) => (
-                    <option key={cityObj.key} value={cityObj.key}>
-                      {cityObj.name}
+              {cost.length === 1 && (
+                <p className={classes.cost}>Cost: {CITIES[cost[0]].name}</p>
+              )}
+              {cost.length > 1 && (
+                <p className={classes.cost}>
+                  Cost:{' '}
+                  <select
+                    value={moveCost}
+                    onChange={(e) => setMoveCost(e.target.value)}
+                    className={classes.select}
+                  >
+                    <option value="" key="default">
+                      Choose a card
                     </option>
-                  ))}
-              </select>
-            </p>
-          </>
-        )}
-      {moves.filter(([possible]) => possible).length === 0 &&
-        !canDoOperationsExpertMove && <p>Nothing to do here</p>}
+                    {cost
+                      .map((card) => CITIES[card])
+                      .map((cityObj) => (
+                        <option key={cityObj.key} value={cityObj.key}>
+                          {cityObj.name}
+                        </option>
+                      ))}
+                  </select>
+                </p>
+              )}
+            </div>
+          )
+        );
+      })}
+      {moves.filter(([possible]) => possible).length === 0 && (
+        <p>Nothing to do here</p>
+      )}
     </>
   );
 };

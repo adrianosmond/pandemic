@@ -17,12 +17,13 @@ export default () => {
     setTurn,
   } = useGame();
   const { setSelectedCity } = useUi();
-  const { currentPlayer } = useProperties();
+  const { currentPlayer, canDoOperationsExpertMove } = useProperties();
   const {
     addCardToHand,
     buildResearchCenter,
+    cureDisease,
     movePlayer,
-    discardPlayerCard,
+    discardPlayerCards,
     removeCardFromHand,
     treatDisease,
   } = useActions();
@@ -36,19 +37,30 @@ export default () => {
         location.connections.includes(city) || // Can drive / ferry?
         (location.researchCenter && destination.researchCenter) // Can get a shuttle flight
       ) {
-        return [true, null, player];
+        return [true, [], player];
       }
+      const cost = [];
       // Can charter a flight ?
       if (currentPlayer.hand.includes(player.location)) {
-        return [true, player.location, player];
+        cost.push(player.location);
       }
       // Can take a direct flight?
       if (currentPlayer.hand.includes(city)) {
-        return [true, city, player];
+        cost.push(city);
       }
-      return [false, null, player];
+      if (canDoOperationsExpertMove) {
+        cost.push(
+          ...currentPlayer.hand.filter(
+            (card) => !cost.includes(card) && CITIES[card].color,
+          ),
+        );
+      }
+      if (cost.length > 0) {
+        return [true, cost, player];
+      }
+      return [false, [], player];
     },
-    [cities, currentPlayer.hand],
+    [canDoOperationsExpertMove, cities, currentPlayer.hand],
   );
 
   const canMoveToCity = useCallback(
@@ -95,14 +107,40 @@ export default () => {
         actions: [...state.actions, `Build research center`],
       }));
       if (currentPlayer.role !== 'operations-expert') {
-        discardPlayerCard(city);
+        discardPlayerCards([city]);
       }
       setSelectedCity(null);
     },
     [
       buildResearchCenter,
       currentPlayer.role,
-      discardPlayerCard,
+      discardPlayerCards,
+      setSelectedCity,
+      setTurn,
+    ],
+  );
+
+  const doCureDisease = useCallback(
+    (color, toDiscard = []) => {
+      if (toDiscard.length === 0) {
+        currentPlayer.hand.forEach((card) => {
+          if (CITIES[card]?.color === color) {
+            toDiscard.push(card);
+          }
+        });
+      }
+      discardPlayerCards(toDiscard);
+      cureDisease(color);
+      setTurn((state) => ({
+        ...state,
+        actions: [...state.actions, `Cure ${color}`],
+      }));
+      setSelectedCity(null);
+    },
+    [
+      cureDisease,
+      currentPlayer.hand,
+      discardPlayerCards,
       setSelectedCity,
       setTurn,
     ],
@@ -112,7 +150,7 @@ export default () => {
     (playerIndex, city, cost, actionStr) => {
       movePlayer(playerIndex, city);
       if (cost) {
-        discardPlayerCard(cost);
+        discardPlayerCards([cost]);
       }
       setTurn((state) => ({
         ...state,
@@ -120,7 +158,7 @@ export default () => {
       }));
       setSelectedCity(null);
     },
-    [discardPlayerCard, movePlayer, setSelectedCity, setTurn],
+    [discardPlayerCards, movePlayer, setSelectedCity, setTurn],
   );
 
   const doShareKnowledge = useCallback(
@@ -184,14 +222,13 @@ export default () => {
         })),
       );
 
-      setPlayerDeck(() => {
-        const piles = new Array(difficulty).fill().map(() => ['epidemic']);
+      const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
-        for (let i = 0; playerDeck.length > 0; i += 1) {
-          piles[i % piles.length].push(playerDeck.pop());
-        }
-        return { deck: piles.map(shuffle).flat(), discard: [] };
-      });
+      for (let i = 0; playerDeck.length > 0; i += 1) {
+        piles[i % piles.length].push(playerDeck.pop());
+      }
+
+      setPlayerDeck({ deck: piles.map(shuffle).flat(), discard: [] });
 
       setCities((state) => {
         const modifications = {};
@@ -220,6 +257,7 @@ export default () => {
     canMoveToSameCity,
     canShareKnowledgeWithPlayer,
     doBuildResearchCenter,
+    doCureDisease,
     doPlayerMove,
     doShareKnowledge,
     doTreatDisease,

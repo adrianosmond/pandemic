@@ -61,17 +61,17 @@ export default () => {
     return card;
   }, [setInfectionDeck]);
 
-  const discardPlayerCard = useCallback(
-    (card) => {
+  const discardPlayerCards = useCallback(
+    (cards) => {
       setPlayers((state) =>
         state.map((player) => ({
           ...player,
-          hand: player.hand.filter((c) => c !== card),
+          hand: player.hand.filter((c) => !cards.includes(c)),
         })),
       );
       setPlayerDeck((state) => ({
         ...state,
-        discard: [...state.discard, card],
+        discard: [...state.discard, ...cards],
       }));
     },
     [setPlayerDeck, setPlayers],
@@ -219,7 +219,7 @@ export default () => {
     cureDisease,
     drawInfectionCard,
     drawPlayerCard,
-    discardPlayerCard,
+    discardPlayerCards,
     infectCity,
     movePlayer,
     removeCardFromHand,

@@ -13,7 +13,7 @@ import classes from './PlayersScreen.module.css';
 const CardsScreen = () => {
   const { players } = useGame();
   const { currentPlayer, otherPlayersInCurrentCity } = useProperties();
-  const { discardPlayerCard } = useActions();
+  const { discardPlayerCards } = useActions();
   const { canShareKnowledgeWithPlayer, doShareKnowledge } = useMethods();
 
   const [showDiscardModal, setShowDiscardModal] = useState(false);
@@ -23,8 +23,8 @@ const CardsScreen = () => {
     setCardToDiscard(null);
   }, []);
   const discardCard = useCallback(() => {
-    discardPlayerCard(cardToDiscard);
-  }, [cardToDiscard, discardPlayerCard]);
+    discardPlayerCards([cardToDiscard]);
+  }, [cardToDiscard, discardPlayerCards]);
 
   const [showShareModal, setShowShareModal] = useState(false);
   const [cardToShare, setCardToShare] = useState(null);

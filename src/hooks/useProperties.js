@@ -26,6 +26,24 @@ export default () => {
     currentPlayer.location,
   ]);
 
+  const cardsNeededToCure = useMemo(
+    () => (currentPlayer.role === 'scientist' ? 4 : 5),
+    [currentPlayer.role],
+  );
+
+  const highestNumberOfDiseaseCards = useMemo(() => {
+    const diseaseCards = currentPlayer.hand
+      .map((card) => CITIES[card]?.color)
+      .filter(Boolean);
+
+    return Object.keys(CURES)
+      .map((disease) => ({
+        disease,
+        amount: diseaseCards.filter((card) => card === disease).length,
+      }))
+      .sort((a, b) => b.amount - a.amount)[0];
+  }, [currentPlayer.hand]);
+
   const canBuildResearchCenter = useMemo(() => {
     if (currentCity.researchCenter) return false;
     if (currentPlayer.role === 'operations-expert') return true;
@@ -39,15 +57,18 @@ export default () => {
 
   const canCure = useMemo(() => {
     if (!currentCity.researchCenter) return false;
-    const cardsNeeded = currentPlayer.role === 'scientist' ? 4 : 5;
-    if (currentPlayer.hand.length < cardsNeeded) return false;
-    const diseaseCards = currentPlayer.hand
-      .map((card) => CITIES[card]?.color)
-      .filter(Boolean);
-    return Object.keys(CURES)
-      .map((disease) => diseaseCards.filter((card) => card === disease).length)
-      .some((amount) => amount >= cardsNeeded);
-  }, [currentCity.researchCenter, currentPlayer.hand, currentPlayer.role]);
+    if (currentPlayer.hand.length < cardsNeededToCure) return false;
+    return (
+      highestNumberOfDiseaseCards.amount >= cardsNeededToCure &&
+      !cures[highestNumberOfDiseaseCards.disease]
+    );
+  }, [
+    cardsNeededToCure,
+    cures,
+    currentCity.researchCenter,
+    currentPlayer.hand.length,
+    highestNumberOfDiseaseCards,
+  ]);
 
   const canDoOperationsExpertMove = useMemo(
     () =>
@@ -134,7 +155,9 @@ export default () => {
     canDoOperationsExpertMove,
     canPickUpEventCard,
     canTreatDisease,
+    cardsNeededToCure,
     cubesRemaining,
+    highestNumberOfDiseaseCards,
     infectionCardsToDraw,
     isGameOver,
     isGameStarted,
