@@ -48,13 +48,17 @@ const Interface = () => {
             onClick={isGameStarted ? closeUi : null}
           />
           <div className={classes.uiWrapper}>
-            <UiCard>
-              {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
-              {visibleTab === 'progress' && <ProgressScreen close={closeUi} />}
-              {visibleTab === 'players' && <PlayersScreen close={closeUi} />}
-              {visibleTab === 'cities' && <CitiesScreen close={closeUi} />}
-              {visibleTab === 'actions' && <ActionsScreen close={closeUi} />}
-            </UiCard>
+            {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
+            {isGameStarted && (
+              <UiCard>
+                {visibleTab === 'progress' && (
+                  <ProgressScreen close={closeUi} />
+                )}
+                {visibleTab === 'players' && <PlayersScreen close={closeUi} />}
+                {visibleTab === 'cities' && <CitiesScreen close={closeUi} />}
+                {visibleTab === 'actions' && <ActionsScreen close={closeUi} />}
+              </UiCard>
+            )}
           </div>
         </>
       )}

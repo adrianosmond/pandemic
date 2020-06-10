@@ -5,8 +5,10 @@ import classes from './StartScreen.module.css';
 const StartScreen = ({ startGame }) => {
   return (
     <div className={classes.startScreen}>
-      <h1 className={classes.heading}>Pandemic</h1>
-      <Button onClick={startGame}>Start Game</Button>
+      <img src="/logo.svg" className={classes.logo} alt="Pandemic logo" />
+      <Button onClick={startGame} className={classes.startButton}>
+        Start Game
+      </Button>
     </div>
   );
 };
