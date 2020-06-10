@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import useOutsideClick from 'hooks/useOutsideClick';
+import Button from 'components/Button';
 import UiCard from 'components/UiCard';
 import classes from './Modal.module.css';
 import './Modal.css';
@@ -29,12 +30,10 @@ export const ConfirmModal = ({
   <Modal clickOutside={closeModal}>
     {children}
     <div className={classes.buttonWrapper}>
-      <button className={classes.cancelButton} onClick={closeModal}>
+      <Button className={classes.cancelButton} onClick={closeModal}>
         {cancelText}
-      </button>
-      <button className={classes.confirmButton} onClick={onConfirm}>
-        {confirmText}
-      </button>
+      </Button>
+      <Button onClick={onConfirm}>{confirmText}</Button>
     </div>
   </Modal>
 );

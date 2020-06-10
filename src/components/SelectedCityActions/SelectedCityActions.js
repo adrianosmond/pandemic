@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';
+import Button from 'components/Button';
 import classes from './SelectedCityActions.module.css';
 
 const CurrentCityActions = ({ city }) => {
@@ -61,8 +62,7 @@ const CurrentCityActions = ({ city }) => {
               </div>
             </>
           )}
-          <button
-            className={classes.button}
+          <Button
             disabled={
               highestNumberOfDiseaseCards.amount > cardsNeededToCure &&
               cardsToDiscard.length !== cardsNeededToCure
@@ -79,32 +79,28 @@ const CurrentCityActions = ({ city }) => {
             }}
           >
             Discover cure for {highestNumberOfDiseaseCards.disease}
-          </button>
+          </Button>
         </div>
       )}
       {canTreatDisease && (
         <div className={classes.option}>
           {Object.keys(CURES).map((color) =>
             city[color] === 0 ? null : (
-              <button
+              <Button
                 key={color}
-                className={classes.button}
                 onClick={() => doTreatDisease(currentPlayer, color)}
               >
                 Treat {color}
-              </button>
+              </Button>
             ),
           )}
         </div>
       )}
       {canBuildResearchCenter && (
         <div className={classes.option}>
-          <button
-            className={classes.button}
-            onClick={() => doBuildResearchCenter(city.key)}
-          >
+          <Button onClick={() => doBuildResearchCenter(city.key)}>
             Build research center
-          </button>
+          </Button>
         </div>
       )}
       {sameCityMoves.map(([canMove, player], index) => {
@@ -113,12 +109,9 @@ const CurrentCityActions = ({ city }) => {
         } to ${city.name}`;
         return canMove ? (
           <div key={index} className={classes.option}>
-            <button
-              className={classes.button}
-              onClick={() => doPlayerMove(index, city.key, null, label)}
-            >
+            <Button onClick={() => doPlayerMove(index, city.key, null, label)}>
               {label}
-            </button>
+            </Button>
           </div>
         ) : null;
       })}
@@ -145,8 +138,7 @@ const OtherCityActions = ({ city }) => {
         return (
           canMove && (
             <div key={index} className={classes.option}>
-              <button
-                className={classes.button}
+              <Button
                 disabled={cost.length > 1 && moveCost === ''}
                 onClick={() =>
                   doPlayerMove(
@@ -158,7 +150,7 @@ const OtherCityActions = ({ city }) => {
                 }
               >
                 {label}
-              </button>
+              </Button>
               {cost.length === 1 && (
                 <p className={classes.cost}>Cost: {CITIES[cost[0]].name}</p>
               )}

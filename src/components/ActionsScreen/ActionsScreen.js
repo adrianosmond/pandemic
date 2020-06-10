@@ -2,7 +2,7 @@ import React from 'react';
 import { useGame } from 'contexts/game';
 import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
-import classes from './ActionsScreen.module.css';
+import Button from 'components/Button';
 
 const ActionsScreen = () => {
   const { turn } = useGame();
@@ -21,18 +21,16 @@ const ActionsScreen = () => {
           ))}
         </ol>
       )}
-      {turn.actions.length < 4 && (
-        <button className={classes.button}>Skip remaining actions</button>
-      )}
+      {turn.actions.length < 4 && <Button>Skip remaining actions</Button>}
       <h2>Draw Cards</h2>
       <h2>Epidemic</h2>
       <h3>Increase</h3>
       <h3>Infect</h3>
       <h3>Intensify</h3>
       <h2>Infect cities</h2>
-      <button disabled={!isTurnOver} onClick={endTurn}>
+      <Button disabled={!isTurnOver} onClick={endTurn}>
         End turn
-      </button>
+      </Button>
     </div>
   );
 };

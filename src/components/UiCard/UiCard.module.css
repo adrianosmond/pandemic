@@ -1,5 +1,5 @@
 .uiCard {
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   background-color: rgba(0, 0, 0, 0.75);
   margin: 2rem;
   padding: 1rem;

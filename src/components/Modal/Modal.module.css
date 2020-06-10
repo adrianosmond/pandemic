@@ -16,20 +16,6 @@
   justify-content: flex-end;
 }
 
-.confirmButton,
-.cancelButton {
-  font: inherit;
-  background-color: #fff;
-  border: 0;
-  margin: 0;
-  color: #000;
-  padding: 0.5rem;
-  white-space: nowrap;
-}
-
-.confirmButton {
-}
-
 .cancelButton {
   margin-right: 1rem;
 }
