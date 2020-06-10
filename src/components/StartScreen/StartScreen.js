@@ -1,11 +1,12 @@
 import React from 'react';
 import Button from 'components/Button';
+import { ReactComponent as Logo } from './logo.svg';
 import classes from './StartScreen.module.css';
 
 const StartScreen = ({ startGame }) => {
   return (
     <div className={classes.startScreen}>
-      <img src="/logo.svg" className={classes.logo} alt="Pandemic logo" />
+      <Logo className={classes.logo} />
       <Button onClick={startGame} className={classes.startButton}>
         Start Game
       </Button>
