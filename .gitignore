@@ -24,3 +24,6 @@ yarn-error.log*
 
 #environment
 settings.json
+
+#generated
+src/tailwind.output.css

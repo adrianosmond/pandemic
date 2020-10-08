@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import classnames from 'classnames';
 import { useGame } from 'contexts/game';
 import { useWorld } from 'contexts/world';
 import {
@@ -8,7 +9,6 @@ import {
   sortByPriority,
 } from 'utils/utils';
 import PlayerToken from 'components/PlayerToken';
-import classes from './CitiesScreen.module.css';
 
 const sorters = {
   priority: sortByPriority,
@@ -39,10 +39,13 @@ const CitiesScreen = ({ close }) => {
         {Object.keys(sorters).map((sort) => (
           <button
             key={sort}
-            className={[
-              classes.sortButton,
-              order === sort ? classes.activeButton : '',
-            ].join(' ')}
+            className={classnames(
+              'ml-2 py-1 px-0 bg-black border-bottom-transparent text-white capitalize appearance-none',
+              {
+                'border-disease-black border-b-2 focus:outline-none':
+                  order === sort,
+              },
+            )}
             onClick={() => setOrder(sort)}
           >
             {sort}
@@ -51,17 +54,25 @@ const CitiesScreen = ({ close }) => {
       </div>
       {sortedCities.map((city) => (
         <button
-          className={[classes.city, classes[`city--${city.color}`]].join(' ')}
+          className={classnames(
+            'flex items-center w-full mt-2 p-2 bg-black text-white text-left appearance-none border border-white border-opacity-50',
+            {
+              'text-disease-black': city.color === 'black',
+              'text-disease-blue': city.color === 'blue',
+              'text-disease-red': city.color === 'red',
+              'text-disease-yellow': city.color === 'yellow',
+            },
+          )}
           key={city.key}
           onClick={() => {
             close();
             panToCity(city.key);
           }}
         >
-          <div className={classes.cityName}>
+          <div className="flex items-center flex-grow text-base leading-none">
             {city.researchCenter && (
               <svg
-                className={classes.researchCenter}
+                className="relative top-px w-3 h-3 mr-1"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >
@@ -69,7 +80,7 @@ const CitiesScreen = ({ close }) => {
               </svg>
             )}
             {city.name}
-            <div className={classes.players}>
+            <div className="flex ml-1">
               {players
                 .filter((player) => player.location === city.key)
                 .map(({ role }) => (
@@ -77,34 +88,40 @@ const CitiesScreen = ({ close }) => {
                     role={role}
                     size="small"
                     key={role}
-                    className={classes.player}
+                    className="ml-px"
                   />
                 ))}
             </div>
           </div>
-          <div className={classes.diseases}>
+          <div className="flex">
             {city.disease.map(([col, amt]) => (
-              <div className={classes.disease} key={col}>
+              <div className="flex" key={col}>
                 <div
-                  className={[
-                    classes.pill,
-                    classes[col],
-                    amt > 0 ? classes.filled : '',
-                  ].join(' ')}
+                  className={classnames('h-1 w-1 ml-1 rounded opacity-25', {
+                    'bg-disease-black': col === 'black',
+                    'bg-disease-blue': col === 'blue',
+                    'bg-disease-red': col === 'red',
+                    'bg-disease-yellow': col === 'yellow',
+                    'opacity-100': amt > 0,
+                  })}
                 ></div>
                 <div
-                  className={[
-                    classes.pill,
-                    classes[col],
-                    amt > 1 ? classes.filled : '',
-                  ].join(' ')}
+                  className={classnames('h-1 w-1 ml-1 rounded opacity-25', {
+                    'bg-disease-black': col === 'black',
+                    'bg-disease-blue': col === 'blue',
+                    'bg-disease-red': col === 'red',
+                    'bg-disease-yellow': col === 'yellow',
+                    'opacity-100': amt > 1,
+                  })}
                 ></div>
                 <div
-                  className={[
-                    classes.pill,
-                    classes[col],
-                    amt > 2 ? classes.filled : '',
-                  ].join(' ')}
+                  className={classnames('h-1 w-1 ml-1 rounded opacity-25', {
+                    'bg-disease-black': col === 'black',
+                    'bg-disease-blue': col === 'blue',
+                    'bg-disease-red': col === 'red',
+                    'bg-disease-yellow': col === 'yellow',
+                    'opacity-100': amt > 2,
+                  })}
                 ></div>
               </div>
             ))}

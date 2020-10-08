@@ -3,7 +3,7 @@ import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';
 import Button from 'components/Button';
-import classes from './SelectedCityActions.module.css';
+// import classes from './SelectedCityActions.module.css';
 
 const CurrentCityActions = ({ city }) => {
   const {
@@ -34,14 +34,14 @@ const CurrentCityActions = ({ city }) => {
   return (
     <>
       {canCure && (
-        <div className={classes.option}>
+        <div className="mt-4">
           {highestNumberOfDiseaseCards.amount > cardsNeededToCure && (
             <>
               <p>
                 Select the {cardsNeededToCure} cards you want to discard for a
                 cure for {highestNumberOfDiseaseCards.disease}:
               </p>
-              <div className={classes.discardOptions}>
+              <div className="my-4">
                 {currentPlayer.hand
                   .filter(
                     (card) =>
@@ -49,7 +49,7 @@ const CurrentCityActions = ({ city }) => {
                       highestNumberOfDiseaseCards.disease,
                   )
                   .map((card) => (
-                    <label key={card} className={classes.checkboxRow}>
+                    <label key={card} className="flex my-1">
                       <input
                         type="checkbox"
                         checked={cardsToDiscard.includes(card)}
@@ -83,7 +83,7 @@ const CurrentCityActions = ({ city }) => {
         </div>
       )}
       {canTreatDisease && (
-        <div className={classes.option}>
+        <div className="mt-4">
           {Object.keys(CURES).map((color) =>
             city[color] === 0 ? null : (
               <Button
@@ -97,7 +97,7 @@ const CurrentCityActions = ({ city }) => {
         </div>
       )}
       {canBuildResearchCenter && (
-        <div className={classes.option}>
+        <div className="mt-4">
           <Button onClick={() => doBuildResearchCenter(city.key)}>
             Build research center
           </Button>
@@ -108,7 +108,7 @@ const CurrentCityActions = ({ city }) => {
           player.role !== currentPlayer.role ? player.name : ''
         } to ${city.name}`;
         return canMove ? (
-          <div key={index} className={classes.option}>
+          <div key={index} className="mt-4">
             <Button onClick={() => doPlayerMove(index, city.key, null, label)}>
               {label}
             </Button>
@@ -137,7 +137,7 @@ const OtherCityActions = ({ city }) => {
         } to ${city.name}`;
         return (
           canMove && (
-            <div key={index} className={classes.option}>
+            <div key={index} className="mt-4">
               <Button
                 disabled={cost.length > 1 && moveCost === ''}
                 onClick={() =>
@@ -152,15 +152,15 @@ const OtherCityActions = ({ city }) => {
                 {label}
               </Button>
               {cost.length === 1 && (
-                <p className={classes.cost}>Cost: {CITIES[cost[0]].name}</p>
+                <p className="mt-2">Cost: {CITIES[cost[0]].name}</p>
               )}
               {cost.length > 1 && (
-                <p className={classes.cost}>
+                <p className="mt-2">
                   Cost:{' '}
                   <select
                     value={moveCost}
                     onChange={(e) => setMoveCost(e.target.value)}
-                    className={classes.select}
+                    className="bg-white text-black"
                   >
                     <option value="" key="default">
                       Choose a card
@@ -190,8 +190,8 @@ const SelectedCityActions = ({ city }) => {
   const selectedCity = CITIES[city];
   const { currentCity } = useProperties();
   return (
-    <div className={classes.wrapper}>
-      <h2 className={classes.cityName}>{selectedCity.name}</h2>
+    <div style={{ minWidth: '260px' }}>
+      <h2 className="mb-4 text-xl font-bold">{selectedCity.name}</h2>
       {selectedCity.name === currentCity.name ? (
         <CurrentCityActions city={selectedCity} />
       ) : (

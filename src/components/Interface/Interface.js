@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import classnames from 'classnames';
 import useMethods from 'hooks/useMethods';
 import useProperties from 'hooks/useProperties';
 import UiCard from 'components/UiCard';
@@ -12,7 +13,6 @@ import TabBar from 'components/TabBar';
 import Hud from 'components/Hud';
 import Modal from 'components/Modal';
 import SelectedCityActions from 'components/SelectedCityActions';
-import classes from './Interface.module.css';
 
 const Interface = () => {
   const { startGame } = useMethods();
@@ -37,17 +37,21 @@ const Interface = () => {
 
   return (
     <div
-      className={[classes.wrapper, uiVisible ? classes.uiVisible : ''].join(
-        ' ',
-      )}
+      className={classnames('absolute inset-0 z-10 flex flex-col', {
+        'pointer-events-none': !uiVisible,
+      })}
     >
       {uiVisible && (
         <>
           <div
-            className={classes.blur}
+            className="absolute inset-0 pointer-events-auto"
+            style={{ zIndex: -1, backdropFilter: 'blur(4px)' }}
             onClick={isGameStarted ? closeUi : null}
           />
-          <div className={classes.uiWrapper}>
+          <div
+            className="flex-grow flex flex-col justify-center items-center pointer-events-none"
+            style={{ maxHeight: 'calc(100% - 3rem)' }}
+          >
             {!isGameStarted && <StartScreen startGame={closeUiAndStart} />}
             {isGameStarted && (
               <UiCard>

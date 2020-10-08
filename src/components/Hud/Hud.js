@@ -2,7 +2,6 @@ import React, { useMemo, useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { useWorld } from 'contexts/world';
 import PlayerToken from 'components/PlayerToken';
-import classes from './Hud.module.css';
 
 const Hud = () => {
   const { players, turn } = useGame();
@@ -16,8 +15,11 @@ const Hud = () => {
   }, [panToCity, player.location]);
 
   return (
-    <div className={classes.hud} onClick={panToPlayer}>
-      <PlayerToken role={player.role} size="medium" className={classes.token} />
+    <div
+      className="flex mt-2 ml-2 items-center pointer-events-auto"
+      onClick={panToPlayer}
+    >
+      <PlayerToken role={player.role} size="medium" className="mr-2" />
       {player.name}
     </div>
   );

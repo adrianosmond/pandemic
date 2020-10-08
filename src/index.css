@@ -19,22 +19,6 @@ body {
     env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-dl,
-dd,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
-}
-
-button {
-  font: inherit;
-}
-
 #root {
   height: 100%;
 }

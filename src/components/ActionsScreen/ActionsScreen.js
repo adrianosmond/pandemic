@@ -11,7 +11,7 @@ const ActionsScreen = () => {
 
   return (
     <div>
-      <h2>Actions</h2>
+      <h2 className="text-xl font-bold">Actions</h2>
       {turn.actions.length === 0 ? (
         <p>No actions taken</p>
       ) : (
@@ -22,12 +22,12 @@ const ActionsScreen = () => {
         </ol>
       )}
       {turn.actions.length < 4 && <Button>Skip remaining actions</Button>}
-      <h2>Draw Cards</h2>
-      <h2>Epidemic</h2>
-      <h3>Increase</h3>
-      <h3>Infect</h3>
-      <h3>Intensify</h3>
-      <h2>Infect cities</h2>
+      <h2 className="text-xl font-bold">Draw Cards</h2>
+      <h2 className="text-xl font-bold">Epidemic</h2>
+      <h3 className="text-lg font-bold">Increase</h3>
+      <h3 className="text-lg font-bold">Infect</h3>
+      <h3 className="text-lg font-bold">Intensify</h3>
+      <h2 className="text-xl font-bold">Infect cities</h2>
       <Button disabled={!isTurnOver} onClick={endTurn}>
         End turn
       </Button>

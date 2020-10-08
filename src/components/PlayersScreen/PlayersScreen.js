@@ -8,7 +8,6 @@ import { sortByDisease } from 'utils/utils';
 import Card from 'components/Card/Card';
 import { ConfirmModal } from 'components/Modal';
 import PlayerToken from 'components/PlayerToken';
-import classes from './PlayersScreen.module.css';
 
 const CardsScreen = () => {
   const { players } = useGame();
@@ -40,21 +39,23 @@ const CardsScreen = () => {
     <div>
       {players.map((player, playerIndex) => (
         <div key={playerIndex}>
-          <h2>{player.name}</h2>
-          <div className={classes.role}>
-            <PlayerToken role={player.role} className={classes.token} />
+          <h2 className="text-xl font-bold">{player.name}</h2>
+          <div className="flex mt-4">
+            <PlayerToken role={player.role} className="flex-shrink-0 mr-4" />
             <div>
-              <h3 className={classes.roleName}>{ROLES[player.role].name}</h3>
-              <ul className={classes.abilityList}>
+              <h3 className="mb-2 text-lg font-bold">
+                {ROLES[player.role].name}
+              </h3>
+              <ul className="m-0 pl-4 list-disc">
                 {ROLES[player.role].abilities.map((ability, index) => (
-                  <li className={classes.ability} key={index}>
+                  <li className="mt-2 text-xs leading-tight" key={index}>
                     {ability}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <div className={classes.playerCards}>
+          <div className="mt-4 mb-4 pt-2">
             {player.hand
               .map((card) => ({ ...(CITIES[card] || EVENTS[card]) }))
               .sort(sortByDisease)
@@ -114,7 +115,7 @@ const CardsScreen = () => {
             <select
               value={cardRecipient}
               onChange={(e) => setCardRecipient(e.target.value)}
-              className={classes.select}
+              className="bg-white text-black font-bold"
             >
               {otherPlayersInCurrentCity.map((player) => (
                 <option key={player.role} value={player.role}>

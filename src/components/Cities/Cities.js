@@ -6,8 +6,6 @@ import useProperties from 'hooks/useProperties';
 import { CITIES } from 'data/gameData';
 import City from 'components/City';
 
-import classes from './Cities.module.css';
-
 const Cities = React.forwardRef((props, ref) => {
   const { cities } = useWorld();
   const { cities: citiesState, players } = useGame();
@@ -50,7 +48,11 @@ const Cities = React.forwardRef((props, ref) => {
   }, [cities, citiesState, players, quarantinedCities]);
 
   return (
-    <div className={classes.cities} ref={ref} onPointerDown={onPointerDown}>
+    <div
+      className="absolute overflow-hidden top-0 left-0 w-full h-full z-10"
+      ref={ref}
+      onPointerDown={onPointerDown}
+    >
       {mixedState.map((city) => (
         <City
           key={city.key}

@@ -1,13 +1,13 @@
 import React from 'react';
-import classes from './TabBar.module.css';
+import classnames from 'classnames';
 
 const TabBar = ({ visibleTab, showTab }) => (
-  <div className={classes.tabBar}>
+  <div className="absolute bottom-0 w-full flex justify-center flex-shrink-0 pointer-events-none">
     <button
-      className={[
-        classes.tabBarButton,
-        visibleTab === 'progress' ? classes.selectedTab : '',
-      ].join(' ')}
+      className={classnames(
+        'h-12 w-12 p-2 border border-disease-black bg-black focus:outline-none pointer-events-auto',
+        { 'bg-grey-700': visibleTab === 'progress' },
+      )}
       onClick={() => showTab('progress')}
     >
       <svg
@@ -19,10 +19,10 @@ const TabBar = ({ visibleTab, showTab }) => (
       </svg>
     </button>
     <button
-      className={[
-        classes.tabBarButton,
-        visibleTab === 'players' ? classes.selectedTab : '',
-      ].join(' ')}
+      className={classnames(
+        'h-12 w-12 p-2 border border-disease-black bg-black focus:outline-none pointer-events-auto',
+        { 'bg-grey-700': visibleTab === 'players' },
+      )}
       onClick={() => showTab('players')}
     >
       <svg
@@ -46,10 +46,10 @@ const TabBar = ({ visibleTab, showTab }) => (
       </svg>
     </button>
     <button
-      className={[
-        classes.tabBarButton,
-        visibleTab === 'cities' ? classes.selectedTab : '',
-      ].join(' ')}
+      className={classnames(
+        'h-12 w-12 p-2 border border-disease-black bg-black focus:outline-none pointer-events-auto',
+        { 'bg-grey-700': visibleTab === 'cities' },
+      )}
       onClick={() => showTab('cities')}
     >
       <svg
@@ -61,10 +61,10 @@ const TabBar = ({ visibleTab, showTab }) => (
       </svg>
     </button>
     <button
-      className={[
-        classes.tabBarButton,
-        visibleTab === 'actions' ? classes.selectedTab : '',
-      ].join(' ')}
+      className={classnames(
+        'h-12 w-12 p-2 border border-disease-black bg-black focus:outline-none pointer-events-auto',
+        { 'bg-grey-700': visibleTab === 'actions' },
+      )}
       onClick={() => showTab('actions')}
     >
       <svg
