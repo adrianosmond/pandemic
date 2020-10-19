@@ -10,6 +10,7 @@ export default () => {
   const {
     cities,
     players,
+    playerDeck,
     setCities,
     setInfectionDeck,
     setPlayers,
@@ -17,13 +18,20 @@ export default () => {
     setTurn,
   } = useGame();
   const { setSelectedCity } = useUi();
-  const { currentPlayer, canDoOperationsExpertMove } = useProperties();
+  const {
+    currentPlayer,
+    currentPlayerIdx,
+    canDoOperationsExpertMove,
+  } = useProperties();
   const {
     addCardToHand,
     buildResearchCenter,
     cureDisease,
-    movePlayer,
+    drawPlayerCard,
     discardPlayerCards,
+    increaseInfectionRate,
+    infectAndIntensify,
+    movePlayer,
     removeCardFromHand,
     treatDisease,
   } = useActions();
@@ -200,11 +208,36 @@ export default () => {
     }));
   }, [players.length, setTurn]);
 
+  const pickUpPlayerCards = useCallback(() => {
+    const cards = [playerDeck.deck[0], playerDeck.deck[1]];
+
+    drawPlayerCard(currentPlayerIdx);
+    drawPlayerCard(currentPlayerIdx);
+
+    if (cards.includes('epidemic')) {
+      increaseInfectionRate();
+      infectAndIntensify();
+    }
+  }, [
+    currentPlayerIdx,
+    drawPlayerCard,
+    increaseInfectionRate,
+    infectAndIntensify,
+    playerDeck.deck,
+  ]);
+
+  const skipActions = useCallback(() => {
+    setTurn((state) => ({
+      ...state,
+      actions: [...state.actions, undefined, undefined, undefined, undefined],
+    }));
+  }, [setTurn]);
+
   const startGame = useCallback(
     (difficulty = 4) => {
       const infectionDeck = shuffle(Object.keys(CITIES), 5);
       const infectionDiscard = [];
-      const playerDeck = shuffle(
+      const pDeck = shuffle(
         [...Object.keys(CITIES), ...Object.keys(EVENTS)],
         5,
       );
@@ -212,7 +245,7 @@ export default () => {
 
       const numPlayers = players.length;
       const cardsPerPlayer = [0, 0, 4, 3, 2][numPlayers];
-      const playerCards = playerDeck.splice(0, numPlayers * cardsPerPlayer);
+      const playerCards = pDeck.splice(0, numPlayers * cardsPerPlayer);
 
       setPlayers(
         players.map((p) => ({
@@ -224,8 +257,8 @@ export default () => {
 
       const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
-      for (let i = 0; playerDeck.length > 0; i += 1) {
-        piles[i % piles.length].push(playerDeck.pop());
+      for (let i = 0; pDeck.length > 0; i += 1) {
+        piles[i % piles.length].push(pDeck.pop());
       }
 
       setPlayerDeck({ deck: piles.map(shuffle).flat(), discard: [] });
@@ -262,6 +295,8 @@ export default () => {
     doShareKnowledge,
     doTreatDisease,
     endTurn,
+    pickUpPlayerCards,
+    skipActions,
     startGame,
   };
 };

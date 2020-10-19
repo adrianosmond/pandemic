@@ -1,36 +1,40 @@
 import React from 'react';
 import { useGame } from 'contexts/game';
-import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
-import Button from 'components/Button';
+import ActionsScreenActions from './ActionsScreenActions';
+import ActionsScreenCards from './ActionsScreenCards';
+import ActionsScreenEpidemic from './ActionsScreenEpidemic';
+import ActionsScreenInfect from './ActionsScreenInfect';
 
 const ActionsScreen = () => {
-  const { turn } = useGame();
-  const { isTurnOver } = useProperties();
-  const { endTurn } = useMethods();
+  const { turn, playerDeck } = useGame();
+  const { skipActions, endTurn, pickUpPlayerCards } = useMethods();
+
+  const isDoingActions = turn.actions.length < 4;
+  const isDrawingCards = !isDoingActions && turn.playerCardsDrawn < 2;
+  const isResolvingEpidemic =
+    !isDoingActions && !isDrawingCards && turn.epidemicPhase > 0;
+  const isInfectingCities =
+    !isDoingActions && !isDrawingCards && turn.epidemicPhase === 0;
 
   return (
     <div>
-      <h2 className="text-xl font-bold">Actions</h2>
-      {turn.actions.length === 0 ? (
-        <p>No actions taken</p>
-      ) : (
-        <ol>
-          {turn.actions.map((action, index) => (
-            <li key={index}>{action}</li>
-          ))}
-        </ol>
+      {isDoingActions && (
+        <ActionsScreenActions
+          actions={turn.actions}
+          skipActions={skipActions}
+        />
       )}
-      {turn.actions.length < 4 && <Button>Skip remaining actions</Button>}
-      <h2 className="text-xl font-bold">Draw Cards</h2>
-      <h2 className="text-xl font-bold">Epidemic</h2>
-      <h3 className="text-lg font-bold">Increase</h3>
-      <h3 className="text-lg font-bold">Infect</h3>
-      <h3 className="text-lg font-bold">Intensify</h3>
-      <h2 className="text-xl font-bold">Infect cities</h2>
-      <Button disabled={!isTurnOver} onClick={endTurn}>
-        End turn
-      </Button>
+      {isDrawingCards && (
+        <ActionsScreenCards
+          cards={[playerDeck.deck[0], playerDeck.deck[1]]}
+          pickUpPlayerCards={pickUpPlayerCards}
+        />
+      )}
+      {isResolvingEpidemic && (
+        <ActionsScreenEpidemic phase={turn.epidemicPhase} />
+      )}
+      {isInfectingCities && <ActionsScreenInfect endTurn={endTurn} />}
     </div>
   );
 };

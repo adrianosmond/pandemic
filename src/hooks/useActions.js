@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
+import { shuffle } from 'utils/utils';
 import useProperties from './useProperties';
 
 export default () => {
   const {
     cures,
+    infectionDeck,
+    playerDeck,
     players,
     setCities,
     setCures,
@@ -79,21 +82,23 @@ export default () => {
 
   const drawPlayerCard = useCallback(
     (playerId) => {
-      let card;
-      let deck;
-      setPlayerDeck((state) => {
-        [card, ...deck] = state.deck;
-        return {
-          deck,
-          discard: [...state.discard],
-        };
+      const [card, ...deck] = playerDeck.deck;
+      setPlayerDeck({
+        ...playerDeck,
+        deck,
       });
+
       if (card === 'epidemic') {
         setTurn((state) => ({
           ...state,
+          playerCardsDrawn: state.playerCardsDrawn + 1,
           epidemicPhase: 1,
         }));
       } else {
+        setTurn((state) => ({
+          ...state,
+          playerCardsDrawn: state.playerCardsDrawn + 1,
+        }));
         setPlayers((state) =>
           state.map((player, index) => {
             if (index !== playerId) return player;
@@ -105,7 +110,7 @@ export default () => {
         );
       }
     },
-    [setPlayerDeck, setPlayers, setTurn],
+    [playerDeck, setPlayerDeck, setPlayers, setTurn],
   );
 
   const isCityInstacured = useCallback(
@@ -116,6 +121,13 @@ export default () => {
     },
     [cures, players],
   );
+
+  const increaseInfectionRate = useCallback(() => {
+    setDiseaseProgress((state) => ({
+      ...state,
+      infectionRateIdx: state.infectionRateIdx + 1,
+    }));
+  }, [setDiseaseProgress]);
 
   const infectCity = useCallback(
     (city, amount, col) => {
@@ -166,6 +178,17 @@ export default () => {
     },
     [isCityInstacured, quarantinedCities, setCities, setDiseaseProgress],
   );
+
+  const infectAndIntensify = useCallback(() => {
+    const { deck, discard } = infectionDeck;
+    const rest = deck.slice(0, -1);
+    const [toInfect] = deck.slice(-1);
+    setInfectionDeck({
+      deck: [...shuffle([...discard, toInfect]), ...rest],
+      discard: [],
+    });
+    infectCity(toInfect, 3);
+  }, [infectCity, infectionDeck, setInfectionDeck]);
 
   const movePlayer = useCallback(
     (playerId, location) => {
@@ -220,7 +243,9 @@ export default () => {
     drawInfectionCard,
     drawPlayerCard,
     discardPlayerCards,
+    increaseInfectionRate,
     infectCity,
+    infectAndIntensify,
     movePlayer,
     removeCardFromHand,
     treatDisease,
