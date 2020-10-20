@@ -3,7 +3,7 @@ import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';
 import Button from 'components/Button';
-// import classes from './SelectedCityActions.module.css';
+import { useGame } from 'contexts/game';
 
 const CurrentCityActions = ({ city }) => {
   const {
@@ -21,6 +21,9 @@ const CurrentCityActions = ({ city }) => {
     doPlayerMove,
     doTreatDisease,
   } = useMethods();
+  const {
+    game: { turn },
+  } = useGame();
   const sameCityMoves = canMoveToSameCity(city.key);
   const [cardsToDiscard, setCardsToDiscard] = useState([]);
   const selectCardToDiscard = useCallback(({ target: { checked, value } }) => {
@@ -30,6 +33,19 @@ const CurrentCityActions = ({ city }) => {
       setCardsToDiscard((state) => state.filter((c) => c !== value));
     }
   }, []);
+
+  if (turn.actions.length > 3) {
+    return <p>No more actions left in this turn</p>;
+  }
+
+  if (
+    !canBuildResearchCenter &&
+    !canCure &&
+    !canTreatDisease &&
+    sameCityMoves.length === 0
+  ) {
+    return <p>Nothing to do here</p>;
+  }
 
   return (
     <>
@@ -115,19 +131,26 @@ const CurrentCityActions = ({ city }) => {
           </div>
         ) : null;
       })}
-      {!canBuildResearchCenter &&
-        !canCure &&
-        !canTreatDisease &&
-        sameCityMoves.length === 0 && <p>Nothing to do here</p>}
     </>
   );
 };
 
 const OtherCityActions = ({ city }) => {
   const [moveCost, setMoveCost] = useState('');
+  const {
+    game: { turn },
+  } = useGame();
   const { canMoveToCity, doPlayerMove } = useMethods();
   const { currentPlayer } = useProperties();
   const moves = canMoveToCity(city.key);
+
+  if (turn.actions.length > 3) {
+    return <p>No more actions left in this turn</p>;
+  }
+
+  if (moves.filter(([possible]) => possible).length === 0) {
+    return <p>Nothing to do here</p>;
+  }
 
   return (
     <>
@@ -179,9 +202,6 @@ const OtherCityActions = ({ city }) => {
           )
         );
       })}
-      {moves.filter(([possible]) => possible).length === 0 && (
-        <p>Nothing to do here</p>
-      )}
     </>
   );
 };

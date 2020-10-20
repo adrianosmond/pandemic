@@ -8,7 +8,9 @@ import City from 'components/City';
 
 const Cities = React.forwardRef((props, ref) => {
   const { cities } = useWorld();
-  const { cities: citiesState, players } = useGame();
+  const {
+    game: { cities: citiesState, players },
+  } = useGame();
   const { setSelectedCity } = useUi();
   const { quarantinedCities } = useProperties();
   const [, setPointerStart] = useState(null);

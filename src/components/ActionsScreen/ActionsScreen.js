@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useGame } from 'contexts/game';
 import useMethods from 'hooks/useMethods';
+import { CITIES, INFECTION_RATE } from 'data/gameData';
 import ActionsScreenActions from './ActionsScreenActions';
 import ActionsScreenCards from './ActionsScreenCards';
 import ActionsScreenEpidemic from './ActionsScreenEpidemic';
 import ActionsScreenInfect from './ActionsScreenInfect';
 
 const ActionsScreen = () => {
-  const { turn, playerDeck } = useGame();
-  const { skipActions, endTurn, pickUpPlayerCards } = useMethods();
+  const {
+    game: { turn, playerDeck, diseaseProgress, infectionDeck },
+  } = useGame();
+  const { skipActions, endEpidemic, endTurn, pickUpPlayerCards } = useMethods();
 
   const isDoingActions = turn.actions.length < 4;
   const isDrawingCards = !isDoingActions && turn.playerCardsDrawn < 2;
   const isResolvingEpidemic =
-    !isDoingActions && !isDrawingCards && turn.epidemicPhase > 0;
+    !isDoingActions && !isDrawingCards && turn.epidemics > 0;
   const isInfectingCities =
-    !isDoingActions && !isDrawingCards && turn.epidemicPhase === 0;
+    !isDoingActions && !isDrawingCards && turn.epidemics === 0;
+
+  const infectionRate = INFECTION_RATE[diseaseProgress.infectionRateIdx];
+  const infectedCities = useMemo(
+    () => infectionDeck.discard.slice(-infectionRate),
+    [infectionDeck.discard, infectionRate],
+  );
 
   return (
     <div>
@@ -32,9 +41,15 @@ const ActionsScreen = () => {
         />
       )}
       {isResolvingEpidemic && (
-        <ActionsScreenEpidemic phase={turn.epidemicPhase} />
+        <ActionsScreenEpidemic
+          infectionRate={infectionRate}
+          lastInfected={CITIES[turn.lastInfected].name}
+          endEpidemic={endEpidemic}
+        />
       )}
-      {isInfectingCities && <ActionsScreenInfect endTurn={endTurn} />}
+      {isInfectingCities && (
+        <ActionsScreenInfect cards={infectedCities} endTurn={endTurn} />
+      )}
     </div>
   );
 };

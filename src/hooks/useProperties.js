@@ -1,15 +1,10 @@
 import { useMemo } from 'react';
 import { useGame } from 'contexts/game';
-import { CURES, CITIES, EVENTS } from 'data/gameData';
+import { CURES, CITIES, EVENTS, INFECTION_RATE } from 'data/gameData';
 
 export default () => {
   const {
-    cures,
-    cities,
-    diseaseProgress,
-    playerDeck,
-    players,
-    turn,
+    game: { cures, cities, diseaseProgress, playerDeck, players, turn },
   } = useGame();
 
   const currentPlayerIdx = useMemo(() => turn.activePlayer, [
@@ -105,7 +100,7 @@ export default () => {
   }, [cities]);
 
   const infectionCardsToDraw = useMemo(
-    () => [2, 2, 2, 3, 3, 4, 4][diseaseProgress.infectionRateIdx],
+    () => INFECTION_RATE[diseaseProgress.infectionRateIdx],
     [diseaseProgress.infectionRateIdx],
   );
 

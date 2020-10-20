@@ -8,29 +8,24 @@ import useActions from './useActions';
 
 export default () => {
   const {
-    cities,
-    players,
-    playerDeck,
-    setCities,
-    setInfectionDeck,
-    setPlayers,
-    setPlayerDeck,
-    setTurn,
+    game: { cities, players, turn },
+    updateGame,
   } = useGame();
-  const { setSelectedCity } = useUi();
+  const { setSelectedCity, closeUi } = useUi();
   const {
     currentPlayer,
     currentPlayerIdx,
     canDoOperationsExpertMove,
+    infectionCardsToDraw,
   } = useProperties();
   const {
     addCardToHand,
+    addTurnAction,
     buildResearchCenter,
     cureDisease,
     drawPlayerCard,
-    discardPlayerCards,
     increaseInfectionRate,
-    infectAndIntensify,
+    infectCity,
     movePlayer,
     removeCardFromHand,
     treatDisease,
@@ -43,7 +38,9 @@ export default () => {
 
       if (
         location.connections.includes(city) || // Can drive / ferry?
-        (location.researchCenter && destination.researchCenter) // Can get a shuttle flight
+        (location.researchCenter && destination.researchCenter) || // Can get a shuttle flight
+        (currentPlayer.role === 'dispatcher' &&
+          players.find((p) => p.role !== player.role && p.location === city)) // Dispatcher move pawn to be in same city as another pawn
       ) {
         return [true, [], player];
       }
@@ -68,7 +65,13 @@ export default () => {
       }
       return [false, [], player];
     },
-    [canDoOperationsExpertMove, cities, currentPlayer.hand],
+    [
+      canDoOperationsExpertMove,
+      cities,
+      currentPlayer.hand,
+      currentPlayer.role,
+      players,
+    ],
   );
 
   const canMoveToCity = useCallback(
@@ -93,6 +96,9 @@ export default () => {
 
   const canShareKnowledgeWithPlayer = useCallback(
     (card, player) => {
+      if (turn.actions.length > 3) {
+        return false;
+      }
       if (player.location !== currentPlayer.location) {
         return false;
       }
@@ -104,27 +110,37 @@ export default () => {
       }
       return false;
     },
-    [currentPlayer.location],
+    [currentPlayer.location, turn.actions.length],
+  );
+
+  const discardPlayerCards = useCallback(
+    (cards) => {
+      updateGame((draft) => {
+        draft.players = draft.players.map((player) => ({
+          ...player,
+          hand: player.hand.filter((c) => !cards.includes(c)),
+        }));
+        draft.playerDeck.discard.push(...cards);
+      });
+    },
+    [updateGame],
   );
 
   const doBuildResearchCenter = useCallback(
     (city) => {
       buildResearchCenter(city);
-      setTurn((state) => ({
-        ...state,
-        actions: [...state.actions, `Build research center`],
-      }));
+      addTurnAction('Build research center');
       if (currentPlayer.role !== 'operations-expert') {
         discardPlayerCards([city]);
       }
       setSelectedCity(null);
     },
     [
+      addTurnAction,
       buildResearchCenter,
       currentPlayer.role,
       discardPlayerCards,
       setSelectedCity,
-      setTurn,
     ],
   );
 
@@ -139,18 +155,15 @@ export default () => {
       }
       discardPlayerCards(toDiscard);
       cureDisease(color);
-      setTurn((state) => ({
-        ...state,
-        actions: [...state.actions, `Cure ${color}`],
-      }));
+      addTurnAction(`Cure ${color}`);
       setSelectedCity(null);
     },
     [
+      addTurnAction,
       cureDisease,
       currentPlayer.hand,
       discardPlayerCards,
       setSelectedCity,
-      setTurn,
     ],
   );
 
@@ -160,13 +173,10 @@ export default () => {
       if (cost) {
         discardPlayerCards([cost]);
       }
-      setTurn((state) => ({
-        ...state,
-        actions: [...state.actions, actionStr],
-      }));
+      addTurnAction(actionStr);
       setSelectedCity(null);
     },
-    [discardPlayerCards, movePlayer, setSelectedCity, setTurn],
+    [addTurnAction, discardPlayerCards, movePlayer, setSelectedCity],
   );
 
   const doShareKnowledge = useCallback(
@@ -181,107 +191,129 @@ export default () => {
         addCardToHand(otherPlayer, card);
         removeCardFromHand(currentPlayer, card);
       }
-      setTurn((state) => ({
-        ...state,
-        actions: [...state.actions, actionStr],
-      }));
+      addTurnAction(actionStr);
     },
-    [addCardToHand, currentPlayer, removeCardFromHand, setTurn],
+    [addCardToHand, addTurnAction, currentPlayer, removeCardFromHand],
   );
 
   const doTreatDisease = useCallback(
     (player, disease) => {
       treatDisease(player, disease);
-      setTurn((state) => ({
-        ...state,
-        actions: [...state.actions, `Treat ${disease}`],
-      }));
+      addTurnAction(`Treat ${disease}`);
       setSelectedCity(null);
     },
-    [setSelectedCity, setTurn, treatDisease],
+    [addTurnAction, setSelectedCity, treatDisease],
   );
 
   const endTurn = useCallback(() => {
-    setTurn((state) => ({
-      ...TURN,
-      activePlayer: (state.activePlayer + 1) % players.length,
-    }));
-  }, [players.length, setTurn]);
+    updateGame((draft) => {
+      draft.turn = {
+        ...TURN,
+        activePlayer: (draft.turn.activePlayer + 1) % players.length,
+      };
+    });
+    closeUi();
+  }, [closeUi, players.length, updateGame]);
 
-  const pickUpPlayerCards = useCallback(() => {
-    const cards = [playerDeck.deck[0], playerDeck.deck[1]];
+  const infectAndIntensify = useCallback(() => {
+    updateGame((draft) => {
+      const { deck, discard } = draft.infectionDeck;
+      const rest = deck.slice(0, -1);
+      const [toInfect] = deck.slice(-1);
+      draft.infectionDeck.discard = [];
+      draft.infectionDeck.deck = [...shuffle([...discard, toInfect]), ...rest];
+      draft.turn.lastInfected = toInfect;
+      infectCity(toInfect, 3);
+    });
+  }, [infectCity, updateGame]);
 
-    drawPlayerCard(currentPlayerIdx);
-    drawPlayerCard(currentPlayerIdx);
-
-    if (cards.includes('epidemic')) {
-      increaseInfectionRate();
-      infectAndIntensify();
-    }
+  const endCardDraw = useCallback(() => {
+    updateGame((draft) => {
+      if (draft.turn.epidemics > 0) {
+        increaseInfectionRate();
+        infectAndIntensify();
+      } else {
+        for (let i = 0; i < infectionCardsToDraw; i += 1) {
+          const city = draft.infectionDeck.deck.shift();
+          draft.infectionDeck.discard.push(city);
+          infectCity(city, 1);
+        }
+      }
+    });
   }, [
-    currentPlayerIdx,
-    drawPlayerCard,
     increaseInfectionRate,
     infectAndIntensify,
-    playerDeck.deck,
+    infectCity,
+    infectionCardsToDraw,
+    updateGame,
   ]);
 
+  const endEpidemic = useCallback(() => {
+    updateGame((draft) => {
+      draft.turn.epidemics -= 1;
+      endCardDraw();
+    });
+  }, [endCardDraw, updateGame]);
+
+  const pickUpPlayerCards = useCallback(() => {
+    drawPlayerCard(currentPlayerIdx);
+    drawPlayerCard(currentPlayerIdx);
+    endCardDraw();
+  }, [currentPlayerIdx, drawPlayerCard, endCardDraw]);
+
   const skipActions = useCallback(() => {
-    setTurn((state) => ({
-      ...state,
-      actions: [...state.actions, undefined, undefined, undefined, undefined],
-    }));
-  }, [setTurn]);
+    updateGame((draft) => {
+      draft.turn.actions.length = 4;
+    });
+  }, [updateGame]);
 
   const startGame = useCallback(
     (difficulty = 4) => {
-      const infectionDeck = shuffle(Object.keys(CITIES), 5);
-      const infectionDiscard = [];
-      const pDeck = shuffle(
-        [...Object.keys(CITIES), ...Object.keys(EVENTS)],
-        5,
-      );
-      const roles = shuffle(Object.keys(ROLES));
+      updateGame((draft) => {
+        const infectionDeck = shuffle(Object.keys(CITIES), 5);
+        const infectionDiscard = [];
+        const pDeck = shuffle(
+          [...Object.keys(CITIES), ...Object.keys(EVENTS)],
+          5,
+        );
+        const roles = shuffle(Object.keys(ROLES));
 
-      const numPlayers = players.length;
-      const cardsPerPlayer = [0, 0, 4, 3, 2][numPlayers];
-      const playerCards = pDeck.splice(0, numPlayers * cardsPerPlayer);
-
-      setPlayers(
-        players.map((p) => ({
+        const numPlayers = players.length;
+        const cardsPerPlayer = [0, 0, 4, 3, 2][numPlayers];
+        const playerCards = pDeck.splice(0, numPlayers * cardsPerPlayer);
+        draft.players = players.map((p) => ({
           ...p,
           role: roles.pop(),
           hand: playerCards.splice(0, cardsPerPlayer),
-        })),
-      );
+        }));
 
-      const piles = new Array(difficulty).fill().map(() => ['epidemic']);
+        const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
-      for (let i = 0; pDeck.length > 0; i += 1) {
-        piles[i % piles.length].push(pDeck.pop());
-      }
+        for (let i = 0; pDeck.length > 0; i += 1) {
+          piles[i % piles.length].push(pDeck.pop());
+        }
 
-      setPlayerDeck({ deck: piles.map(shuffle).flat(), discard: [] });
+        draft.playerDeck = {
+          deck: piles.map((pile) => shuffle(pile, 3)).flat(),
+          discard: [],
+        };
 
-      setCities((state) => {
-        const modifications = {};
         [3, 3, 3, 2, 2, 2, 1, 1, 1].forEach((amount) => {
           const city = infectionDeck.pop();
-          const { color } = state[city];
-          modifications[city] = { ...state[city], [color]: amount };
+          const { color } = draft.cities[city];
+          draft.cities[city][color] = amount;
           infectionDiscard.push(city);
         });
-        return {
-          ...state,
-          ...modifications,
+
+        draft.infectionDeck = {
+          deck: infectionDeck,
+          discard: infectionDiscard,
         };
+
+        draft.turn.activePlayer = 0;
       });
-
-      setInfectionDeck({ deck: infectionDeck, discard: infectionDiscard });
-
-      setTurn((state) => ({ ...state, activePlayer: 0 }));
     },
-    [players, setCities, setInfectionDeck, setPlayerDeck, setPlayers, setTurn],
+    [players, updateGame],
   );
 
   return {
@@ -294,6 +326,7 @@ export default () => {
     doPlayerMove,
     doShareKnowledge,
     doTreatDisease,
+    endEpidemic,
     endTurn,
     pickUpPlayerCards,
     skipActions,

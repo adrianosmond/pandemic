@@ -1,149 +1,88 @@
 import { useCallback } from 'react';
 import { useGame } from 'contexts/game';
-import { shuffle } from 'utils/utils';
 import useProperties from './useProperties';
 
 export default () => {
-  const {
-    cures,
-    infectionDeck,
-    playerDeck,
-    players,
-    setCities,
-    setCures,
-    setDiseaseProgress,
-    setInfectionDeck,
-    setPlayerDeck,
-    setPlayers,
-    setTurn,
-  } = useGame();
+  const { updateGame } = useGame();
   const { quarantinedCities } = useProperties();
 
   const addCardToHand = useCallback(
     (player, card) => {
-      setPlayers((state) =>
-        state.map((p) => {
-          if (p.role !== player.role) return p;
-          return {
-            ...p,
-            hand: [...p.hand, card.key],
-          };
-        }),
-      );
+      updateGame((draft) => {
+        draft.players.find((pp) => pp.role === player.role).hand.push(card.key);
+      });
     },
-    [setPlayers],
+    [updateGame],
+  );
+
+  const addTurnAction = useCallback(
+    (actionStr) => {
+      updateGame((draft) => {
+        draft.turn.actions.push(actionStr);
+      });
+    },
+    [updateGame],
   );
 
   const buildResearchCenter = useCallback(
     (city) => {
-      setCities((state) => ({
-        ...state,
-        [city]: { ...state[city], researchCenter: true },
-      }));
+      updateGame((draft) => {
+        draft.cities[city].researchCenter = true;
+      });
     },
-    [setCities],
+    [updateGame],
   );
 
   const cureDisease = useCallback(
     (disease) => {
-      setCures((state) => ({ ...state, [disease]: true }));
+      updateGame((draft) => {
+        draft.cures[disease] = true;
+      });
     },
-    [setCures],
-  );
-
-  const drawInfectionCard = useCallback(() => {
-    let card;
-    let deck;
-    setInfectionDeck((state) => {
-      [card, ...deck] = state.deck;
-      return {
-        deck,
-        discard: [...state.discard, card],
-      };
-    });
-    return card;
-  }, [setInfectionDeck]);
-
-  const discardPlayerCards = useCallback(
-    (cards) => {
-      setPlayers((state) =>
-        state.map((player) => ({
-          ...player,
-          hand: player.hand.filter((c) => !cards.includes(c)),
-        })),
-      );
-      setPlayerDeck((state) => ({
-        ...state,
-        discard: [...state.discard, ...cards],
-      }));
-    },
-    [setPlayerDeck, setPlayers],
+    [updateGame],
   );
 
   const drawPlayerCard = useCallback(
     (playerId) => {
-      const [card, ...deck] = playerDeck.deck;
-      setPlayerDeck({
-        ...playerDeck,
-        deck,
+      updateGame((draft) => {
+        const card = draft.playerDeck.deck.shift();
+        draft.turn.playerCardsDrawn += 1;
+
+        if (card === 'epidemic') {
+          draft.turn.epidemics += 1;
+        } else {
+          draft.players[playerId].hand.push(card);
+        }
       });
-
-      if (card === 'epidemic') {
-        setTurn((state) => ({
-          ...state,
-          playerCardsDrawn: state.playerCardsDrawn + 1,
-          epidemicPhase: 1,
-        }));
-      } else {
-        setTurn((state) => ({
-          ...state,
-          playerCardsDrawn: state.playerCardsDrawn + 1,
-        }));
-        setPlayers((state) =>
-          state.map((player, index) => {
-            if (index !== playerId) return player;
-            return {
-              ...player,
-              hand: [...player.hand, card],
-            };
-          }),
-        );
-      }
     },
-    [playerDeck, setPlayerDeck, setPlayers, setTurn],
-  );
-
-  const isCityInstacured = useCallback(
-    (city, color) => {
-      if (!cures[color]) return false;
-      const medic = players.find((player) => player.role === 'medic');
-      return medic && medic.location === city;
-    },
-    [cures, players],
+    [updateGame],
   );
 
   const increaseInfectionRate = useCallback(() => {
-    setDiseaseProgress((state) => ({
-      ...state,
-      infectionRateIdx: state.infectionRateIdx + 1,
-    }));
-  }, [setDiseaseProgress]);
+    updateGame((draft) => {
+      draft.diseaseProgress.infectionRateIdx += 1;
+    });
+  }, [updateGame]);
 
   const infectCity = useCallback(
     (city, amount, col) => {
-      let numOutbreaks = 0;
       if (quarantinedCities.includes(city)) {
         return;
       }
-      setCities((state) => {
-        const modifications = { [city]: { ...state[city] } };
-        const color = col || state[city].color;
+      updateGame((draft) => {
+        const isCityInstacured = (cityToCheck, color) => {
+          if (!draft.cures[color]) return false;
+          const medic = draft.players.find((player) => player.role === 'medic');
+          return medic && medic.location === cityToCheck;
+        };
+        let numOutbreaks = 0;
+        const color = col || draft.cities[city].color;
         const alreadyOutbroken = [];
         const toOutbreak = [city];
         if (isCityInstacured(city, color)) {
-          return state;
+          return;
         }
-        modifications[city][color] += amount - 1;
+        draft.cities[city][color] += amount - 1;
         while (toOutbreak.length > 0) {
           const o = toOutbreak.shift();
           alreadyOutbroken.push(o);
@@ -151,101 +90,61 @@ export default () => {
             !quarantinedCities.includes(city) &&
             !isCityInstacured(city, color)
           ) {
-            if (!modifications[o]) {
-              Object.assign(modifications, { [o]: { ...state[o] } });
-            }
-            modifications[o][color] += 1;
-            if (modifications[o][color] > 3) {
+            draft.cities[o][color] += 1;
+            if (draft.cities[o][color] > 3) {
               numOutbreaks += 1;
-              modifications[o][color] = 3;
+              draft.cities[o][color] = 3;
               toOutbreak.push(
-                ...state[o].connections.filter(
+                ...draft.cities[o].connections.filter(
                   (con) => !alreadyOutbroken.includes(con),
                 ),
               );
             }
           }
         }
-        return {
-          ...state,
-          ...modifications,
-        };
+        draft.diseaseProgress.outbreaks += numOutbreaks;
       });
-      setDiseaseProgress((state) => ({
-        ...state,
-        outbreaks: state.outbreaks + numOutbreaks,
-      }));
     },
-    [isCityInstacured, quarantinedCities, setCities, setDiseaseProgress],
+    [quarantinedCities, updateGame],
   );
-
-  const infectAndIntensify = useCallback(() => {
-    const { deck, discard } = infectionDeck;
-    const rest = deck.slice(0, -1);
-    const [toInfect] = deck.slice(-1);
-    setInfectionDeck({
-      deck: [...shuffle([...discard, toInfect]), ...rest],
-      discard: [],
-    });
-    infectCity(toInfect, 3);
-  }, [infectCity, infectionDeck, setInfectionDeck]);
 
   const movePlayer = useCallback(
     (playerId, location) => {
-      setPlayers((state) =>
-        state.map((player, index) => {
-          if (index !== playerId) return player;
-          return {
-            ...player,
-            location,
-          };
-        }),
-      );
+      updateGame((draft) => {
+        draft.players[playerId].location = location;
+      });
     },
-    [setPlayers],
+    [updateGame],
   );
 
   const removeCardFromHand = useCallback(
     (player, card) => {
-      setPlayers((state) =>
-        state.map((p) => {
-          if (p.role !== player.role) return p;
-          return {
-            ...p,
-            hand: p.hand.filter((c) => c !== card.key),
-          };
-        }),
-      );
+      updateGame((draft) => {
+        const toRemove = draft.players.find((p) => p.role === player.role);
+        toRemove.hand = toRemove.hand.filter((c) => c !== card.key);
+      });
     },
-    [setPlayers],
+    [updateGame],
   );
 
   const treatDisease = useCallback(
     (player, disease) => {
-      setCities((state) => ({
-        ...state,
-        [player.location]: {
-          ...state[player.location],
-          [disease]: Math.max(
-            0,
-            state[player.location][disease] - (player.role === 'medic' ? 3 : 1),
-          ),
-        },
-      }));
+      updateGame((draft) => {
+        draft.cities[player.location][disease] -=
+          player.role === 'medic' ? 3 : 1;
+      });
     },
-    [setCities],
+    [updateGame],
   );
 
   return {
     addCardToHand,
+    addTurnAction,
     buildResearchCenter,
     cureDisease,
-    drawInfectionCard,
     drawPlayerCard,
-    discardPlayerCards,
     increaseInfectionRate,
     infectCity,
-    infectAndIntensify,
     movePlayer,
     removeCardFromHand,
     treatDisease,

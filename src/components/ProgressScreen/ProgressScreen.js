@@ -2,10 +2,11 @@ import React, { useMemo } from 'react';
 import classnames from 'classnames';
 import { useGame } from 'contexts/game';
 import useProperties from 'hooks/useProperties';
-// import classes from './ProgressScreen.module.css';
 
 const ProgressScreen = () => {
-  const { cures, diseaseProgress, playerDeck } = useGame();
+  const {
+    game: { cures, diseaseProgress, playerDeck },
+  } = useGame();
   const { cubesRemaining } = useProperties();
   const numCured = useMemo(() => Object.values(cures).filter(Boolean).length, [
     cures,

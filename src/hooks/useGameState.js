@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useImmer } from 'use-immer';
 import {
   CITIES,
   CURES,
@@ -11,31 +11,19 @@ import {
 } from 'data/gameData';
 
 export default () => {
-  const [cities, setCities] = useState(CITIES);
-  const [cures, setCures] = useState(CURES);
-  const [diseaseProgress, setDiseaseProgress] = useState(DISEASE_PROGRESS);
-  const [events, setEvents] = useState(EVENTS);
-  const [infectionDeck, setInfectionDeck] = useState(INFECTION_DECK);
-  const [playerDeck, setPlayerDeck] = useState(PLAYER_DECK);
-  const [players, setPlayers] = useState(PLAYERS);
-  const [turn, setTurn] = useState(TURN);
+  const [game, updateGame] = useImmer({
+    cities: CITIES,
+    cures: CURES,
+    diseaseProgress: DISEASE_PROGRESS,
+    events: EVENTS,
+    infectionDeck: INFECTION_DECK,
+    playerDeck: PLAYER_DECK,
+    players: PLAYERS,
+    turn: TURN,
+  });
 
   return {
-    cities,
-    setCities,
-    cures,
-    setCures,
-    diseaseProgress,
-    setDiseaseProgress,
-    events,
-    setEvents,
-    infectionDeck,
-    setInfectionDeck,
-    players,
-    setPlayers,
-    playerDeck,
-    setPlayerDeck,
-    turn,
-    setTurn,
+    game,
+    updateGame,
   };
 };

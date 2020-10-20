@@ -613,6 +613,8 @@ export const INFECTION_DECK = {
   discard: [],
 };
 
+export const INFECTION_RATE = [2, 2, 2, 3, 3, 4, 4];
+
 export const PLAYER_DECK = {
   deck: [],
   discard: [],
@@ -698,5 +700,6 @@ export const TURN = {
   actions: [],
   playerCardsDrawn: 0,
   infectionCardsDrawn: 0,
-  epidemicPhase: 0,
+  lastInfected: '',
+  epidemics: 0,
 };

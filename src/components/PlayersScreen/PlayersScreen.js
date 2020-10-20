@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { CITIES, EVENTS, ROLES } from 'data/gameData';
-import useActions from 'hooks/useActions';
 import useMethods from 'hooks/useMethods';
 import useProperties from 'hooks/useProperties';
 import { sortByDisease } from 'utils/utils';
@@ -10,10 +9,15 @@ import { ConfirmModal } from 'components/Modal';
 import PlayerToken from 'components/PlayerToken';
 
 const CardsScreen = () => {
-  const { players } = useGame();
+  const {
+    game: { players },
+  } = useGame();
   const { currentPlayer, otherPlayersInCurrentCity } = useProperties();
-  const { discardPlayerCards } = useActions();
-  const { canShareKnowledgeWithPlayer, doShareKnowledge } = useMethods();
+  const {
+    canShareKnowledgeWithPlayer,
+    doShareKnowledge,
+    discardPlayerCards,
+  } = useMethods();
 
   const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [cardToDiscard, setCardToDiscard] = useState(null);

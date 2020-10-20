@@ -18,7 +18,9 @@ const sorters = {
 
 const CitiesScreen = ({ close }) => {
   const [order, setOrder] = useState(Object.keys(sorters)[0]);
-  const { cities, players } = useGame();
+  const {
+    game: { cities, players },
+  } = useGame();
   const { panToCity } = useWorld();
   const sortedCities = useMemo(
     () =>

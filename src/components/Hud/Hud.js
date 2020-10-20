@@ -4,7 +4,9 @@ import { useWorld } from 'contexts/world';
 import PlayerToken from 'components/PlayerToken';
 
 const Hud = () => {
-  const { players, turn } = useGame();
+  const {
+    game: { players, turn },
+  } = useGame();
   const { panToCity } = useWorld();
   const player = useMemo(() => players[turn.activePlayer], [
     players,
