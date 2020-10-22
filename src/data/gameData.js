@@ -700,6 +700,7 @@ export const TURN = {
   actions: [],
   playerCardsDrawn: 0,
   infectionCardsDrawn: 0,
+  isQuietNight: false,
   lastInfected: '',
   epidemics: 0,
 };

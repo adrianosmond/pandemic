@@ -48,7 +48,11 @@ const ActionsScreen = () => {
         />
       )}
       {isInfectingCities && (
-        <ActionsScreenInfect cards={infectedCities} endTurn={endTurn} />
+        <ActionsScreenInfect
+          cards={infectedCities}
+          isQuietNight={turn.isQuietNight}
+          endTurn={endTurn}
+        />
       )}
     </div>
   );

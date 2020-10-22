@@ -24,9 +24,10 @@ export default () => {
   } = useGame();
   const { setVisibleModal, closeUi } = useUi();
   const {
+    canDoOperationsExpertMove,
     currentPlayer,
     currentPlayerIdx,
-    canDoOperationsExpertMove,
+    cubesRemaining,
     infectionCardsToDraw,
     quarantinedCities,
   } = useProperties();
@@ -237,16 +238,16 @@ export default () => {
           ...rest,
         ];
         draft.turn.lastInfected = toInfect;
-        infectCity(draft, quarantinedCities, toInfect, 3);
-      } else {
+        infectCity(draft, quarantinedCities, cubesRemaining, toInfect, 3);
+      } else if (!draft.turn.isQuietNight) {
         for (let i = 0; i < infectionCardsToDraw; i += 1) {
           const city = draft.infectionDeck.deck.shift();
           draft.infectionDeck.discard.push(city);
-          infectCity(draft, quarantinedCities, city, 1);
+          infectCity(draft, quarantinedCities, cubesRemaining, city, 1);
         }
       }
     });
-  }, [infectionCardsToDraw, quarantinedCities, updateGame]);
+  }, [cubesRemaining, infectionCardsToDraw, quarantinedCities, updateGame]);
 
   const endEpidemic = useCallback(() => {
     updateGame((draft) => {
@@ -286,7 +287,7 @@ export default () => {
           setVisibleModal('governmentGrant');
           break;
         case 'quietNight':
-          console.log('quietNight');
+          setVisibleModal('quietNight');
           break;
         case 'resilientPopulation':
           setVisibleModal('resilientPopulation');
@@ -297,6 +298,13 @@ export default () => {
     },
     [setVisibleModal],
   );
+
+  const quietNight = useCallback(() => {
+    updateGame((draft) => {
+      draft.turn.isQuietNight = true;
+    });
+    discardPlayerCards(['quietNight']);
+  }, [discardPlayerCards, updateGame]);
 
   const resilientPopulation = useCallback(
     (city) => {
@@ -381,6 +389,7 @@ export default () => {
     governmentGrant,
     pickUpPlayerCards,
     playEventCard,
+    quietNight,
     resilientPopulation,
     skipActions,
     startGame,

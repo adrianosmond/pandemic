@@ -29,10 +29,18 @@ export const increaseInfectionRate = (draft) => {
   draft.diseaseProgress.infectionRateIdx += 1;
 };
 
-export const infectCity = (draft, quarantinedCities, city, amount, col) => {
+export const infectCity = (
+  draft,
+  quarantinedCities,
+  cubesRemaining,
+  city,
+  amount,
+  col,
+) => {
   const color = col || draft.cities[city].color;
   const isCityInvulnerable = (cityToCheck) => {
     if (quarantinedCities.includes(city)) return true;
+    if (draft.cures[color] && cubesRemaining[color] === 24) return true;
     if (!draft.cures[color]) return false;
     const medic = draft.players.find((player) => player.role === 'medic');
     return medic && medic.location === cityToCheck;
