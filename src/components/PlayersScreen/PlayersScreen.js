@@ -7,6 +7,7 @@ import { sortByDisease } from 'utils/utils';
 import Card from 'components/Card/Card';
 import { ConfirmModal } from 'components/Modal';
 import PlayerToken from 'components/PlayerToken';
+import Select from 'components/Select';
 
 const CardsScreen = () => {
   const {
@@ -17,6 +18,7 @@ const CardsScreen = () => {
     canShareKnowledgeWithPlayer,
     doShareKnowledge,
     discardPlayerCards,
+    playEventCard,
   } = useMethods();
 
   const [showDiscardModal, setShowDiscardModal] = useState(false);
@@ -71,17 +73,20 @@ const CardsScreen = () => {
                   description={card.description}
                   share={
                     canShareKnowledgeWithPlayer(card, player) &&
-                    (() => {
+                    ((event) => {
+                      event.stopPropagation();
                       setCardToShare(card);
                       setCardOwner(player);
                       setCardRecipient(otherPlayersInCurrentCity[0]);
                       setShowShareModal(true);
                     })
                   }
-                  discard={() => {
+                  discard={(event) => {
+                    event.stopPropagation();
                     setCardToDiscard(card);
                     setShowDiscardModal(true);
                   }}
+                  onClick={!card.color ? () => playEventCard(card.key) : null}
                 />
               ))}
             {player.hand.length === 0 && <p>{player.name} has no cards</p>}
@@ -116,17 +121,14 @@ const CardsScreen = () => {
           {otherPlayersInCurrentCity.length === 1 ? (
             <>{otherPlayersInCurrentCity[0].name}</>
           ) : (
-            <select
+            <Select
               value={cardRecipient}
               onChange={(e) => setCardRecipient(e.target.value)}
-              className="bg-white text-black font-bold"
-            >
-              {otherPlayersInCurrentCity.map((player) => (
-                <option key={player.role} value={player.role}>
-                  {player.name}
-                </option>
-              ))}
-            </select>
+              options={otherPlayersInCurrentCity.map((player) => ({
+                value: player.role,
+                label: player.name,
+              }))}
+            />
           )}
           ?
         </ConfirmModal>

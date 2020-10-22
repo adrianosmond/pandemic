@@ -2,17 +2,18 @@ import React, { useCallback } from 'react';
 import classnames from 'classnames';
 import useMethods from 'hooks/useMethods';
 import useProperties from 'hooks/useProperties';
+import { useUi } from 'contexts/ui';
 import UiCard from 'components/UiCard';
 import StartScreen from 'components/StartScreen';
 import ProgressScreen from 'components/ProgressScreen';
 import PlayersScreen from 'components/PlayersScreen';
 import CitiesScreen from 'components/CitiesScreen';
 import ActionsScreen from 'components/ActionsScreen';
-import { useUi } from 'contexts/ui';
 import TabBar from 'components/TabBar';
 import Hud from 'components/Hud';
 import Modal from 'components/Modal';
 import SelectedCityActions from 'components/SelectedCityActions';
+import Airlift from 'components/Airlift';
 
 const Interface = () => {
   const { startGame } = useMethods();
@@ -22,8 +23,8 @@ const Interface = () => {
     visibleTab,
     closeUi,
     showTab,
-    selectedCity,
-    setSelectedCity,
+    visibleModal,
+    setVisibleModal,
   } = useUi();
 
   const closeUiAndStart = useCallback(() => {
@@ -32,8 +33,8 @@ const Interface = () => {
   }, [closeUi, startGame]);
 
   const closeModal = useCallback(() => {
-    setSelectedCity(null);
-  }, [setSelectedCity]);
+    setVisibleModal(null);
+  }, [setVisibleModal]);
 
   return (
     <div
@@ -73,11 +74,14 @@ const Interface = () => {
           <TabBar visibleTab={visibleTab} showTab={showTab} />
         </>
       )}
-      {selectedCity !== null && (
-        <Modal clickOutside={closeModal}>
-          <SelectedCityActions city={selectedCity} />
-        </Modal>
-      )}
+      {visibleModal &&
+        (visibleModal === 'airlift' ? (
+          <Airlift closeModal={closeModal} />
+        ) : (
+          <Modal clickOutside={closeModal}>
+            <SelectedCityActions city={visibleModal} />
+          </Modal>
+        ))}
     </div>
   );
 };

@@ -578,7 +578,7 @@ export const EVENTS = {
     key: 'airlift',
     active: false,
     name: 'Airlift',
-    description: 'Move any 1 pawn to any city.',
+    description: 'Move any pawn to any city.',
   },
   center: {
     key: 'center',

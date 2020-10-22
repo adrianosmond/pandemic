@@ -4,6 +4,7 @@ import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';
 import Button from 'components/Button';
 import { useGame } from 'contexts/game';
+import Select from 'components/Select/Select';
 
 const CurrentCityActions = ({ city }) => {
   const {
@@ -180,22 +181,17 @@ const OtherCityActions = ({ city }) => {
               {cost.length > 1 && (
                 <p className="mt-2">
                   Cost:{' '}
-                  <select
+                  <Select
                     value={moveCost}
                     onChange={(e) => setMoveCost(e.target.value)}
-                    className="bg-white text-black"
-                  >
-                    <option value="" key="default">
-                      Choose a card
-                    </option>
-                    {cost
-                      .map((card) => CITIES[card])
-                      .map((cityObj) => (
-                        <option key={cityObj.key} value={cityObj.key}>
-                          {cityObj.name}
-                        </option>
-                      ))}
-                  </select>
+                    options={cost.map((card) =>
+                      CITIES[card].map((cityObj) => ({
+                        value: cityObj.key,
+                        label: cityObj.name,
+                      })),
+                    )}
+                    defaultOption="Choose a card"
+                  />
                 </p>
               )}
             </div>

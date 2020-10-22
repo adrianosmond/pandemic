@@ -4,32 +4,59 @@ import { useUi } from 'contexts/ui';
 import { shuffle } from 'utils/utils';
 import { CITIES, EVENTS, ROLES, TURN } from 'data/gameData';
 import useProperties from './useProperties';
-import useActions from './useActions';
+import {
+  addCardToHand,
+  addTurnAction,
+  buildResearchCenter,
+  cureDisease,
+  drawPlayerCard,
+  increaseInfectionRate,
+  infectCity,
+  movePlayer,
+  removeCardFromHand,
+  treatDisease,
+} from './actions';
 
 export default () => {
   const {
     game: { cities, players, turn },
     updateGame,
   } = useGame();
-  const { setSelectedCity, closeUi } = useUi();
+  const { setVisibleModal, closeUi } = useUi();
   const {
     currentPlayer,
     currentPlayerIdx,
     canDoOperationsExpertMove,
     infectionCardsToDraw,
+    quarantinedCities,
   } = useProperties();
-  const {
-    addCardToHand,
-    addTurnAction,
-    buildResearchCenter,
-    cureDisease,
-    drawPlayerCard,
-    increaseInfectionRate,
-    infectCity,
-    movePlayer,
-    removeCardFromHand,
-    treatDisease,
-  } = useActions();
+
+  const discardPlayerCards = useCallback(
+    (cards) => {
+      updateGame((draft) => {
+        draft.players = draft.players.map((player) => ({
+          ...player,
+          hand: player.hand.filter((c) => !cards.includes(c)),
+        }));
+        draft.playerDeck.discard.push(...cards);
+      });
+    },
+    [updateGame],
+  );
+
+  const airlift = useCallback(
+    (playerRole, city) => {
+      updateGame((draft) => {
+        const playerIdx = draft.players.findIndex((p) => p.role === playerRole);
+        draft.players[playerIdx].location = city;
+        draft.players[currentPlayerIdx].hand = draft.players[
+          currentPlayerIdx
+        ].hand.filter((c) => c !== 'airlift');
+      });
+      discardPlayerCards(['airlift']);
+    },
+    [currentPlayerIdx, discardPlayerCards, updateGame],
+  );
 
   const canMovePlayerToCity = useCallback(
     (player, city) => {
@@ -113,35 +140,18 @@ export default () => {
     [currentPlayer.location, turn.actions.length],
   );
 
-  const discardPlayerCards = useCallback(
-    (cards) => {
-      updateGame((draft) => {
-        draft.players = draft.players.map((player) => ({
-          ...player,
-          hand: player.hand.filter((c) => !cards.includes(c)),
-        }));
-        draft.playerDeck.discard.push(...cards);
-      });
-    },
-    [updateGame],
-  );
-
   const doBuildResearchCenter = useCallback(
     (city) => {
-      buildResearchCenter(city);
-      addTurnAction('Build research center');
+      updateGame((draft) => {
+        buildResearchCenter(draft, city);
+        addTurnAction(draft, 'Build research center');
+      });
       if (currentPlayer.role !== 'operations-expert') {
         discardPlayerCards([city]);
       }
-      setSelectedCity(null);
+      setVisibleModal(null);
     },
-    [
-      addTurnAction,
-      buildResearchCenter,
-      currentPlayer.role,
-      discardPlayerCards,
-      setSelectedCity,
-    ],
+    [currentPlayer.role, discardPlayerCards, setVisibleModal, updateGame],
   );
 
   const doCureDisease = useCallback(
@@ -153,56 +163,58 @@ export default () => {
           }
         });
       }
+      updateGame((draft) => {
+        cureDisease(draft, color);
+        addTurnAction(draft, `Cure ${color}`);
+      });
       discardPlayerCards(toDiscard);
-      cureDisease(color);
-      addTurnAction(`Cure ${color}`);
-      setSelectedCity(null);
+      setVisibleModal(null);
     },
-    [
-      addTurnAction,
-      cureDisease,
-      currentPlayer.hand,
-      discardPlayerCards,
-      setSelectedCity,
-    ],
+    [currentPlayer.hand, discardPlayerCards, setVisibleModal, updateGame],
   );
 
   const doPlayerMove = useCallback(
     (playerIndex, city, cost, actionStr) => {
-      movePlayer(playerIndex, city);
+      updateGame((draft) => {
+        movePlayer(draft, playerIndex, city);
+        addTurnAction(draft, actionStr);
+      });
       if (cost) {
         discardPlayerCards([cost]);
       }
-      addTurnAction(actionStr);
-      setSelectedCity(null);
+      setVisibleModal(null);
     },
-    [addTurnAction, discardPlayerCards, movePlayer, setSelectedCity],
+    [discardPlayerCards, setVisibleModal, updateGame],
   );
 
   const doShareKnowledge = useCallback(
     (card, otherPlayer, taking = true) => {
-      let actionStr;
-      if (taking) {
-        actionStr = `Take ${card.name} from ${otherPlayer.name}`;
-        addCardToHand(currentPlayer, card);
-        removeCardFromHand(otherPlayer, card);
-      } else {
-        actionStr = `Give ${card.name} to ${otherPlayer.name}`;
-        addCardToHand(otherPlayer, card);
-        removeCardFromHand(currentPlayer, card);
-      }
-      addTurnAction(actionStr);
+      updateGame((draft) => {
+        let actionStr;
+        if (taking) {
+          actionStr = `Take ${card.name} from ${otherPlayer.name}`;
+          addCardToHand(draft, currentPlayer, card);
+          removeCardFromHand(draft, otherPlayer, card);
+        } else {
+          actionStr = `Give ${card.name} to ${otherPlayer.name}`;
+          addCardToHand(draft, otherPlayer, card);
+          removeCardFromHand(draft, currentPlayer, card);
+        }
+        addTurnAction(draft, actionStr);
+      });
     },
-    [addCardToHand, addTurnAction, currentPlayer, removeCardFromHand],
+    [currentPlayer, updateGame],
   );
 
   const doTreatDisease = useCallback(
     (player, disease) => {
-      treatDisease(player, disease);
-      addTurnAction(`Treat ${disease}`);
-      setSelectedCity(null);
+      updateGame((draft) => {
+        treatDisease(draft, player, disease);
+        addTurnAction(draft, `Treat ${disease}`);
+      });
+      setVisibleModal(null);
     },
-    [addTurnAction, setSelectedCity, treatDisease],
+    [setVisibleModal, updateGame],
   );
 
   const endTurn = useCallback(() => {
@@ -215,38 +227,29 @@ export default () => {
     closeUi();
   }, [closeUi, players.length, updateGame]);
 
-  const infectAndIntensify = useCallback(() => {
-    updateGame((draft) => {
-      const { deck, discard } = draft.infectionDeck;
-      const rest = deck.slice(0, -1);
-      const [toInfect] = deck.slice(-1);
-      draft.infectionDeck.discard = [];
-      draft.infectionDeck.deck = [...shuffle([...discard, toInfect]), ...rest];
-      draft.turn.lastInfected = toInfect;
-      infectCity(toInfect, 3);
-    });
-  }, [infectCity, updateGame]);
-
   const endCardDraw = useCallback(() => {
     updateGame((draft) => {
       if (draft.turn.epidemics > 0) {
-        increaseInfectionRate();
-        infectAndIntensify();
+        increaseInfectionRate(draft);
+        const { deck, discard } = draft.infectionDeck;
+        const rest = deck.slice(0, -1);
+        const [toInfect] = deck.slice(-1);
+        draft.infectionDeck.discard = [];
+        draft.infectionDeck.deck = [
+          ...shuffle([...discard, toInfect]),
+          ...rest,
+        ];
+        draft.turn.lastInfected = toInfect;
+        infectCity(draft, quarantinedCities, toInfect, 3);
       } else {
         for (let i = 0; i < infectionCardsToDraw; i += 1) {
           const city = draft.infectionDeck.deck.shift();
           draft.infectionDeck.discard.push(city);
-          infectCity(city, 1);
+          infectCity(draft, quarantinedCities, city, 1);
         }
       }
     });
-  }, [
-    increaseInfectionRate,
-    infectAndIntensify,
-    infectCity,
-    infectionCardsToDraw,
-    updateGame,
-  ]);
+  }, [infectionCardsToDraw, quarantinedCities, updateGame]);
 
   const endEpidemic = useCallback(() => {
     updateGame((draft) => {
@@ -256,10 +259,37 @@ export default () => {
   }, [endCardDraw, updateGame]);
 
   const pickUpPlayerCards = useCallback(() => {
-    drawPlayerCard(currentPlayerIdx);
-    drawPlayerCard(currentPlayerIdx);
+    updateGame((draft) => {
+      drawPlayerCard(draft, currentPlayerIdx);
+      drawPlayerCard(draft, currentPlayerIdx);
+    });
     endCardDraw();
-  }, [currentPlayerIdx, drawPlayerCard, endCardDraw]);
+  }, [currentPlayerIdx, endCardDraw, updateGame]);
+
+  const playEventCard = useCallback(
+    (card) => {
+      switch (card) {
+        case 'airlift':
+          setVisibleModal('airlift');
+          break;
+        case 'forecast':
+          console.log('forecast');
+          break;
+        case 'government-grant':
+          console.log('government-grant');
+          break;
+        case 'one-quiet-night':
+          console.log('one-quiet-night');
+          break;
+        case 'resilient-population':
+          console.log('resilient-population');
+          break;
+        default:
+          break;
+      }
+    },
+    [setVisibleModal],
+  );
 
   const skipActions = useCallback(() => {
     updateGame((draft) => {
@@ -286,6 +316,8 @@ export default () => {
           role: roles.pop(),
           hand: playerCards.splice(0, cardsPerPlayer),
         }));
+
+        draft.players[0].hand.unshift('airlift');
 
         const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
@@ -317,6 +349,7 @@ export default () => {
   );
 
   return {
+    airlift,
     canMovePlayerToCity,
     canMoveToCity,
     canMoveToSameCity,
@@ -329,6 +362,7 @@ export default () => {
     endEpidemic,
     endTurn,
     pickUpPlayerCards,
+    playEventCard,
     skipActions,
     startGame,
   };

@@ -11,7 +11,7 @@ const Cities = React.forwardRef((props, ref) => {
   const {
     game: { cities: citiesState, players },
   } = useGame();
-  const { setSelectedCity } = useUi();
+  const { setVisibleModal } = useUi();
   const { quarantinedCities } = useProperties();
   const [, setPointerStart] = useState(null);
 
@@ -27,14 +27,14 @@ const Cities = React.forwardRef((props, ref) => {
               const yDiff = Math.abs(pageY - state.pageY);
               const distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
               if (timeDiff < 500 && distance < 10) {
-                setTimeout(() => setSelectedCity(key));
+                setTimeout(() => setVisibleModal(key));
               }
               return null;
             });
           },
         ]),
       ),
-    [setSelectedCity],
+    [setVisibleModal],
   );
   const onPointerDown = useCallback(({ pageX, pageY }) => {
     setPointerStart({ time: new Date().getTime(), pageX, pageY });

@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const Card = ({ title, description, cardStyle, share, discard }) => (
+const Card = ({ title, description, cardStyle, share, discard, onClick }) => (
   <div
+    onClick={onClick}
     className={classnames(
       'p-2 pb-4 border-2 border-white border-b-0 rounded-t-lg text-black -mt-2 last:pb-3 shadow-card',
       {
@@ -12,6 +13,7 @@ const Card = ({ title, description, cardStyle, share, discard }) => (
         'bg-disease-yellow': cardStyle === 'yellow',
         'bg-event': cardStyle === 'event',
         'bg-green-900 text-white': cardStyle === 'epidemic',
+        'cursor-pointer': onClick,
       },
     )}
   >
