@@ -49,13 +49,10 @@ export default () => {
       updateGame((draft) => {
         const playerIdx = draft.players.findIndex((p) => p.role === playerRole);
         draft.players[playerIdx].location = city;
-        draft.players[currentPlayerIdx].hand = draft.players[
-          currentPlayerIdx
-        ].hand.filter((c) => c !== 'airlift');
       });
       discardPlayerCards(['airlift']);
     },
-    [currentPlayerIdx, discardPlayerCards, updateGame],
+    [discardPlayerCards, updateGame],
   );
 
   const canMovePlayerToCity = useCallback(
@@ -258,6 +255,16 @@ export default () => {
     });
   }, [endCardDraw, updateGame]);
 
+  const governmentGrant = useCallback(
+    (city) => {
+      updateGame((draft) => {
+        buildResearchCenter(draft, city);
+      });
+      discardPlayerCards(['governmentGrant']);
+    },
+    [discardPlayerCards, updateGame],
+  );
+
   const pickUpPlayerCards = useCallback(() => {
     updateGame((draft) => {
       drawPlayerCard(draft, currentPlayerIdx);
@@ -275,20 +282,32 @@ export default () => {
         case 'forecast':
           console.log('forecast');
           break;
-        case 'government-grant':
-          console.log('government-grant');
+        case 'governmentGrant':
+          setVisibleModal('governmentGrant');
           break;
-        case 'one-quiet-night':
-          console.log('one-quiet-night');
+        case 'quietNight':
+          console.log('quietNight');
           break;
-        case 'resilient-population':
-          console.log('resilient-population');
+        case 'resilientPopulation':
+          setVisibleModal('resilientPopulation');
           break;
         default:
           break;
       }
     },
     [setVisibleModal],
+  );
+
+  const resilientPopulation = useCallback(
+    (city) => {
+      updateGame((draft) => {
+        draft.infectionDeck.discard = draft.infectionDeck.discard.filter(
+          (c) => c !== city,
+        );
+      });
+      discardPlayerCards(['resilientPopulation']);
+    },
+    [discardPlayerCards, updateGame],
   );
 
   const skipActions = useCallback(() => {
@@ -316,8 +335,6 @@ export default () => {
           role: roles.pop(),
           hand: playerCards.splice(0, cardsPerPlayer),
         }));
-
-        draft.players[0].hand.unshift('airlift');
 
         const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
@@ -361,8 +378,10 @@ export default () => {
     doTreatDisease,
     endEpidemic,
     endTurn,
+    governmentGrant,
     pickUpPlayerCards,
     playEventCard,
+    resilientPopulation,
     skipActions,
     startGame,
   };

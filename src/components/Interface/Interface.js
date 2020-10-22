@@ -11,9 +11,7 @@ import CitiesScreen from 'components/CitiesScreen';
 import ActionsScreen from 'components/ActionsScreen';
 import TabBar from 'components/TabBar';
 import Hud from 'components/Hud';
-import Modal from 'components/Modal';
-import SelectedCityActions from 'components/SelectedCityActions';
-import Airlift from 'components/Airlift';
+import InterfaceModals from 'components/InterfaceModals';
 
 const Interface = () => {
   const { startGame } = useMethods();
@@ -74,14 +72,7 @@ const Interface = () => {
           <TabBar visibleTab={visibleTab} showTab={showTab} />
         </>
       )}
-      {visibleModal &&
-        (visibleModal === 'airlift' ? (
-          <Airlift closeModal={closeModal} />
-        ) : (
-          <Modal clickOutside={closeModal}>
-            <SelectedCityActions city={visibleModal} />
-          </Modal>
-        ))}
+      {<InterfaceModals modal={visibleModal} closeModal={closeModal} />}
     </div>
   );
 };

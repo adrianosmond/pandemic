@@ -580,8 +580,8 @@ export const EVENTS = {
     name: 'Airlift',
     description: 'Move any pawn to any city.',
   },
-  center: {
-    key: 'center',
+  governmentGrant: {
+    key: 'governmentGrant',
     active: false,
     name: 'Government Grant',
     description: 'Add 1 research station to any city',
