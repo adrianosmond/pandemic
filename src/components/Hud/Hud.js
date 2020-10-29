@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { useWorld } from 'contexts/world';
 import PlayerToken from 'components/PlayerToken';

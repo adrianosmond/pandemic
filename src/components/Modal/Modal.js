@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import useOutsideClick from 'hooks/useOutsideClick';
 import Button from 'components/Button';

@@ -1,4 +1,3 @@
-import React from 'react';
 import PositionMarker from 'components/PositionMarker';
 import { useWorld } from 'contexts/world';
 import { CITIES } from 'data/gameData';

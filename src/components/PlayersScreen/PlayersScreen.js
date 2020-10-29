@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useGame } from 'contexts/game';
 import { CITIES, EVENTS, ROLES } from 'data/gameData';
 import useMethods from 'hooks/useMethods';

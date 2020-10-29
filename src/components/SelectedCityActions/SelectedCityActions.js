@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import useProperties from 'hooks/useProperties';
 import useMethods from 'hooks/useMethods';
 import { CITIES, CURES } from 'data/gameData';

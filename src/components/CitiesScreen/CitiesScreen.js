@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import classnames from 'classnames';
 import { useGame } from 'contexts/game';
 import { useWorld } from 'contexts/world';

@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import Button from 'components/Button';
 import { ReactComponent as Logo } from './logo.svg';

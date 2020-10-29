@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useGame } from 'contexts/game';
 import useMethods from 'hooks/useMethods';
 import { CITIES, INFECTION_RATE } from 'data/gameData';

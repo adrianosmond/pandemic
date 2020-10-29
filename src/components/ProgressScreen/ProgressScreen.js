@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import classnames from 'classnames';
 import { useGame } from 'contexts/game';
 import useProperties from 'hooks/useProperties';

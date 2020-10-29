@@ -1,4 +1,3 @@
-import React from 'react';
 import { useUpdate, useThree } from 'react-three-fiber';
 import { getPositionsFromVectors } from 'utils/utils';
 

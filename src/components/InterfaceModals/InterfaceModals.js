@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Modal from 'components/Modal';
 import SelectedCityActions from 'components/SelectedCityActions';
 import Airlift from 'components/Airlift';

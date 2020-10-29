@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useGame } from 'contexts/game';
 import useMethods from 'hooks/useMethods';
 import { ConfirmModal } from 'components/Modal';

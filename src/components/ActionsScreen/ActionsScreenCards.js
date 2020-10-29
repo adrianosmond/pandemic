@@ -1,4 +1,3 @@
-import React from 'react';
 import { CITIES, EVENTS } from 'data/gameData';
 import Button from 'components/Button';
 import Card from 'components/Card';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { CONNECTING_LINES } from 'data/mapData';
 import Curve from 'components/Curve';
 

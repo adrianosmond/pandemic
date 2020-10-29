@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, forwardRef } from 'react';
 import { useWorld } from 'contexts/world';
 import { useGame } from 'contexts/game';
 import { useUi } from 'contexts/ui';
@@ -6,7 +6,7 @@ import useProperties from 'hooks/useProperties';
 import { CITIES } from 'data/gameData';
 import City from 'components/City';
 
-const Cities = React.forwardRef((props, ref) => {
+const Cities = forwardRef((props, ref) => {
   const { cities } = useWorld();
   const {
     game: { cities: citiesState, players },

@@ -1,4 +1,3 @@
-import React from 'react';
 import useProperties from 'hooks/useProperties';
 import Planet from 'components/Planet';
 import CityMarkers from 'components/CityMarkers';

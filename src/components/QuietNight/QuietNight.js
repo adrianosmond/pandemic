@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import useMethods from 'hooks/useMethods';
 import { ConfirmModal } from 'components/Modal';
 import Typography from 'components/Typography';

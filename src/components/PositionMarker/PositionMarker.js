@@ -1,4 +1,3 @@
-import React from 'react';
 import { useUpdate } from 'react-three-fiber';
 
 const colors = {

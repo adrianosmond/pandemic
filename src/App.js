@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { WorldContext } from 'contexts/world';
 import { GameContext } from 'contexts/game';

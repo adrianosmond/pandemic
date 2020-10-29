@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import { sortDiseaseAmounts } from 'utils/utils';
 import PlayerToken from 'components/PlayerToken';
