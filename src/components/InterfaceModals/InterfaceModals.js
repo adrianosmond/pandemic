@@ -1,6 +1,7 @@
 import Modal from 'components/Modal';
 import SelectedCityActions from 'components/SelectedCityActions';
 import Airlift from 'components/Airlift';
+import Forecast from 'components/Forecast';
 import GovernmentGrant from 'components/GovernmentGrant';
 import QuietNight from 'components/QuietNight';
 import ResilientPopulation from 'components/ResilientPopulation';
@@ -10,6 +11,10 @@ const InterfaceModals = ({ modal, closeModal }) => {
 
   if (modal === 'airlift') {
     return <Airlift closeModal={closeModal} />;
+  }
+
+  if (modal === 'forecast') {
+    return <Forecast closeModal={closeModal} />;
   }
 
   if (modal === 'governmentGrant') {

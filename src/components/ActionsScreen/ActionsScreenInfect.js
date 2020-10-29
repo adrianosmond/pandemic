@@ -1,7 +1,6 @@
-import { CITIES } from 'data/gameData';
 import Button from 'components/Button';
 import Typography from 'components/Typography';
-import Card from 'components/Card';
+import CardsList from 'components/CardsList';
 
 const ActionsScreenEpidemic = ({ isQuietNight, cards, endTurn }) => (
   <div>
@@ -12,18 +11,7 @@ const ActionsScreenEpidemic = ({ isQuietNight, cards, endTurn }) => (
       {isQuietNight ? (
         <p>Quiet night - no cities infected</p>
       ) : (
-        cards
-          .map((card) => ({
-            ...CITIES[card],
-          }))
-          .map((card, index) => (
-            <Card
-              key={index}
-              title={card.name}
-              description={card.description}
-              cardStyle={card.color}
-            />
-          ))
+        <CardsList cards={cards} />
       )}
     </div>
     <Button onClick={endTurn}>End turn</Button>

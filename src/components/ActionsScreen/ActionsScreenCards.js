@@ -1,6 +1,5 @@
-import { CITIES, EVENTS } from 'data/gameData';
 import Button from 'components/Button';
-import Card from 'components/Card';
+import CardsList from 'components/CardsList';
 import Typography from 'components/Typography';
 
 const ActionsScreenCards = ({ cards, pickUpPlayerCards }) => {
@@ -10,19 +9,7 @@ const ActionsScreenCards = ({ cards, pickUpPlayerCards }) => {
         New player cards
       </Typography>
       <div className="my-8">
-        {cards
-          .map((card) => ({
-            ...(CITIES[card] ||
-              EVENTS[card] || { name: 'epidemic', color: 'epidemic' }),
-          }))
-          .map((card, index) => (
-            <Card
-              key={index}
-              title={card.name}
-              description={card.description}
-              cardStyle={card.color || 'event'}
-            />
-          ))}
+        <CardsList cards={cards} />
       </div>
       <Button className="mt-2" onClick={pickUpPlayerCards}>
         Continue

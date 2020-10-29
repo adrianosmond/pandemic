@@ -281,7 +281,7 @@ export default () => {
           setVisibleModal('airlift');
           break;
         case 'forecast':
-          console.log('forecast');
+          setVisibleModal('forecast');
           break;
         case 'governmentGrant':
           setVisibleModal('governmentGrant');
@@ -338,11 +338,14 @@ export default () => {
         const numPlayers = players.length;
         const cardsPerPlayer = [0, 0, 4, 3, 2][numPlayers];
         const playerCards = pDeck.splice(0, numPlayers * cardsPerPlayer);
+
         draft.players = players.map((p) => ({
           ...p,
           role: roles.pop(),
           hand: playerCards.splice(0, cardsPerPlayer),
         }));
+
+        draft.players[0].hand.unshift('forecast');
 
         const piles = new Array(difficulty).fill().map(() => ['epidemic']);
 
